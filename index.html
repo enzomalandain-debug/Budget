@@ -643,6 +643,51 @@ h1 { font-size: 30px; } h2 { font-size: 21px; } h3 { font-size: 17px; }
 .ledform { display: grid; gap: 10px; padding: 12px; border-radius: 16px; background: var(--surface); }
 #goal-new { display: grid; }
 .app-v { margin-top: 18px; }
+#ana { display: grid; gap: 14px; }
+.ana-card { display: grid; gap: 10px; padding: 16px; border-radius: 22px; background: var(--surface); }
+.ana-card h3 { margin: 0; font-size: 17px; }
+.ana-donut { width: min(240px, 70vw); height: auto; justify-self: center; display: block; }
+.ana-donut.ana-sm { width: 104px; flex: none; }
+.ana-part { stroke: var(--surface); stroke-width: 2; cursor: pointer; transition: opacity .15s; }
+.ana-part.dim { opacity: .28; }
+.ana-c1 { font: 800 26px var(--font-body); fill: var(--ink); }
+.ana-donut.ana-sm .ana-c1 { font-size: 24px; }
+.ana-c2 { font: 600 14px var(--font-body); fill: var(--ink-2); }
+.ana-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.ana-row { width: 100%; display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 40px 74px; align-items: center; gap: 8px; min-height: 44px; padding: 4px 8px; border: 0; border-radius: 12px; background: transparent; color: var(--ink); font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+.ana-row.on { background: var(--field); box-shadow: 0 1px 4px var(--shadow); }
+.ana-sw { width: 12px; height: 12px; border-radius: 4px; display: inline-block; flex: none; }
+.ana-nom { min-width: 0; overflow-wrap: anywhere; font-weight: 600; }
+.ana-m { font-weight: 800; font-variant-numeric: tabular-nums; }
+.ana-pc { color: var(--ink-2); text-align: right; font-variant-numeric: tabular-nums; }
+.ana-e { font-size: 12px; font-weight: 700; text-align: right; color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ana-e.up { color: var(--bad); }
+.ana-e.down { color: var(--good); }
+.ana-note { margin: 0; font-size: 12px; color: var(--ink-2); }
+.ana-det { list-style: none; margin: 0; padding: 10px 12px; display: grid; gap: 6px; border-radius: 14px; background: var(--field); font-size: 14px; }
+.ana-det li { display: flex; justify-content: space-between; gap: 10px; }
+.ana-det small { display: block; font-size: 12px; color: var(--ink-2); }
+.ana-det b { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ana-bar { display: flex; gap: 2px; height: 18px; border-radius: 6px; overflow: hidden; background: var(--surface); }
+.ana-bar span { display: block; height: 100%; min-width: 2px; }
+.ana-bar .ana-reste { background: repeating-linear-gradient(135deg, var(--surface-2) 0 6px, var(--field) 6px 9px); border: 1px solid var(--line); box-sizing: border-box; }
+.ana-io { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); }
+.ana-io b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.ana-io b.neg { color: var(--bad); }
+.ana-mini { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.ana-mlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13px; }
+.ana-mlist li { display: flex; align-items: center; gap: 6px; }
+.conseilcard { display: grid; gap: 8px; padding: 16px; border-radius: 22px; background: var(--surface); }
+.conseilcard.cs-plus { background: var(--good-soft); }
+.conseilcard.cs-moins { background: var(--warn-soft); }
+#conseil { display: grid; gap: 8px; padding: 16px; border-radius: 22px; background: var(--surface); }
+.cs-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.cs-titre { margin: 0; font-size: 19px; line-height: 1.25; }
+.cs-l, .cs-ok { margin: 0; font-size: 14px; line-height: 1.45; }
+.cs-ok { font-weight: 700; color: var(--good); }
+.cs-btn { margin-top: 4px; }
+.cs-idees ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; line-height: 1.4; }
+.cs-acts { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 4px; }
 .tile-s0 { font-size: 12px; font-weight: 700; color: var(--ink); }
 /* Heures sup. à la volée : mêmes éléments sur la carte noire et dans la Saisie */
 .hsv { --hb: var(--line); --hf: var(--field); --hi: var(--ink); --hm: var(--ink-2); --hp: var(--ink); --hpi: #FFFFFF; display: grid; gap: 8px; color: var(--hi); }
@@ -689,6 +734,49 @@ h1 { font-size: 30px; } h2 { font-size: 21px; } h3 { font-size: 17px; }
 .sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .sheet-close { width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--surface); color: var(--ink); font-size: 22px; line-height: 1; cursor: pointer; }
 body.sheet-open { overflow: hidden; }
+/* Import de captures bancaires */
+.imp-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.imp-bar .mini { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: #FFFFFF; border-radius: 999px; padding: 0 16px; height: 40px; }
+.imp-bar svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linejoin: round; }
+.imp-body { display: grid; gap: 14px; min-width: 0; }
+.imp-grp { display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; min-width: 0; }
+.imp-gh { display: grid; gap: 2px; min-width: 0; }
+.imp-titre { font-size: 17px; font-weight: 700; overflow-wrap: anywhere; }
+.imp-solde { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: space-between; padding: 10px 12px; background: var(--field); border: 1px solid var(--line); border-radius: 12px; font-size: 14px; color: var(--ink-2); }
+.imp-solde b { font-size: 18px; color: var(--ink); font-variant-numeric: tabular-nums; margin-left: auto; }
+.imp-solde .link-btn { font-size: 13px; }
+.imp-list { list-style: none; margin: 0; padding: 0; background: var(--field); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.imp-row { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 11px 12px; border-top: 1px solid var(--line); }
+.imp-row:first-child { border-top: 0; }
+.imp-row.fait .imp-lib, .imp-row.fait .imp-m { color: var(--ink-2); font-weight: 500; }
+.imp-ck { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--ink); }
+.imp-ok { width: 22px; text-align: center; color: var(--good); font-weight: 800; }
+.imp-main { display: grid; gap: 3px; min-width: 0; }
+.imp-lib { font-weight: 600; overflow-wrap: anywhere; line-height: 1.3; }
+.imp-meta, .imp-det { font-size: 13px; color: var(--ink-2); line-height: 1.35; }
+.imp-meta .pill.sm { margin-left: 2px; }
+.imp-sel { height: 36px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 0 8px; max-width: 100%; justify-self: start; margin-top: 3px; }
+.imp-m { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.imp-m.pos { color: var(--good); }
+.imp-mi { width: 92px; height: 38px; border: 1px solid var(--bad); border-radius: 10px; background: var(--field); padding: 0 8px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.imp-solde .imp-mi { border-color: var(--line); width: 130px; margin-left: auto; }
+.imp-deja summary { cursor: pointer; font-weight: 600; color: var(--ink-2); padding: 4px 0; }
+.imp-deja .imp-list { margin-top: 8px; }
+.imp-ctrl { font-size: 14px; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); line-height: 1.4; }
+.imp-ctrl.ok { background: var(--good-soft); color: var(--good); font-weight: 600; }
+.imp-ctrl.warn { background: var(--warn-soft); color: var(--warn); }
+.imp-foot { display: grid; gap: 8px; position: sticky; bottom: calc(-20px - env(safe-area-inset-bottom, 0px)); background: var(--bg); padding: 12px 0 calc(16px + env(safe-area-inset-bottom, 0px)); margin-bottom: calc(-20px - env(safe-area-inset-bottom, 0px)); box-shadow: 0 -10px 14px -12px var(--shadow); }
+.imp-btns { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; }
+.imp-btns .btn.ghost { height: 52px; padding: 0 18px; }
+.imp-foot .note { font-size: 13px; }
+.imp-suivi { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.imp-suivi input { width: 20px; height: 20px; accent-color: var(--ink); }
+.imp-prog { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.imp-prog span { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width .3s; }
+.imp-prog-t { font-weight: 600; }
+.imp-coller summary { cursor: pointer; font-weight: 600; color: var(--accent); padding: 4px 0; }
+.imp-coller textarea { width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 10px; font: inherit; font-size: 15px; background: var(--field); margin: 8px 0; resize: vertical; }
+
 </style>
 
 <div class="wrap">
@@ -700,6 +788,7 @@ body.sheet-open { overflow: hidden; }
   <div class="bk-banner" id="bk-banner" role="status" hidden></div>
   <section class="daycard" id="today-card" aria-label="Ma journée" hidden></section>
   <section class="soldecard bilancard" id="bilan-card" aria-label="Bilan du mois terminé" hidden></section>
+  <section class="conseilcard" id="conseil-card" aria-label="Conseil du mois" hidden></section>
   <nav class="tiles" id="tiles" aria-label="Outils"></nav>
   <button type="button" class="link-btn home-reg" data-goto="reglages">Réglages et sauvegarde</button>
   </div>
@@ -761,9 +850,17 @@ body.sheet-open { overflow: hidden; }
   </section>
   </div>
   <div class="subpanel" data-subpanel="mois" hidden>
+  <section class="sec" id="conseil-sec" aria-labelledby="conseil-title">
+    <div class="sec-head"><h2 id="conseil-title">Conseil du mois</h2></div>
+    <div id="conseil"></div>
+  </section>
+  <section class="sec" id="ana-sec" aria-labelledby="ana-title">
+    <div class="sec-head"><h2 id="ana-title">Où va ton argent</h2><select id="ana-select" aria-label="Choisir le mois"></select></div>
+    <div id="ana"></div>
+  </section>
   <section class="sec" aria-labelledby="ledger-title">
     <div class="sec-head"><h2 id="ledger-title">Le budget du mois</h2></div>
-    <p class="note">Revenus, prélèvements des trois comptes et épargne. Touche un montant pour le corriger. <span class="pill warn sm">à confirmer</span> signale un point à vérifier.</p>
+    <p class="note">Revenus, prélèvements et épargne de tes comptes. Touche un montant pour le corriger. <span class="pill warn sm">à confirmer</span> signale un point à vérifier.</p>
     <div id="ledger"></div>
     <button class="btn ghost" id="next-btn" type="button" hidden>Préparer le mois suivant</button>
   </section>
@@ -849,7 +946,7 @@ body.sheet-open { overflow: hidden; }
     <p class="note">Remet l'application à zéro sur ce téléphone. Fais une sauvegarde avant.</p>
     <button class="btn ghost" id="wipe-btn" type="button">Tout effacer</button>
     <div class="confirm" id="wipe-confirm" hidden>Effacer toutes les données de ce téléphone ?<button type="button" class="link-btn danger" id="wipe-yes">Tout effacer</button><button type="button" class="link-btn" id="wipe-no">Annuler</button></div>
-    <p class="note app-v">Paie &amp; Budget · version 1.0</p>
+    <p class="note app-v">Paie &amp; Budget · version 1.2</p>
   </section>
   </div>
 
@@ -891,6 +988,14 @@ body.sheet-open { overflow: hidden; }
       <p class="note" id="form-hint"></p>
     </form>
     <p class="empty" id="ro-note" hidden>Lecture seule : tu peux consulter ce budget, pas le modifier.</p>
+  </div>
+</div>
+<div class="sheet" id="imp-sheet" hidden>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="imp-title">
+    <div class="sheet-grip" aria-hidden="true"></div>
+    <div class="sheet-head"><h2 id="imp-title">Importer une capture</h2><button type="button" class="sheet-close" id="imp-close" aria-label="Fermer">×</button></div>
+    <input type="file" id="imp-file" accept="image/*" multiple hidden>
+    <div class="imp-body" id="imp-body"></div>
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
@@ -1245,7 +1350,7 @@ body.sheet-open { overflow: hidden; }
       return '<button type="button" class="acc" data-acc="' + esc(c[0]) + '" aria-pressed="' + (S.compteSel === c[0]) + '"><span class="acc-k">' + esc(c[1]) + '</span><span class="acc-v' + (i && i.montant < 0 ? " neg" : "") + '">' + (i ? esc(eur.format(i.montant)) : "—") + '</span><span class="acc-s">' +
         (i ? (fin ? "≈ " + esc(eur.format(fin.v)) + " au " + esc(String(dateOf(pr.fin).getDate())) : "à jour") : "à renseigner") + "</span></button>";
     }).join("") + "</div>";
-    box.innerHTML = cartes + SUIVIS.filter(function (c) { return c[0] === S.compteSel; }).map(function (c) {
+    box.innerHTML = impBarre() + cartes + SUIVIS.filter(function (c) { return c[0] === S.compteSel; }).map(function (c) {
       var compte = c[0], i = soldeInfo(compte), av = aVenir(compte);
       var h = '<div class="solde-head"><span class="label">' + esc(c[1]) + (i ? " jusqu'à la fin du mois" : "") + "</span>" + (i && !ro && S.recaler !== compte ? '<button type="button" class="link-btn" data-recal="' + esc(compte) + '">Recaler</button>' : "") + "</div>";
       if (i) {
@@ -1416,7 +1521,7 @@ body.sheet-open { overflow: hidden; }
     var cats = catsDe(daily);
     var budgets = (p.budgets || []).map(function (b) { return { lib: b.libelle || b.categorie, cat: b.categorie, prevu: Number(b.montant) || 0, reel: cats[b.categorie] || 0 }; });
     var oublis = (p.charges || []).concat(p.epargne || []).filter(function (x) { return !x.passe && (Number(x.montant) || 0) > 0; });
-    var vers = r2(total(S.versements.filter(function (v) { return v.date >= p.debut && v.date <= p.fin; })));
+    var vers = r2(total(S.versements.filter(function (v) { return !v.epargne && v.date >= p.debut && v.date <= p.fin; })));
     var epReel = r2(total((p.epargne || []).filter(function (x) { return x.passe; })) + vers);
     var prev = S.periods.filter(function (q) { return q.fin < p.debut; }).sort(byDebut).pop() || null;
     var prevCats = prev ? catsDe(S.allExp.filter(function (x) { return x.periode === prev.id && !isEnvExpense(x); })) : null;
@@ -1475,12 +1580,12 @@ body.sheet-open { overflow: hidden; }
       var b = bilanDe(last);
       card.innerHTML = '<div class="solde-head"><span class="label">Bilan de ' + esc((last.nom || last.id).split(" ")[0].toLowerCase()) + '</span><button type="button" class="link-btn" data-goto="budget" data-bilan="' + esc(last.id) + '">Bilan complet</button></div>' +
         '<div class="bil-big ' + (b.reste < 0 ? "neg" : "pos") + '">' + moneyHTML(b.reste) + '</div><p class="env-meta">' + (b.reste < 0 ? "de dépassement" : "de reste en fin de mois") + "</p>" +
-        '<ul class="bil-list">' + b.constats.slice(1, 4).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul>";
+        '<ul class="bil-list">' + b.constats.slice(1, 4).map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul>" + anaMini(last);
       card.hidden = false;
     } else card.hidden = true;
   }
 
-  function renderAll() { if (typeof renderFirstMonth === "function") { renderFirstMonth(); renderBanner(); } var p = current(); renderHeader(p); renderHero(p); renderSoldes(); renderBilans(); renderPrets(); renderPlans(); renderEnvelopes(); renderBudgets(p); renderPending(p); renderForm(p); renderList(p); renderGoals(); renderLedger(p); renderTiles(); }
+  function renderAll() { if (typeof renderFirstMonth === "function") { renderFirstMonth(); renderBanner(); } var p = current(); renderHeader(p); renderHero(p); renderSoldes(); renderBilans(); renderConseil(); renderAnalyse(); renderPrets(); renderPlans(); renderEnvelopes(); renderBudgets(p); renderPending(p); renderForm(p); renderList(p); renderGoals(); renderLedger(p); renderTiles(); }
 
   /* Date approximative d'un prélèvement dans le mois, d'après son texte « jour » */
   function itemDate(p, x) {
@@ -1559,6 +1664,10 @@ body.sheet-open { overflow: hidden; }
     write(function () { return S.db.doc("periodes/" + p.id).update(patch); },
       (x.passe ? "Passé : " : "À venir : ") + x.libelle + soldeApres(x.compte, delta) + partageMsg(x, p)).then(function (ok) {
       if (ok && x.partage) syncPartage(x, p);
+      if (ok && ln === "epargne" && x.objectif && x.cle) {
+        (x.passe ? S.db.doc("versements/ep-" + x.cle).set({ objectif: x.objectif, date: todayISO(), montant: m, qui: "Les deux", creeLe: nowISO(), epargne: p.id })
+          : S.db.doc("versements/ep-" + x.cle).delete()).catch(onError);
+      }
     });
   }
   /* Prélèvement partagé (ex. un abonnement à deux) : chaque mois coché ajoute sa part au prêt « On me doit » de la personne */
@@ -3500,6 +3609,8 @@ body.sheet-open { overflow: hidden; }
     paShow();
     renderToday();
     renderTiles();
+    renderConseil();
+    renderAnalyse();
   }
   function paShow() {
     qsa("[data-pa-panel]").forEach(el => { el.hidden = el.dataset.paPanel !== P.tab; });
@@ -4094,7 +4205,7 @@ body.sheet-open { overflow: hidden; }
   })();
 
   /* ================= Version hors ligne : réglages, bienvenue, sauvegarde, premier mois, lignes du budget ================= */
-  var APP_VERSION = "1.0";
+  var APP_VERSION = "1.2";
   var ROULEMENT_TYPE = {"jours": ["1", "1", "2", "2", "2", "JNT", "R", "R", "JNT", "1", "1", "3", "3", "3", "JNT", "R", "JNT", "JN", "1", "2", "2", "3", "3", "JNT", "R", "JNT", "1", "1", "2", "2", "3", "3", "JNT", "JNT", "R"], "libelles": {"1": "1 · 6h–14h", "2": "2 · 14h–22h", "3": "3 · 22h–6h", "JN": "JN", "JNT": "JNT", "R": "R"}};
   var MODELE_VIERGE = {"decalage": 1, "rubriques": [{"code": "HS_NE", "libelle": "Heures sup. 25 % non exonérées", "unite": "h", "taux": 0}, {"code": "HS_EXO", "exo": true, "libelle": "Heures sup. 25 % exonérées", "unite": "h", "taux": 0}, {"code": "PAO", "libelle": "Heures de PAO", "unite": "h", "taux": 0}, {"code": "INCOMMODES", "libelle": "Heures incommodes 66 %", "unite": "h", "taux": 0}, {"code": "RAPPEL", "libelle": "Heures de rappel", "unite": "h", "taux": 0}, {"code": "APPEL", "libelle": "Heures d'appel", "unite": "h", "taux": 0}, {"code": "FERIES", "libelle": "Jours fériés payés 100 %", "unite": "h", "taux": 0}, {"code": "FERIES_233", "libelle": "Jours fériés payés 233 % (Noël, jour de l'an)", "unite": "h", "taux": 0}, {"code": "PENIBLES", "libelle": "Travaux pénibles 20 %", "unite": "h", "taux": 0}, {"code": "HABILLAGE", "libelle": "Habillage / déshabillage", "unite": "u", "taux": 0}, {"code": "REMPLACEMENT", "controle": false, "libelle": "Jours de remplacement", "unite": "jour", "taux": 0}, {"code": "QUART_HS", "derive": ["HS_NE", "HS_EXO"], "libelle": "Prime de quart sur heures sup.", "unite": "h", "taux": 0}, {"code": "RET_QUART", "derive": ["INCOMMODES"], "libelle": "Retenue quart", "unite": "h", "taux": 0}, {"code": "TF", "libelle": "Tickets flexibilité (8 h par TF)", "unite": "h", "taux": 0}], "fixes": [{"libelle": "Salaire de base", "montant": 0}, {"libelle": "Prime d'ancienneté", "montant": 0}, {"libelle": "Prime de transport P/I", "montant": 0}, {"libelle": "Prime de quart", "montant": 0}, {"libelle": "Prime mensuelle", "montant": 0}, {"imposable": false, "libelle": "Forfait prime de panier", "montant": 0}], "nonSoumis": [{"libelle": "Prime de transport NP/NI", "montant": 0}, {"libelle": "Prime panier non passible", "montant": 0}], "cotis": {"csgAjout": 0, "csgAssiette": 98.25, "csgDed": 6.8, "csgNonDed": 2.9, "deplafonnee": 0.4, "fixes": 0, "hsNetFiscal": 93.32, "pass": 4005, "plafonnee": 11.61, "reducHS": 10.66, "reintegration": 0, "t2": 8.45}, "tauxPAS": 0};
   var PROFIL = null;
@@ -4415,6 +4526,1143 @@ body.sheet-open { overflow: hidden; }
     navigator.serviceWorker.addEventListener("controllerchange", function () { if (hadCtrl) toast("Nouvelle version de l'application installée."); });
   }
 
+
+  /* ---------- Conseil du mois ----------
+     À la paie : la paie qui arrive (estimée, puis réelle quand elle est cochée « reçue ») et ce qui est prévu ce mois-ci,
+     comparés à la consommation du mois passé (dépenses du quotidien, sans les prélèvements).
+     Marge ≥ 150 € : mettre la moitié de côté pour le projet. Entre 0 et 150 € : même rythme. Négative : ralentir, avec des idées chiffrées. */
+  var CONSEIL_SEUIL = 150, CONSEIL_PART = 0.5;
+  var CATS_SOUPLES = { "Restos & sorties": 0.3, "Shopping": 0.3, "Loisirs": 0.3, "Cadeaux": 0.3, "Autre": 0.2, "Maison": 0.15, "Courses": 0.1, "Carburant": 0.1, "Enfants": 0.1 };
+  var RE_ABOS = /canal|netflix|spotify|deezer|disney\s*\+|prime video|amazon prime|uber\s*one|youtube|apple|abonnement|salle de sport|basic.?fit|playstation|xbox/i;
+  function projetConseil() { var gs = S.goals || []; return gs.filter(function (g) { return /duba/i.test(g.nom || ""); })[0] || gs[0] || null; }
+  function recuOuPrevu(p, x) { return x.recu && x.recuMontant != null ? Number(x.recuMontant) : revAmount(p, x); }
+  function ratioNet() { var b = sortedBulletins().filter(function (x) { return isNum(x.brut) && isNum(x.netAvantImpot) && Number(x.brut) > 0; })[0]; return b ? Number(b.netAvantImpot) / Number(b.brut) : null; }
+  function conseilDe(p) {
+    if (!p) return null;
+    var prev = S.periods.filter(function (q) { return q.fin < p.debut; }).sort(byDebut).pop();
+    if (!prev) return { p: p, sansPrev: true };
+    var conso = r2(total(S.allExp.filter(function (x) { return x.periode === prev.id && !isEnvExpense(x); })));
+    if (!(conso > 0)) return { p: p, sansPrev: true, prev: prev };
+    var sal = (p.revenus || []).filter(function (x) { return x.lien === "bulletin"; });
+    var paie = sal.length ? r2(sal.reduce(function (t, x) { return t + recuOuPrevu(p, x); }, 0)) : null;
+    var rev = r2((p.revenus || []).reduce(function (t, x) { return t + recuOuPrevu(p, x); }, 0) + total(S.allInc.filter(function (x) { return x.periode === p.id; })));
+    var ajout = (p.epargne || []).filter(function (x) { return x.conseil; });
+    var charges = r2(total(p.charges)), epargne = r2(total((p.epargne || []).filter(function (x) { return !x.conseil; })));
+    var marge = r2(rev - charges - epargne - conso);
+    var bs = sortedBulletins().filter(function (b) { return isNum(b.netPaye) && Number(b.netPaye) > 0; }).slice(0, 6);
+    var moy = bs.length >= 2 ? r2(bs.reduce(function (t, b) { return t + Number(b.netPaye); }, 0) / bs.length) : null;
+    var t = todayISO(), dl = t < p.debut ? daysBetween(p.debut, p.fin) + 1 : t > p.fin ? 0 : daysBetween(t, p.fin) + 1;
+    var deja = r2(total(S.allExp.filter(function (x) { return x.periode === p.id && !isEnvExpense(x); })));
+    var c = { p: p, prev: prev, conso: conso, paie: paie, paieRecue: sal.length > 0 && sal.every(function (x) { return x.recu; }), moy: moy, rev: rev, charges: charges, epargne: epargne,
+      marge: marge, cas: marge >= CONSEIL_SEUIL ? "plus" : marge >= 0 ? "stable" : "moins", ajout: ajout, ajoutTot: r2(total(ajout)), projet: projetConseil(),
+      parJour: dl > 0 ? r2((rev - charges - epargne - r2(total(ajout)) - deja) / dl) : null, parJourAvant: r2(conso / (daysBetween(prev.debut, prev.fin) + 1)) };
+    if (c.cas === "plus") c.proposition = Math.floor(marge * CONSEIL_PART / 10) * 10;
+    if (c.cas === "moins") c.idees = ideesDe(c);
+    return c;
+  }
+  function ideesDe(c) {
+    var out = [], manque = -c.marge;
+    var cats = catsDe(S.allExp.filter(function (x) { return x.periode === c.prev.id && !isEnvExpense(x); }));
+    Object.keys(cats).map(function (k) { var r = CATS_SOUPLES[k] || 0; return { k: k, m: cats[k], r: r, e: Math.round(cats[k] * r) }; })
+      .filter(function (a) { return a.r > 0 && a.e >= 5; }).sort(function (a, b) { return b.e - a.e; }).slice(0, 3)
+      .forEach(function (a) { out.push(a.k + " : " + eur0.format(a.m) + " le mois passé. Avec " + Math.round(a.r * 100) + " % de moins, " + eur0.format(a.e) + " d'économie."); });
+    var abos = (c.p.charges || []).filter(function (x) { return RE_ABOS.test(x.libelle || "") && !x.passe && Number(x.montant) > 0; });
+    if (abos.length) out.push("Suspendre un mois " + (abos.length > 1 ? "ces abonnements (" + eur0.format(total(abos)) + " en tout)" : "cet abonnement") + " : " + abos.map(function (x) { return x.libelle + " (" + eur.format(Number(x.montant)) + ")"; }).join(", ") + ".");
+    var r = rubOf("HS_NE"), ratio = ratioNet();
+    if (r && N(r.taux) > 0) {
+      var nh = N(r.taux) * (ratio || 1), h = Math.ceil(manque / nh * 2) / 2;
+      out.push("≈ " + num(h) + " h sup. combleraient le manque (≈ " + eur.format(r2(nh)) + (ratio ? " net" : " brut") + " de l'heure).");
+    }
+    return out;
+  }
+  function conseilHTML(c, compact) {
+    if (!c) return "";
+    if (c.sansPrev) return compact ? "" : '<p class="empty">Le premier conseil arrivera au début du prochain mois de budget, une fois un mois complet de dépenses noté.</p>';
+    var mois = (c.p.nom || c.p.id).split(" ")[0].toLowerCase(), moisPrev = (c.prev.nom || c.prev.id).split(" ")[0].toLowerCase();
+    var ecartPaie = c.paie != null && c.moy != null ? r2(c.paie - c.moy) : 0;
+    var titre = c.cas === "plus" ? (ecartPaie >= 50 ? "Belle paie : mets‑en un peu plus de côté" : "De la marge ce mois-ci : mets‑en un peu plus de côté")
+      : c.cas === "stable" ? "Ça passe : garde le même rythme"
+      : (ecartPaie <= -50 ? "Paie plus modeste : ralentis un peu" : "Au rythme du mois passé, ça ne passe pas : ralentis un peu");
+    var h = '<div class="cs-head"><span class="label">Conseil de ' + esc(mois) + '</span><span class="pill ' + (c.cas === "moins" ? "bad" : c.cas === "plus" ? "good" : "") + '">' + (c.cas === "plus" ? "+" + esc(eur0.format(c.marge)) : c.cas === "moins" ? "−" + esc(eur0.format(-c.marge)) : esc(eur0.format(c.marge))) + "</span></div>";
+    h += '<h3 class="cs-titre">' + esc(titre) + "</h3>";
+    var l1 = c.paie != null ? "Ta paie : " + (c.paieRecue ? "" : "≈ ") + eur0.format(c.paie) + (c.paieRecue ? " reçue" : " estimée") : "Tes revenus du mois : " + eur0.format(c.rev);
+    if (c.paie != null && c.moy != null) { var d = r2(c.paie - c.moy); l1 += Math.abs(d) < 50 ? ", comme ta moyenne (" + eur0.format(c.moy) + ")" : ", soit " + eur0.format(Math.abs(d)) + (d > 0 ? " de plus" : " de moins") + " que ta moyenne (" + eur0.format(c.moy) + ")"; }
+    var l2 = "Au rythme de " + moisPrev + " (" + eur0.format(c.conso) + " de dépenses du quotidien), après tes prélèvements (" + eur0.format(c.charges) + ") et ton épargne prévue (" + eur0.format(c.epargne) + "), " +
+      (c.marge >= 0 ? "il te resterait ≈ " + eur0.format(c.marge) + "." : "il manquerait ≈ " + eur0.format(-c.marge) + ".");
+    h += '<p class="cs-l">' + esc(l1) + '.</p><p class="cs-l">' + esc(l2) + "</p>";
+    if (c.cas === "plus") {
+      var pj = c.projet, nom = pj ? pj.nom : "ton épargne";
+      if (c.ajout.length) h += '<p class="cs-ok">✓ ' + esc(eur0.format(c.ajoutTot)) + " ajoutés pour " + esc(nom) + ". Coche-les dans « À passer » quand le virement est fait.</p>";
+      else if (c.proposition >= 10) {
+        var avance = "";
+        if (pj && Number(pj.objectif) > 0) { var deja = goalSavedConseil(pj), pc = Math.min(100, Math.round((deja + c.proposition) / Number(pj.objectif) * 100)); avance = " Tu passerais à " + pc + " % de l'objectif."; }
+        h += '<p class="cs-l"><b>Mets ' + esc(eur0.format(c.proposition)) + " de plus pour " + esc(nom) + ".</b>" + esc(avance) + " L'autre moitié (" + esc(eur0.format(r2(c.marge - c.proposition))) + ") reste pour les imprévus.</p>";
+        if (S.canWrite !== false) h += '<button type="button" class="btn cs-btn" data-conseil-add="' + esc(c.p.id) + ":" + c.proposition + '">Ajouter ' + esc(eur0.format(c.proposition)) + " à " + esc(nom) + "</button>";
+      }
+    } else {
+      if (c.parJour != null) h += '<p class="cs-l"><b>Pour finir le mois à zéro : ' + esc(eur0.format(Math.max(0, Math.floor(c.parJour)))) + " par jour maximum</b>, contre " + esc(eur0.format(c.parJourAvant)) + " par jour en " + esc(moisPrev) + ".</p>";
+      if (c.cas === "moins" && c.idees && c.idees.length) h += '<div class="cs-idees"><span class="label">Des idées</span><ul>' + c.idees.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>";
+    }
+    if (compact) h += '<div class="cs-acts"><button type="button" class="link-btn" data-goto="budget" data-sub="mois">Voir le détail</button><button type="button" class="mini ghost" data-conseil-vu="' + esc(c.p.id) + '">Compris</button></div>';
+    return h;
+  }
+  function goalSavedConseil(g) { return r2(total(S.versements.filter(function (v) { return v.objectif === g.id; }))); }
+  function renderConseil() {
+    var box = $("conseil"), card = $("conseil-card"); if (!box || !card) return;
+    if (S.failed || !S.loaded) { box.innerHTML = ""; card.hidden = true; return; }
+    box.innerHTML = conseilHTML(conseilDe(current()), false) || '<p class="empty">Crée ton mois pour avoir un conseil.</p>';
+    /* Sur l'Accueil : les 7 premiers jours du mois de budget, jusqu'à « Compris » */
+    var t = todayISO(), p0 = periodFor(t), c0 = p0 ? conseilDe(p0) : null, n = p0 ? daysBetween(p0.debut, t) : -1;
+    var vu = S.meta && S.meta.conseilVu && p0 && S.meta.conseilVu[p0.id];
+    if (c0 && !c0.sansPrev && n >= 0 && n <= 6 && !vu) { card.innerHTML = conseilHTML(c0, true); card.hidden = false; card.className = "conseilcard cs-" + c0.cas; }
+    else card.hidden = true;
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-conseil-add], [data-conseil-vu]"); if (!b || !S.db) return;
+    if (b.dataset.conseilVu) {
+      var vu = Object.assign({}, (S.meta && S.meta.conseilVu) || {}); vu[b.dataset.conseilVu] = true;
+      S.db.doc("local/meta").set(Object.assign({}, S.meta || {}, { conseilVu: vu })).catch(onError);
+      return;
+    }
+    var a = b.dataset.conseilAdd.split(":"), p = S.periods.filter(function (q) { return q.id === a[0]; })[0], m = Number(a[1]); if (!p || !(m > 0)) return;
+    var pj = projetConseil(), ep = clone(p.epargne || []);
+    var ligne = { libelle: (pj ? pj.nom : "Épargne") + " · en plus", montant: m, compte: COMPTES[0][0], jour: "à la paie", conseil: true, cle: "c" + Date.now().toString(36) };
+    if (pj) ligne.objectif = pj.id;
+    ep.push(ligne); b.disabled = true;
+    write(function () { return S.db.doc("periodes/" + p.id).update({ epargne: ep }); }, "Ajouté : " + eur0.format(m) + " pour " + (pj ? pj.nom : "ton épargne") + ". Coche-le dans « À passer » quand le virement est fait.");
+  });
+
+
+  /* ---------- Où va ton argent : deux camemberts par mois ----------
+     1. Tout ce qui est sorti : prélèvements, dépenses du quotidien, épargne (+ une barre entrées / sorties).
+     2. Les dépenses du quotidien seules, par catégorie (les petites catégories regroupées en « Autres »).
+     Couleurs fixes par élément (jamais selon le rang), parts dans un ordre fixe, liste chiffrée sous chaque camembert
+     avec l'écart au mois d'avant (au même jour pour le mois en cours). Toucher une part ou une ligne montre le détail. */
+  var ANA_C1 = [["prel", "Prélèvements", "#2a78d6"], ["dep", "Dépenses du quotidien", "#eb6834"], ["epa", "Épargne", "#1baf7a"]];
+  var ANA_CATS = [["Courses", "#2a78d6"], ["Restos & sorties", "#eb6834"], ["Carburant", "#1baf7a"], ["Enfants", "#eda100"], ["Maison", "#e87ba4"], ["Shopping", "#008300"], ["Loisirs", "#6250d6"]];
+  var ANA_AUTRES = "#A9ACB6";
+  S.anaSel = {};
+  function anaMois() { var t = todayISO(); return S.periods.filter(function (p) { return p.debut <= t; }).sort(byDebut).reverse(); }
+  function anaDe(p, cut) {
+    var exps = S.allExp.filter(function (x) { return x.periode === p.id && (!cut || String(x.date) <= cut); });
+    var daily = exps.filter(function (x) { return !isEnvExpense(x); }), envE = exps.filter(isEnvExpense);
+    var rev = r2((p.revenus || []).reduce(function (t, x) { return t + recuOuPrevu(p, x); }, 0) + total(S.allInc.filter(function (x) { return x.periode === p.id; })));
+    var v = { prel: r2(total(p.charges)), dep: r2(total(daily)), epa: r2(total(p.epargne)) }, cats = catsDe(daily), known = ANA_CATS.map(function (a) { return a[0]; });
+    var parts1 = ANA_C1.map(function (a) { return { key: a[0], nom: a[1], m: v[a[0]], col: a[2] }; }).filter(function (x) { return x.m > 0; });
+    var parts2 = ANA_CATS.filter(function (a) { return cats[a[0]] > 0; }).map(function (a) { return { key: a[0], nom: a[0], m: cats[a[0]], col: a[1] }; });
+    var autres = Object.keys(cats).filter(function (k) { return known.indexOf(k) < 0 && cats[k] > 0; });
+    if (autres.length) parts2.push({ key: "Autres", nom: "Autres (" + autres.join(", ") + ")", m: r2(autres.reduce(function (t, k) { return t + cats[k]; }, 0)), col: ANA_AUTRES, sous: autres });
+    var cmp1 = {}, cmp2 = {}; parts1.forEach(function (x) { cmp1[x.key] = x.m; }); ANA_C1.forEach(function (a) { if (!(a[0] in cmp1)) cmp1[a[0]] = 0; });
+    Object.keys(cats).forEach(function (k) { if (known.indexOf(k) >= 0) cmp2[k] = cats[k]; else cmp2.Autres = r2((cmp2.Autres || 0) + cats[k]); });
+    return { p: p, rev: rev, v: v, cats: cats, daily: daily, parts1: parts1, parts2: parts2, cmp1: cmp1, cmp2: cmp2, envSpent: r2(total(envE)),
+      sorti: r2(v.prel + v.dep + v.epa), reste: r2(rev - v.prel - v.dep - v.epa), enCours: todayISO() <= p.fin };
+  }
+  function anaArc(R, r, a0, a1) {
+    var c = 100, P = function (rad, a) { return (c + rad * Math.cos(a)).toFixed(2) + " " + (c + rad * Math.sin(a)).toFixed(2); }, lg = a1 - a0 > Math.PI ? 1 : 0;
+    return "M" + P(R, a0) + "A" + R + " " + R + " 0 " + lg + " 1 " + P(R, a1) + "L" + P(r, a1) + "A" + r + " " + r + " 0 " + lg + " 0 " + P(r, a0) + "Z";
+  }
+  function anaDonut(id, parts, centre, sous, sel, mini) {
+    var tot = parts.reduce(function (t, x) { return t + x.m; }, 0), a = -Math.PI / 2, h = "";
+    if (!(tot > 0)) return "";
+    parts.forEach(function (x) {
+      var d = x.m / tot * 2 * Math.PI, path;
+      if (d >= 2 * Math.PI - 1e-6) path = anaArc(96, 62, a, a + Math.PI) + anaArc(96, 62, a + Math.PI, a + 2 * Math.PI - 1e-4);
+      else path = anaArc(96, 62, a, a + d);
+      h += '<path d="' + path + '" fill="' + x.col + '" class="ana-part' + (sel && sel !== x.key ? " dim" : "") + '"' + (mini ? "" : ' data-ana="' + id + "|" + esc(x.key) + '"') + "><title>" + esc(x.nom + " : " + eur.format(x.m) + " (" + Math.round(x.m / tot * 100) + " %)") + "</title></path>";
+      a += d;
+    });
+    var lab = parts.map(function (x) { return x.nom + " " + Math.round(x.m / tot * 100) + " %"; }).join(", ");
+    return '<svg class="ana-donut' + (mini ? " ana-sm" : "") + '" viewBox="0 0 200 200" role="img" aria-label="' + esc(centre + " " + sous + " : " + lab) + '">' + h +
+      '<text x="100" y="' + (mini ? 104 : 98) + '" text-anchor="middle" class="ana-c1">' + esc(centre) + "</text>" + (mini ? "" : '<text x="100" y="122" text-anchor="middle" class="ana-c2">' + esc(sous) + "</text>") + "</svg>";
+  }
+  function anaEcart(m, pv) {
+    if (pv == null) return "";
+    var d = r2(m - pv); if (Math.abs(d) < 1) return '<span class="ana-e">=</span>';
+    return '<span class="ana-e ' + (d > 0 ? "up" : "down") + '">' + (d > 0 ? "▲ +" : "▼ −") + esc(eur0.format(Math.abs(d))) + "</span>";
+  }
+  function anaListe(id, parts, cmp, prevNom, sel) {
+    var tot = parts.reduce(function (t, x) { return t + x.m; }, 0);
+    var rows = parts.slice().sort(function (x, y) { return y.m - x.m; }).map(function (x) {
+      var pv = cmp ? (cmp[x.key] || 0) : null;
+      return '<li><button type="button" class="ana-row' + (sel === x.key ? " on" : "") + '" data-ana="' + id + "|" + esc(x.key) + '" aria-pressed="' + (sel === x.key) + '">' +
+        '<span class="ana-sw" style="background:' + x.col + '"></span><span class="ana-nom">' + esc(x.nom) + '</span><span class="ana-m">' + esc(eur0.format(x.m)) + '</span><span class="ana-pc">' + Math.round(x.m / tot * 100) + " %</span>" + anaEcart(x.m, pv) + "</button></li>";
+    }).join("");
+    return '<ul class="ana-list">' + rows + "</ul>" + (cmp ? '<p class="ana-note">Écart avec ' + esc(prevNom) + ".</p>" : '<p class="ana-note">Pas de mois précédent pour comparer.</p>');
+  }
+  function anaDetail(a, id, key) {
+    var items = [], fmt = function (x) { return x.date ? fmtShort.format(dateOf(x.date)) : ""; };
+    if (id === "c1" && key === "prel") items = (a.p.charges || []).filter(function (x) { return Number(x.montant) > 0; }).sort(function (x, y) { return y.montant - x.montant; }).map(function (x) { return [x.libelle, x.passe ? "passé" : "prévu", x.montant]; });
+    else if (id === "c1" && key === "epa") items = (a.p.epargne || []).filter(function (x) { return Number(x.montant) > 0; }).sort(function (x, y) { return y.montant - x.montant; }).map(function (x) { return [x.libelle, x.passe ? "passé" : "prévu", x.montant]; });
+    else if (id === "c1" && key === "dep") items = a.daily.slice().sort(function (x, y) { return y.montant - x.montant; }).map(function (x) { return [x.libelle || x.categorie, (x.categorie || "") + " · " + fmt(x), x.montant]; });
+    else {
+      var part = a.parts2.filter(function (x) { return x.key === key; })[0], cs = part && part.sous ? part.sous : [key];
+      items = a.daily.filter(function (x) { return cs.indexOf(x.categorie || "Autre") >= 0; }).sort(function (x, y) { return String(y.date).localeCompare(String(x.date)); }).map(function (x) { return [x.libelle || x.categorie, (part && part.sous ? (x.categorie || "Autre") + " · " : "") + fmt(x), x.montant]; });
+    }
+    if (!items.length) return "";
+    var max = 15, h = '<ul class="ana-det">' + items.slice(0, max).map(function (x) { return "<li><span>" + esc(x[0]) + "<small>" + esc(x[1]) + "</small></span><b>" + esc(eur.format(Number(x[2]) || 0)) + "</b></li>"; }).join("") + "</ul>";
+    if (items.length > max) h += '<p class="ana-note">… et ' + (items.length - max) + " autres.</p>";
+    return h;
+  }
+  function anaBarre(a) {
+    var base = Math.max(a.rev, a.sorti) || 1, segs = ANA_C1.map(function (c) { return [c[1], a.v[c[0]], c[2]]; }).filter(function (x) { return x[1] > 0; });
+    var h = '<div class="ana-bar" role="img" aria-label="' + esc("Revenus " + eur0.format(a.rev) + ", sorti " + eur0.format(a.sorti) + ", " + (a.reste >= 0 ? "reste " + eur0.format(a.reste) : "dépassement " + eur0.format(-a.reste))) + '">' +
+      segs.map(function (x) { return '<span style="width:' + (x[1] / base * 100).toFixed(2) + "%;background:" + x[2] + '"></span>'; }).join("") +
+      (a.reste > 0 ? '<span class="ana-reste" style="width:' + (a.reste / base * 100).toFixed(2) + '%"></span>' : "") + "</div>";
+    h += '<div class="ana-io"><span>Revenus <b>' + esc(eur0.format(a.rev)) + "</b></span><span>Sorti <b>" + esc(eur0.format(a.sorti)) + "</b></span><span>" + (a.reste >= 0 ? "Reste <b>" + esc(eur0.format(a.reste)) : 'Dépassement <b class="neg">' + esc(eur0.format(-a.reste))) + "</b></span></div>";
+    return h;
+  }
+  function anaPrev(p) { return S.periods.filter(function (q) { return q.fin < p.debut; }).sort(byDebut).pop() || null; }
+  function renderAnalyse() {
+    var box = $("ana"), sel = $("ana-select"); if (!box) return;
+    if (S.failed || !S.loaded) { box.innerHTML = ""; sel.hidden = true; return; }
+    var ms = anaMois();
+    if (!ms.length) { box.innerHTML = '<p class="empty">L\'analyse arrive dès que ton premier mois est créé.</p>'; sel.hidden = true; return; }
+    if (!S.anaId || !ms.some(function (p) { return p.id === S.anaId; })) {
+      var t = todayISO(), fini = ms.filter(function (p) { return p.fin < t; })[0];
+      S.anaId = fini && daysBetween(fini.fin, t) <= 7 ? fini.id : ms[0].id;
+    }
+    sel.hidden = ms.length < 2;
+    sel.innerHTML = ms.map(function (p) { return '<option value="' + esc(p.id) + '"' + (p.id === S.anaId ? " selected" : "") + ">" + esc((p.nom || p.id) + (todayISO() <= p.fin ? " (en cours)" : "")) + "</option>"; }).join("");
+    var p = ms.filter(function (q) { return q.id === S.anaId; })[0], a = anaDe(p), prev = anaPrev(p), b = null, prevNom = "";
+    if (prev) {
+      var cut = a.enCours ? isoAdd(prev.debut, Math.max(0, daysBetween(p.debut, todayISO()))) : null;
+      b = anaDe(prev, cut); prevNom = (prev.nom || prev.id).split(" ")[0].toLowerCase() + (a.enCours ? " au même jour" : "");
+      if (!b.daily.length && !b.v.prel) b = null;
+    }
+    var s1 = S.anaSel.c1, s2 = S.anaSel.c2, h = "";
+    h += '<div class="ana-card"><span class="label">' + (a.enCours ? "Jusqu'ici, ce mois-ci" : "Le mois en un coup d'œil") + "</span>" + anaBarre(a) + "</div>";
+    h += '<div class="ana-card"><h3>Tout ce qui est sorti</h3>' + anaDonut("c1", a.parts1, eur0.format(a.sorti), "sortis", s1) +
+      anaListe("c1", a.parts1, b ? b.cmp1 : null, prevNom, s1) + (s1 ? anaDetail(a, "c1", s1) : "") + "</div>";
+    h += '<div class="ana-card"><h3>Dépenses du quotidien</h3><p class="ana-note">Sans les prélèvements ni l\'épargne.</p>' +
+      (a.parts2.length ? anaDonut("c2", a.parts2, eur0.format(a.v.dep), "dépensés", s2) + anaListe("c2", a.parts2, b ? b.cmp2 : null, prevNom, s2) + (s2 ? anaDetail(a, "c2", s2) : "") : '<p class="empty">Aucune dépense notée ce mois-ci.</p>') +
+      (a.envSpent ? '<p class="ana-note">Plus ' + esc(eur.format(a.envSpent)) + " dépensés dans les enveloppes (Noël…), comptés à part.</p>" : "") + "</div>";
+    box.innerHTML = h;
+  }
+  function anaMini(p) {
+    var a = anaDe(p); if (!(a.sorti > 0)) return "";
+    var leg = a.parts1.map(function (x) { return '<li><span class="ana-sw" style="background:' + x.col + '"></span>' + esc(x.nom) + " <b>" + esc(eur0.format(x.m)) + "</b></li>"; }).join("");
+    return '<div class="ana-mini">' + anaDonut("m", a.parts1, eur0.format(a.sorti), "sortis", null, true) + '<ul class="ana-mlist">' + leg + "</ul></div>" +
+      '<button type="button" class="link-btn" data-goto="budget" data-sub="mois" data-scroll="ana-sec" data-ana-mois="' + esc(p.id) + '">Où est passé ton argent</button>';
+  }
+  document.addEventListener("click", function (e) {
+    var m = e.target.closest("[data-ana-mois]"); if (m) { S.anaId = m.dataset.anaMois; S.anaSel = {}; renderAnalyse(); }
+    var b = e.target.closest("[data-ana]"); if (!b) return;
+    var k = b.getAttribute("data-ana").split("|"); S.anaSel[k[0]] = S.anaSel[k[0]] === k[1] ? null : k[1]; renderAnalyse();
+  });
+  $("ana-select").addEventListener("change", function () { S.anaId = this.value; S.anaSel = {}; renderAnalyse(); });
+
+  /* ---------- Import de captures bancaires ----------
+     La capture est lue sur le téléphone (module de lecture Tesseract, téléchargé la 1re fois puis gardé hors ligne),
+     puis rapprochée de ce qui est déjà noté. Rien ne change avant « Valider ». La capture elle-même n'est jamais gardée. */
+  /* ---------- Import de captures : lecture ---------- */
+  function impMoisDe(nm) {
+    var T = [[/^janv?/, 1], [/^fev/, 2], [/^mars?$/, 3], [/^avr/, 4], [/^mai$/, 5], [/^juin$/, 6], [/^juil/, 7], [/^aou/, 8], [/^sept?/, 9], [/^oct/, 10], [/^nov/, 11], [/^dec/, 12]];
+    for (var i = 0; i < T.length; i++) if (T[i][0].test(nm)) return T[i][1];
+    return 0;
+  }
+  var IMP_NAV = /^(accueil|comptes?|virements?|cartes?|assurances?|plus|autres|sobot|bourse|epargne|profil|aide|credits?|messagerie|services|contacts?|offres|synthese|operations|menu|paiements?|conseiller)$/;
+  function impNorm(s) {
+    return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[’']/g, " ").replace(/\s+/g, " ").trim();
+  }
+  function impIso(y, m, d) { return y + "-" + String(m).padStart(2, "0") + "-" + String(d).padStart(2, "0"); }
+  function impAjoute(iso, n) { var d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return impIso(d.getFullYear(), d.getMonth() + 1, d.getDate()); }
+  /* Une ligne qui n'est qu'une date : "12 novembre", "Aujourd'hui", "Hier", "Mardi 10 novembre 2026", "10/11/2026" */
+  function impDate(txt, ref) {
+    var t = impNorm(txt).replace(/[^a-z0-9/ ]/g, " ").replace(/\s+/g, " ").trim();
+    if (/^aujourd ?hui( \S{1,3})?$/.test(t)) return ref;
+    if (/^hier( \S{1,3})?$/.test(t)) return impAjoute(ref, -1);
+    if (/^avant hier( \S{1,3})?$/.test(t)) return impAjoute(ref, -2);
+    var y0 = +ref.slice(0, 4), m, d, mo, y;
+    m = t.match(/^(?:(?:lun|mar|mer|jeu|ven|sam|dim)[a-z]* )?(\d{1,2})(?:er)? ([a-z]{3,9})(?: (\d{4}))?( \S{1,3})?$/);
+    if (m) {
+      d = +m[1]; mo = impMoisDe(m[2]);
+      if (!mo) return null;
+      y = m[3] ? +m[3] : y0;
+    } else {
+      m = t.match(/^(?:(?:lun|mar|mer|jeu|ven|sam|dim)[a-z]* )?(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?$/);
+      if (!m) return null;
+      d = +m[1]; mo = +m[2]; y = m[3] ? (m[3].length === 2 ? 2000 + +m[3] : +m[3]) : y0;
+    }
+    if (d < 1 || d > 31 || mo < 1 || mo > 12) return null;
+    var iso = impIso(y, mo, d);
+    if (!m[3] && iso > impAjoute(ref, 2)) iso = impIso(y - 1, mo, d);
+    return iso;
+  }
+  function impNombre(s) {
+    s = String(s).replace(/[\s  ]/g, "");
+    var m = s.match(/^(.*?)[,.](\d{2})$/), corr = false, v;
+    if (m) v = +(m[1].replace(/[.,]/g, "") || "0") + +m[2] / 100;
+    else if (/^\d{3,}$/.test(s)) { v = +s / 100; corr = true; }
+    else v = +s.replace(/[.,]/g, "");
+    return { v: Math.round(v * 100) / 100, corr: corr };
+  }
+  /* Montant dans une suite de mots : signe, nombre, € */
+  function impMontant(mots) {
+    var txt = "", pos = [];
+    mots.forEach(function (w) { if (txt) txt += " "; pos.push([txt.length, txt.length + w.t.length]); txt += w.t; });
+    var re = /([+\-–−_~]\s*)?((?:\d{1,3}(?:[ .  ]\d{3})+|\d+)(?:[,.] ?\d{1,2})?)\s*(?:€|eur\b|e\b)/gi, m, der = null;
+    while ((m = re.exec(txt))) der = m;
+    if (!der) return null;
+    var a = der.index, b = der.index + der[0].length, us = [], numA = der.index + (der[1] ? der[1].length : 0), numB = numA + der[2].length, numMots = [];
+    mots.forEach(function (w, i) {
+      if (pos[i][1] > a && pos[i][0] < b) us.push(w);
+      if (pos[i][1] > numA && pos[i][0] < numB) numMots.push(w);
+    });
+    var n = impNombre(der[2]), sg = der[1] ? der[1].trim() : "";
+    var bb = function (L) { return { x0: Math.min.apply(null, L.map(function (w) { return w.x0; })), y0: Math.min.apply(null, L.map(function (w) { return w.y0; })), x1: Math.max.apply(null, L.map(function (w) { return w.x1; })), y1: Math.max.apply(null, L.map(function (w) { return w.y1; })) }; };
+    return {
+      v: n.v, corr: n.corr || /,\d$|\.\d$/.test(der[2]), signe: sg === "+" ? 1 : sg ? -1 : 0, mots: us,
+      bbox: bb(us), bboxNum: bb(numMots.length ? numMots : us),
+      conf: Math.min.apply(null, numMots.length ? numMots.map(function (w) { return w.conf; }) : [100])
+    };
+  }
+  function impMotsTSV(tsv) {
+    var mots = [], W = 0, H = 0;
+    String(tsv || "").split(/\r?\n/).forEach(function (l) {
+      var c = l.split("\t");
+      if (c.length < 12 || !/^\d+$/.test(c[0])) return;
+      var lv = +c[0];
+      if (lv === 1) { W = Math.max(W, +c[6] + +c[8]); H = Math.max(H, +c[7] + +c[9]); }
+      if (lv !== 5) return;
+      var t = c.slice(11).join(" ").trim();
+      if (!t) return;
+      mots.push({ t: t, x0: +c[6], y0: +c[7], x1: +c[6] + +c[8], y1: +c[7] + +c[9], conf: +c[10], k: c[2] + "." + c[3] + "." + c[4] });
+    });
+    return { mots: mots, W: W, H: H };
+  }
+  function impMotsBlocs(data) {
+    var mots = [], n = 0;
+    (data.blocks || []).forEach(function (b, ib) {
+      (b.paragraphs || []).forEach(function (p, ip) {
+        (p.lines || []).forEach(function (l, il) {
+          (l.words || []).forEach(function (w) {
+            if (!w.text || !w.text.trim()) return;
+            mots.push({ t: w.text.trim(), x0: w.bbox.x0, y0: w.bbox.y0, x1: w.bbox.x1, y1: w.bbox.y1, conf: w.confidence, k: ib + "." + ip + "." + il });
+          });
+        });
+      });
+    });
+    return { mots: mots, W: 0, H: 0 };
+  }
+  function impMed(a) { a = a.slice().sort(function (x, y) { return x - y; }); return a.length ? a[Math.floor(a.length / 2)] : 0; }
+  function impMajR(s) { var l = String(s).replace(/[^A-Za-zÀ-ÿ]/g, ""); return l.length ? l.replace(/[^A-ZÀ-Þ]/g, "").length / l.length : 0; }
+  function impMaj(s) { return String(s).replace(/[^A-Za-zÀ-ÿ]/g, "").length >= 4 && impMajR(s) >= 0.7; }
+  function impBeau(s) {
+    s = String(s || "")
+      .replace(/\s*\bREF\s*:\s*\S*/gi, " ").replace(/REF:\S*/gi, " ")
+      .split(/\s+/).filter(function (t) { return t && /[A-Za-zÀ-ÿ0-9]/.test(t) && !/[{}\[\]]/.test(t) && !/^[xX]$/.test(t) && !/^(?=.*\d)(?=.*[a-z])[a-z0-9]{14,}$/i.test(t); }).join(" ");
+    if (impMaj(s)) s = s.toLowerCase().replace(/(^|[\s\-'/·(])([a-zà-ÿ])/g, function (_, a, b) { return a + b.toUpperCase(); });
+    s = s.replace(/^VIR(?:EMENT)?\s+(?:SEPA\s+)?(?:INSTANTANE\s+|INST\s+)?RECU\s+(?:\/\s*)?DE\s*:?\s*/i, "Virement reçu de ")
+      .replace(/^(Virement reçu de )(?:M(?:R|ME|LLE)?\.?\s+(?:O[UÙ]\s+M(?:ME|E|R)?\.?\s+)?)/i, "$1")
+      .replace(/\s*MOTIF\s*:\s*/gi, " · ")
+      .replace(/^(?:PRLV|PRELEVEMENT)\s+(?:SEPA\s+)?/i, "")
+      .replace(/^(?:PAIEMENT\s+(?:PAR\s+)?)?(?:CB|CARTE)\s+(?:X?\d{4}\s+)?(?:\d{2}\/\d{2}\s+)?/i, "")
+      .replace(/\s+/g, " ").trim();
+    return s;
+  }
+  /* src = {mots, W, H}; ref = date du jour (ISO) ; couleur(bbox) -> 'vert'|'bleu'|'rouge'|null */
+  function impLire(src, ref, couleur) {
+    var M = src.mots || [], W = src.W, H = src.H;
+    if (!W) W = Math.max.apply(null, M.map(function (w) { return w.x1; }).concat([1]));
+    if (!H) H = Math.max.apply(null, M.map(function (w) { return w.y1; }).concat([1]));
+    couleur = couleur || function () { return null; };
+    var parK = {}, lignes = [];
+    M.forEach(function (w) {
+      if (!parK[w.k]) { parK[w.k] = { mots: [] }; lignes.push(parK[w.k]); }
+      parK[w.k].mots.push(w);
+    });
+    lignes.forEach(function (L) {
+      L.mots.sort(function (a, b) { return a.x0 - b.x0; });
+      L.y0 = Math.min.apply(null, L.mots.map(function (w) { return w.y0; }));
+      L.y1 = Math.max.apply(null, L.mots.map(function (w) { return w.y1; }));
+      L.texte = L.mots.map(function (w) { return w.t; }).join(" ");
+    });
+    lignes.sort(function (a, b) { return a.y0 - b.y0; });
+    var res = { titre: "", solde: null, ops: [], alertes: [], W: W, H: H };
+    /* Titre de l'écran */
+    var hautMax = 0.105 * H, cands = [];
+    lignes.forEach(function (L) {
+      if (L.y1 > hautMax || /\d{1,2}[:h]\d{2}/.test(L.texte)) return;
+      var t = L.mots.filter(function (w) { return w.conf >= 50 && /[A-Za-zÀ-ÿ]{2,}|\//.test(w.t) && !/^(retour|<|‹|q)$/i.test(w.t); }).map(function (w) { return w.t; }).join(" ");
+      if (t.replace(/[^A-Za-zÀ-ÿ]/g, "").length >= 4) cands.push(t);
+    });
+    cands.sort(function (a, b) { return b.length - a.length; });
+    res.titre = cands[0] || "";
+    /* Barre de navigation du bas */
+    var coupe = H + 1;
+    lignes.forEach(function (L) {
+      if (L.y0 < 0.75 * H) return;
+      var n = L.mots.filter(function (w) { return IMP_NAV.test(impNorm(w.t)); }).length;
+      if (n >= 2) coupe = Math.min(coupe, L.y0 - 0.045 * H);
+    });
+    /* Solde */
+    var zone = hautMax;
+    for (var i = 0; i < lignes.length && !res.solde; i++) {
+      if (!/\bsolde\b/i.test(lignes[i].texte)) continue;
+      for (var j = i; j < Math.min(lignes.length, i + 4); j++) {
+        var mt = impMontant(lignes[j].mots);
+        if (mt) {
+          var c = mt.signe ? null : couleur(mt.bboxNum);
+          res.solde = { v: mt.signe ? mt.signe * mt.v : (c === "rouge" ? -mt.v : mt.v), corr: mt.corr, conf: mt.conf };
+          zone = lignes[j].y1;
+          break;
+        }
+      }
+    }
+    /* Éléments : dates, montants, textes */
+    var els = [];
+    lignes.forEach(function (L) {
+      if (L.y0 <= zone || L.y0 >= coupe) return;
+      var mt = impMontant(L.mots.filter(function (w) { return w.x0 >= 0.42 * W; }));
+      if (!mt) {
+        var d = impDate(L.texte, ref);
+        if (d) { els.push({ type: "date", y0: L.y0, y1: L.y1, date: d }); return; }
+      }
+      if (mt) els.push({ type: "montant", y0: mt.bbox.y0, y1: mt.bbox.y1, m: mt });
+      var reste = L.mots.filter(function (w) { return !mt || mt.mots.indexOf(w) < 0; });
+      if (reste.length) els.push({ type: "texte", y0: L.y0, y1: L.y1, mots: reste });
+    });
+    /* Colonne du texte : enlève ce qui vient des icônes */
+    var gauches = [];
+    els.forEach(function (e) {
+      if (e.type !== "texte") return;
+      var w = e.mots.filter(function (w) { return w.conf >= 60 && /[A-Za-zÀ-ÿ]{2,}/.test(w.t); })[0];
+      if (w) gauches.push(w.x0);
+    });
+    var colX = impMed(gauches);
+    els = els.filter(function (e) {
+      if (e.type !== "texte") return true;
+      e.mots = e.mots.filter(function (w) { return w.x1 >= colX - 0.012 * W && /[A-Za-zÀ-ÿ0-9]/.test(w.t) && !(w.conf < 30 && w.t.length <= 3); });
+      if (!e.mots.length) return false;
+      e.y0 = Math.min.apply(null, e.mots.map(function (w) { return w.y0; }));
+      e.y1 = Math.max.apply(null, e.mots.map(function (w) { return w.y1; }));
+      e.texte = e.mots.map(function (w) { return w.t; }).join(" ");
+      return true;
+    });
+    var hs = [];
+    els.forEach(function (e) { if (e.type === "texte") e.mots.forEach(function (w) { if (w.conf >= 60 && /[A-Za-zÀ-ÿ]{2,}/.test(w.t)) hs.push(w.y1 - w.y0); }); });
+    var hMed = impMed(hs) || 0.012 * H, seuil = 1.9 * hMed;
+    els.sort(function (a, b) { return a.y0 - b.y0; });
+    /* Regroupement en opérations */
+    var groupes = [], g = null, dateCour = null;
+    els.forEach(function (e) {
+      if (e.type === "date") { dateCour = e.date; g = null; return; }
+      if (!g || e.y0 - g.y1 > seuil) { g = { els: [], y0: e.y0, y1: e.y1, date: dateCour }; groupes.push(g); }
+      g.els.push(e); g.y1 = Math.max(g.y1, e.y1);
+    });
+    var ops = [], zones = [];
+    groupes.forEach(function (g) {
+      var ms = g.els.filter(function (e) { return e.type === "montant"; }), ts = g.els.filter(function (e) { return e.type === "texte"; });
+      if (!ms.length) {
+        if (ts.length && ts.length <= 4) zones.push({ type: "groupe", ts: ts, date: g.date, x0: 0.55 * W, x1: 0.985 * W, y0: Math.max(0, g.y0 - 0.4 * hMed), y1: Math.min(H, g.y1 + 0.4 * hMed), y: g.y0 });
+        return;
+      }
+      var parts = ms.map(function (m) { return { m: m, ts: [] }; });
+      ts.forEach(function (t) {
+        var yc = (t.y0 + t.y1) / 2, best = parts[0], bd = 1e9;
+        parts.forEach(function (p) { var d = Math.abs((p.m.y0 + p.m.y1) / 2 - yc); if (d < bd) { bd = d; best = p; } });
+        best.ts.push(t);
+      });
+      parts.forEach(function (p) {
+        var o = impOp(p.ts, p.m.m, g.date, ref, couleur);
+        o.y = p.m.y0;
+        var b = p.m.m.bbox;
+        zones.push({ type: "op", op: o, x0: Math.max(0.5 * W, b.x0 - 0.06 * W), x1: Math.min(W, b.x1 + 0.03 * W), y0: Math.max(0, b.y0 - 0.35 * (b.y1 - b.y0)), y1: Math.min(H, b.y1 + 0.35 * (b.y1 - b.y0)) });
+        ops.push(o);
+      });
+    });
+    res.zones = zones;
+    res.ops = ops;
+    if (!res.solde) res.alertes.push("Solde introuvable sur la capture.");
+    return res;
+  }
+  function impOp(ts, mt, date, ref, couleur) {
+    ts = ts.slice().sort(function (a, b) { return a.y0 - b.y0; });
+    var lib = [], cat = "";
+    ts.forEach(function (t) {
+      if (!impBeau(t.texte)) return;
+      if (!lib.length || impMaj(t.texte)) lib.push(t.texte);
+      else if (!cat) cat = t.texte.replace(/\s+/g, " ");
+    });
+    var brut = lib.join(" "), signe = mt.signe, src = "explicite";
+    if (!signe) {
+      var c = mt.bboxNum && mt.bboxNum.x1 ? couleur(mt.bboxNum) : null;
+      if (c === "vert" || c === "bleu") { signe = 1; src = "couleur"; }
+      else if (c === "rouge") { signe = -1; src = "couleur"; }
+      else if (/\b(recu|remise|remboursement|avoir|vir(ement)? (sepa )?(inst(antane)? )?de)\b/i.test(impNorm(brut))) { signe = 1; src = "motcle"; }
+      else { signe = -1; src = "defaut"; }
+    }
+    return {
+      date: date || ref, sansDate: !date, brut: brut, libelle: impBeau(brut) || "Opération", cat: cat,
+      montant: signe * mt.v, signeSrc: src, corr: mt.corr, conf: mt.conf, douteux: mt.corr || mt.conf < 70
+    };
+  }
+  /* 2e lecture des montants, zone par zone (chiffres seulement) : lectures[i] = texte lu pour res.zones[i] */
+  function impComplete(res, lectures, ref, couleur) {
+    var ajout = [];
+    (res.zones || []).forEach(function (z, i) {
+      var t = lectures[i];
+      if (t == null) return;
+      var mots = String(t).replace(/€/g, " € ").split(/\s+/).filter(Boolean).map(function (w) { return { t: w, x0: 0, y0: 0, x1: 0, y1: 0, conf: 90 }; });
+      var m2 = impMontant(mots);
+      if (!m2 && /\d[,.]\d{2}\s*$/.test(t.trim())) m2 = impMontant(mots.concat([{ t: "€", x0: 0, y0: 0, x1: 0, y1: 0, conf: 90 }]));
+      if (z.type === "op") {
+        var o = z.op;
+        if (!m2) { o.relu = "illisible"; return; }
+        var v1 = Math.abs(o.montant);
+        if (Math.abs(m2.v - v1) < 0.005) { o.relu = "ok"; o.douteux = false; o.corr = false; if (m2.signe && o.signeSrc !== "explicite") { o.montant = m2.signe * v1; o.signeSrc = "explicite"; } return; }
+        o.relu = "corrige"; o.lu1 = v1;
+        var sg = m2.signe || (o.montant < 0 ? -1 : 1);
+        o.montant = sg * m2.v; o.douteux = true; o.corr = m2.corr;
+        if (m2.signe) o.signeSrc = "explicite";
+      } else if (z.type === "groupe" && m2 && !m2.corr) {
+        var ts = z.ts.map(function (t) {
+          var ms = t.mots.filter(function (w) { return w.x0 < 0.7 * z.x1 / 0.985; });
+          return { y0: t.y0, y1: t.y1, mots: ms, texte: ms.map(function (w) { return w.t; }).join(" ") };
+        }).filter(function (t) { return t.mots.length; });
+        var op = impOp(ts, { v: m2.v, signe: m2.signe, corr: m2.corr, conf: 60, bboxNum: null }, z.date, ref, couleur);
+        op.y = z.y; op.douteux = true; op.relu = "trouve";
+        ajout.push(op);
+      }
+    });
+    if (ajout.length) { res.ops = res.ops.concat(ajout).sort(function (a, b) { return a.y - b.y; }); }
+    return res;
+  }
+  /* Texte collé (Texte en direct de l'iPhone) : lecture ligne à ligne */
+  var IMP_COURTS = /^(le|la|les|l|de|du|des|the|vir|cb|bnp|sfr|edf|gdf|au|aux|un|une|mr|mme|m|sa|ma|mon|sas|lh|bp|ca|sg|lcl|pmu|kfc|h&m|a)$/i;
+  function impSansIcone(l) {
+    var t = String(l).split(/\s+/);
+    var court = function (w) { return /^[^A-Za-zÀ-ÿ0-9]*[A-Za-zÀ-ÿ0-9]{0,3}[^A-Za-zÀ-ÿ0-9]*$/.test(w) && !IMP_COURTS.test(w.replace(/[^A-Za-zÀ-ÿ0-9&]/g, "")); };
+    while (t.length > 1 && court(t[0]) && (/^[A-ZÀ-Þ0-9]/.test(t[1]) || !/[A-Za-zÀ-ÿ0-9]/.test(t[1]) || court(t[1]))) t.shift();
+    return t.join(" ");
+  }
+  function impLireTexte(txt, ref) {
+    var res = { titre: "", solde: null, ops: [], alertes: [], texte: true }, enAttente = [], dateCour = null, der = null;
+    var L = String(txt || "").split(/\r?\n/).map(function (l) { return impSansIcone(l.trim()); }).filter(Boolean);
+    for (var t0 = 0; t0 < L.length && !/\bsolde\b/i.test(L[t0]); t0++) {
+      if (/\d{1,2}[:h]\d{2}/.test(L[t0])) continue;
+      var tt = L[t0].split(/\s+/).filter(function (w) { return /[A-Za-zÀ-ÿ]{2,}|\//.test(w) && !/^(retour|<|‹|q|n|ull|5g|4g|lte)$/i.test(w); }).join(" ");
+      if (tt.replace(/[^A-Za-zÀ-ÿ]/g, "").length < 4 || /^(operations?|caracteristiques|a venir|details?|historique|mes comptes)( |$)/.test(impNorm(tt))) continue;
+      res.titre = tt; break;
+    }
+    for (var i = 0; i < L.length; i++) {
+      var l = L[i], mots = l.split(/\s+/).map(function (t) { return { t: t, x0: 0, y0: 0, x1: 0, y1: 0, conf: 90 }; });
+      if (!res.solde && /\bsolde\b/i.test(l)) {
+        for (var j = i; j < Math.min(L.length, i + 4); j++) {
+          var ms = impMontant(L[j].split(/\s+/).map(function (t) { return { t: t, x0: 0, y0: 0, x1: 0, y1: 0, conf: 90 }; }));
+          if (ms) { res.solde = { v: ms.signe ? ms.signe * ms.v : ms.v, corr: ms.corr, conf: 90 }; i = j; break; }
+        }
+        enAttente = []; der = null; continue;
+      }
+      var mt = impMontant(mots);
+      if (!mt) {
+        var d = impDate(l, ref);
+        if (d) { dateCour = d; enAttente = []; der = null; continue; }
+        if (l.split(/\s+/).filter(function (w) { return IMP_NAV.test(impNorm(w)); }).length >= 2) break;
+        if (IMP_NAV.test(impNorm(l)) || l.replace(/[^A-Za-zÀ-ÿ]/g, "").length < 3) continue;
+        if (!impBeau(l)) continue;
+        if (der && !enAttente.length && impMajR(l) >= 0.5 && impMaj(der.brut)) { der.brut += " " + l; der.libelle = impBeau(der.brut) || der.libelle; continue; }
+        if (der && !der.cat && !enAttente.length && impMajR(l) < 0.5 && l.split(/\s+/).length <= 5) { der.cat = l; continue; }
+        enAttente.push(l); continue;
+      }
+      var avant = mots.filter(function (w) { return mt.mots.indexOf(w) < 0; }).map(function (w) { return w.t; }).join(" ").trim();
+      var avantCat = avant && enAttente.length && !impMaj(avant) && avant.split(/\s+/).length <= 4;
+      var brut = avantCat ? enAttente[enAttente.length - 1] : avant || enAttente[enAttente.length - 1] || "";
+      var cat = avantCat ? avant : "";
+      var signe = mt.signe || (/\b(recu|remise|remboursement|vir(ement)? de)\b/i.test(impNorm(brut)) ? 1 : -1);
+      der = { date: dateCour || ref, sansDate: !dateCour, brut: brut, libelle: impBeau(brut) || "Opération", cat: cat, montant: signe * mt.v, signeSrc: mt.signe ? "explicite" : "defaut", corr: mt.corr, conf: 90 };
+      res.ops.push(der);
+      enAttente = [];
+    }
+    if (!res.solde) res.alertes.push("Solde introuvable dans le texte.");
+    return res;
+  }
+
+  /* Moteur de lecture : Tesseract.js, chargé à la première utilisation puis gardé hors ligne */
+  var IMP_TESS = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";
+  var IMP_WL = "0123456789,.+-€ ";
+  var impMoteurP = null, impProg = null;
+  function impChargerMoteur() {
+    if (typeof window.__impMoteurTest === "function") return Promise.resolve(window.__impMoteurTest());
+    if (impMoteurP) return impMoteurP;
+    impMoteurP = new Promise(function (ok, ko) {
+      if (window.Tesseract) { ok(); return; }
+      var s = document.createElement("script"); s.src = IMP_TESS; s.async = true;
+      s.onload = function () { ok(); }; s.onerror = function () { ko(new Error("script")); };
+      document.head.appendChild(s);
+    }).then(function () {
+      return window.Tesseract.createWorker("fra", 1, { logger: function (m) { if (impProg) impProg(m); } });
+    });
+    impMoteurP.catch(function () { impMoteurP = null; });
+    return impMoteurP;
+  }
+  function impImage(file) {
+    return new Promise(function (ok, ko) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () {
+        var W = img.naturalWidth, H = img.naturalHeight, k = W > 1600 ? 1600 / W : 1;
+        var c = document.createElement("canvas"); c.width = Math.round(W * k); c.height = Math.round(H * k);
+        var ctx = c.getContext("2d", { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url); ok({ c: c, ctx: ctx });
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); ko(new Error("image")); };
+      img.src = url;
+    });
+  }
+  /* Couleur de l'encre d'un montant : vert ou bleu = rentrée, rouge = sortie */
+  function impCouleurs(ctx, W, H) {
+    return function (b) {
+      var x0 = Math.max(0, Math.floor(b.x0)), y0 = Math.max(0, Math.floor(b.y0));
+      var w = Math.min(W - x0, Math.ceil(b.x1 - b.x0)), h = Math.min(H - y0, Math.ceil(b.y1 - b.y0));
+      if (w < 2 || h < 2) return null;
+      var d; try { d = ctx.getImageData(x0, y0, w, h).data; } catch (e) { return null; }
+      var bg = [d[0], d[1], d[2]], R = 0, G = 0, B = 0, n = 0;
+      for (var i = 0; i < d.length; i += 4) {
+        var dr = d[i] - bg[0], dg = d[i + 1] - bg[1], db = d[i + 2] - bg[2];
+        if (dr * dr + dg * dg + db * db > 6400) { R += d[i]; G += d[i + 1]; B += d[i + 2]; n++; }
+      }
+      if (n < 6) return null;
+      R /= n; G /= n; B /= n;
+      if (G > R + 35 && G >= B) return "vert";
+      if (B > R + 40 && B > G) return "bleu";
+      if (R > G + 60 && R > B + 40) return "rouge";
+      return null;
+    };
+  }
+  function impZone(src, z) {
+    var w = Math.max(1, Math.round(z.x1 - z.x0)), h = Math.max(1, Math.round(z.y1 - z.y0)), k = Math.max(2, 64 / h);
+    var c = document.createElement("canvas"); c.width = Math.round(w * k) + 40; c.height = Math.round(h * k) + 40;
+    var x = c.getContext("2d"); x.fillStyle = "#FFFFFF"; x.fillRect(0, 0, c.width, c.height);
+    x.imageSmoothingEnabled = true; x.imageSmoothingQuality = "high";
+    x.drawImage(src, Math.round(z.x0), Math.round(z.y0), w, h, 20, 20, Math.round(w * k), Math.round(h * k));
+    return c;
+  }
+  function impLireImage(file, moteur, ref, etape) {
+    return impImage(file).then(function (im) {
+      etape("lecture");
+      return Promise.resolve(moteur.setParameters({ tessedit_pageseg_mode: "4", tessedit_char_whitelist: "" })).then(function () {
+        return moteur.recognize(im.c, {}, { text: true, tsv: true, blocks: true, hocr: false });
+      }).then(function (r) {
+        var d = (r && r.data) || {}, src = d.tsv ? impMotsTSV(d.tsv) : impMotsBlocs(d);
+        src.W = im.c.width; src.H = im.c.height;
+        var coul = impCouleurs(im.ctx, im.c.width, im.c.height), res = impLire(src, ref, coul);
+        if (!res.zones.length) return res;
+        etape("verif");
+        return Promise.resolve(moteur.setParameters({ tessedit_pageseg_mode: "7", tessedit_char_whitelist: IMP_WL })).then(function () {
+          var lect = [], k = 0;
+          function suivant() {
+            if (k >= res.zones.length) return Promise.resolve();
+            var z = res.zones[k++];
+            return moteur.recognize(impZone(im.c, z), {}, { text: true, tsv: false, blocks: false, hocr: false })
+              .then(function (r2) { lect.push(String((r2 && r2.data && r2.data.text) || "").trim()); }, function () { lect.push(null); })
+              .then(suivant);
+          }
+          return suivant().then(function () { impComplete(res, lect, ref, coul); return res; });
+        });
+      });
+    });
+  }
+
+  /* ---------- Rapprochement avec ce qui est déjà dans l'appli ---------- */
+  var IMP_VIDES = { prlv: 1, sepa: 1, vir: 1, virement: 1, cb: 1, carte: 1, paiement: 1, sas: 1, sarl: 1, des: 1, les: 1, recu: 1, inst: 1, instantane: 1, ref: 1, motif: 1, the: 1, cau: 1, sur: 1, par: 1, pour: 1, chez: 1, com: 1, www: 1, eur: 1, euro: 1, ltd: 1, inc: 1, mme: 1, mlle: 1, prelevement: 1, achat: 1, facture: 1, abonnement: 1 };
+  var IMP_VILLES = /^(montivilliers|havre|harfleur|rouen|paris|fecamp|bolbec|lillebonne|gonfreville|orcher|port|jerome|amsterdam|france|luxembourg|dublin|caen|etretat|octeville|sainte|saint|adresse|gainneville|epouville|rolleville|meylan|lyon|lille|nantes|marseille|bordeaux|toulouse)$/;
+  function impMotsCles(s) { return impNorm(s).replace(/[^a-z0-9 ]/g, " ").split(" ").filter(function (t) { return t.length >= 3 && !IMP_VIDES[t] && !/^\d+$/.test(t) && !IMP_VILLES.test(t); }); }
+  function impSim(a, b) {
+    var A = impMotsCles(a), B = impMotsCles(b), n = 0;
+    A.forEach(function (t) {
+      if (B.some(function (u) { return u === t || (t.length >= 5 && u.length >= 5 && t.slice(0, 5) === u.slice(0, 5)) || (t.length >= 4 && u.indexOf(t) === 0) || (u.length >= 4 && t.indexOf(u) === 0); })) n++;
+    });
+    return n;
+  }
+  function impCleLib(s) { return impMotsCles(s).slice(0, 3).join(" "); }
+  var IMP_CAT_MOTS = [
+    [/leclerc|carrefour|auchan|intermarche|lidl|aldi|super ?u\b|hyper ?u\b|monoprix|franprix|casino|grand frais|picard|boulang|epicerie|supermarche|hypermarche|alimentation|petit commercant|marche/, "Courses"],
+    [/total|esso|\bbp\b|shell|avia|carburant|station|essence|gazole|dyneff/, "Carburant"],
+    [/mcdo|mcdonald|quick|burger|kfc|pizz|restau|brasserie|\bbar\b|cafe|tabac|sortie|snack|kebab|sushi|uber ?eats|deliveroo|bowling|cinema|looping/, "Restos & sorties"],
+    [/pharmacie|medecin|docteur|dentiste|ortho|kine|sante|optic|laborato/, "Santé"],
+    [/gemo|kiabi|zara|h ?& ?m|primark|decathlon|celio|jules|habillement|vetement|chaussure|amazon|fnac|darty|boulanger|shopping/, "Shopping"],
+    [/ikea|leroy|castorama|brico|jardin|maison|ameublement|electromenager|action\b|gifi|but\b|conforama/, "Maison"],
+    [/jouet|king jouet|creche|ecole|cantine|garderie|enfant|bebe|vertbaudet|esf\b/, "Enfants"],
+    [/netflix|spotify|disney|deezer|canal|prime video|playstation|xbox|steam|loisir|sport|piscine|parc|musee|sejour|voyage|hotel|airbnb|booking/, "Loisirs"],
+    [/cadeau/, "Cadeaux"]
+  ];
+  function impCategorie(o) {
+    var mem = S.imports && S.imports.libelles, k = impCleLib(o.brut);
+    if (mem && k && mem[k] && CATS.indexOf(mem[k]) >= 0) return mem[k];
+    var cpt = {};
+    (S.allExp || []).forEach(function (x) { if (x.categorie && impSim(x.libelle, o.brut) >= 1) cpt[x.categorie] = (cpt[x.categorie] || 0) + 1; });
+    var best = Object.keys(cpt).sort(function (a, b) { return cpt[b] - cpt[a]; })[0];
+    if (best) return best;
+    var t = impNorm(o.brut + " " + o.cat);
+    for (var i = 0; i < IMP_CAT_MOTS.length; i++) if (IMP_CAT_MOTS[i][0].test(t)) return IMP_CAT_MOTS[i][1];
+    return "Autre";
+  }
+  function impTypeRentree(o) {
+    var t = impNorm(o.brut);
+    if (/sdis|vacation|pompier/.test(t)) return "Vacations pompier";
+    if (/rembours|virement recu|vir .* de|pizza/.test(t)) return "Remboursement";
+    return "Autre";
+  }
+  function impPools() {
+    var notes = [], plan = [];
+    (S.allExp || []).forEach(function (x) { notes.push({ k: "dep", x: x, compte: x.compte, date: x.date, m: Number(x.montant) || 0, lib: x.libelle || "", sens: -1 }); });
+    (S.allInc || []).forEach(function (x) { notes.push({ k: "inc", x: x, compte: x.compte, date: x.date, m: Number(x.montant) || 0, lib: x.libelle || "", sens: 1 }); });
+    (S.mouvements || []).forEach(function (x) { notes.push({ k: "pret", x: x, compte: x.compte, date: x.date || String(x.le || "").slice(0, 10), m: Number(x.montant) || 0, lib: x.libelle || "", sens: Number(x.sens) > 0 ? 1 : -1 }); });
+    (S.virs || []).forEach(function (x) {
+      notes.push({ k: "vir", x: x, compte: x.de, date: x.date, m: Number(x.montant) || 0, lib: x.libelle || "Virement", sens: -1 });
+      notes.push({ k: "vir", x: x, compte: x.vers, date: x.date, m: Number(x.montant) || 0, lib: x.libelle || "Virement", sens: 1 });
+    });
+    (S.periods || []).forEach(function (p) {
+      var dd = function (x) { var d = itemDate(p, x); return d ? isoOf(d) : null; };
+      ["charges", "epargne"].forEach(function (ln) {
+        (p[ln] || []).forEach(function (x, i) { plan.push({ k: ln, p: p, i: i, x: x, cle: p.id + ":" + ln + ":" + i, compte: x.compte, date: dd(x), m: Number(x.montant) || 0, lib: x.libelle || "", sens: -1, fait: !!x.passe }); });
+      });
+      (p.revenus || []).forEach(function (x, i) { plan.push({ k: "revenus", p: p, i: i, x: x, cle: p.id + ":revenus:" + i, compte: x.compte, date: dd(x), m: x.recu && x.recuMontant != null ? Number(x.recuMontant) : Number(x.montant) || 0, lib: x.libelle || "", sens: 1, fait: !!x.recu }); });
+      (p.virements || []).forEach(function (x, i) {
+        var lib = "Virement " + courtCompte(x.de) + " → " + courtCompte(x.vers);
+        plan.push({ k: "virements", p: p, i: i, x: x, cle: p.id + ":virements:" + i, compte: x.de, date: dd(x), m: Number(x.montant) || 0, lib: lib, sens: -1, fait: !!x.fait });
+        plan.push({ k: "virements", p: p, i: i, x: x, cle: p.id + ":virements:" + i, compte: x.vers, date: dd(x), m: Number(x.montant) || 0, lib: lib, sens: 1, fait: !!x.fait });
+      });
+    });
+    return { notes: notes, plan: plan };
+  }
+  function impInterne(o, compte, autresTitres) {
+    if (/virements? internes?|virement interne|transfert/i.test(impNorm(o.cat))) return true;
+    var t = impNorm(o.brut);
+    if (!/\bvir|virement|transfert/.test(t)) return false;
+    var noms = [];
+    ((PROFIL && PROFIL.comptes) || []).forEach(function (c) { if (c.id !== compte) [c.id, c.court, c.nom].forEach(function (n) { impMotsCles(n).forEach(function (w) { if (!/^(compte|commun|perso|mon)$/.test(w)) noms.push(w); }); }); });
+    if (PROFIL && PROFIL.prenom) noms = noms.concat(impMotsCles(PROFIL.prenom));
+    var mots = impMotsCles(o.brut);
+    if (noms.some(function (n) { return mots.indexOf(n) >= 0; })) return true;
+    return (autresTitres || []).some(function (ti) { var a = impMotsCles(ti); return a.length && a.every(function (w) { return mots.indexOf(w) >= 0; }); });
+  }
+  function impApparie(g, compte, pools, autresTitres) {
+    var pris = {}, p0 = periodFor(todayISO()), lignes = [];
+    g.ops.forEach(function (o, idx) {
+      var a = Math.round(Math.abs(o.montant) * 100) / 100, sens = o.montant < 0 ? -1 : 1, txt = o.brut + " " + o.cat;
+      var L = { idx: idx, o: o, montant: a, sens: sens, libelle: o.libelle, statut: "", coche: false, detail: "", avec: null };
+      /* 1. Déjà noté (dépense, rentrée, prêt, virement) */
+      var nb = impNorm(o.brut), estPrlv = /\b(prlv|prelevement|prel|echeance|ech|sepa|abonnement|cotisation)\b/.test(nb), estVir = /\b(vir|virement|transfert)\b/.test(nb);
+      var best = -1, bs = -1;
+      pools.notes.forEach(function (c, j) {
+        if (pris["n" + j] || c.sens !== sens || Math.abs(c.m - a) > 0.005 || !c.date) return;
+        var dj = Math.abs(daysBetween(String(c.date).slice(0, 10), o.date)); if (dj > 4) return;
+        var sim = impSim(c.lib, txt);
+        if (c.compte !== compte && sim < 1) return;
+        var s = 10 - dj + 3 * sim + (c.compte === compte ? 6 : 0);
+        if (s > bs) { bs = s; best = j; }
+      });
+      if (best >= 0) {
+        var c = pools.notes[best]; pris["n" + best] = 1;
+        L.statut = "note"; L.avec = c;
+        L.detail = (c.k === "dep" ? "Dépense notée" : c.k === "inc" ? "Rentrée notée" : c.k === "pret" ? "Noté dans les prêts" : "Virement noté") + " : " + c.lib + (c.compte !== compte ? " (sur " + courtCompte(c.compte) + ")" : "");
+        lignes.push(L); return;
+      }
+      /* 2. Prévu dans le mois : prélèvement, épargne, revenu, virement */
+      best = -1; bs = -1;
+      var nouv = null;
+      pools.plan.forEach(function (c, j) {
+        if (pris[c.cle] || c.compte !== compte || c.sens !== sens) return;
+        var dans = c.p.debut <= o.date && o.date <= c.p.fin, dj = c.date ? Math.abs(daysBetween(c.date, o.date)) : null;
+        if (!dans && !(dj != null && dj <= 4)) return;
+        var eq = Math.abs(c.m - a) < 0.005, sim = impSim(c.lib, txt), ratio = c.m ? a / c.m : 0, s = -1, nm = null;
+        if (c.k === "charges" || c.k === "epargne") {
+          if (eq && (sim >= 1 || estPrlv)) s = 30 + 3 * sim - Math.min(dj || 0, 10);
+          else if (!eq && !c.fait && sim >= 1 && ratio >= 0.7 && ratio <= 1.43) { s = 8 + sim; nm = a; }
+        } else if (c.k === "virements") {
+          if (eq && (estVir || sim >= 1)) s = 30 + 3 * sim - Math.min(dj || 0, 10);
+        } else if (c.k === "revenus") {
+          if (eq) s = 30 + 3 * sim - Math.min(dj || 0, 10);
+          else if (!c.fait && ratio >= 0.6 && ratio <= 1.6 && (sim >= 1 || (estVir && /salaire|paie|net/i.test(impNorm(c.lib))))) { s = 8 + sim; nm = a; }
+        }
+        if (s > bs) { bs = s; best = j; nouv = nm; }
+      });
+      if (best >= 0) {
+        var c2 = pools.plan[best]; pris[c2.cle] = 1; L.avec = c2;
+        if (c2.fait) { L.statut = "coche"; L.detail = (c2.k === "revenus" ? "Déjà reçu : " : c2.k === "virements" ? "Déjà fait : " : "Déjà coché : ") + c2.lib; }
+        else {
+          L.statut = c2.k === "revenus" ? "revenu" : c2.k === "virements" ? "virprevu" : c2.k === "epargne" ? "epargne" : "prevu";
+          L.coche = true; L.libelle = c2.lib;
+          L.detail = (c2.k === "revenus" ? "Revenu prévu" : c2.k === "virements" ? "Virement prévu" : c2.k === "epargne" ? "Épargne prévue" : "Prélèvement prévu") + " : " + c2.lib;
+          if (nouv != null) { L.prixAvant = c2.m; L.detail += " · prévu " + eur.format(c2.m) + (c2.k === "revenus" ? ", reçu " : ", passé à ") + eur.format(a); }
+        }
+        lignes.push(L); return;
+      }
+      /* 3. Virement entre tes comptes */
+      if (impInterne(o, compte, autresTitres)) { L.statut = "interne"; L.detail = "Virement entre tes comptes : pas une dépense"; lignes.push(L); return; }
+      /* 4. Nouveau */
+      var per = periodFor(o.date);
+      if (sens < 0) {
+        L.statut = "nouveau"; L.cat = impCategorie(o);
+        if (!per) { L.bloque = true; L.detail = "Aucun mois de budget ne couvre cette date"; }
+        else if (estVir) { L.coche = false; L.detail = "Virement envoyé : coche-le si c'est une dépense"; }
+        else { L.coche = !p0 || per.debut >= p0.debut; if (!L.coche) L.detail = "Mois précédent : coche si tu veux l'ajouter"; }
+      } else {
+        L.statut = "rentree"; L.type = impTypeRentree(o);
+        if (!per) { L.bloque = true; L.detail = "Aucun mois de budget ne couvre cette date"; }
+        else L.detail = "Pas compté dans le budget, sauf si tu coches";
+      }
+      lignes.push(L);
+    });
+    return lignes;
+  }
+  function impTitresAutres(g) {
+    var t = [];
+    (S.imp ? S.imp.groupes : []).forEach(function (h) { if (h !== g && h.titre) t.push(h.titre); });
+    var mem = S.imports && S.imports.titres;
+    if (mem) Object.keys(mem).forEach(function (k) { if (mem[k] !== g.compte) t.push(k); });
+    return t;
+  }
+  function impComptesListe() { return COMPTES.map(function (c) { return c[0]; }).filter(function (id) { return id !== "Liquide"; }); }
+  function impDeviner(g, pools) {
+    var mem = S.imports && S.imports.titres, ids = impComptesListe();
+    if (g.cle && mem && mem[g.cle] && ids.indexOf(mem[g.cle]) >= 0) return { compte: mem[g.cle], devine: false };
+    var sc = ids.map(function (id) {
+      var n = impApparie(g, id, pools, []).filter(function (L) { return L.avec && L.avec.compte === id && L.statut !== "interne"; }).length;
+      return { id: id, n: n };
+    }).sort(function (a, b) { return b.n - a.n; });
+    if (sc[0] && sc[0].n >= 1 && (!sc[1] || sc[0].n >= 2 * sc[1].n) && (sc[0].n >= 2 || !sc[1] || sc[1].n === 0)) return { compte: sc[0].id, devine: true };
+    return { compte: "", devine: false };
+  }
+  function impRapprocher(g, pools) {
+    var acc = g.compte;
+    if (!acc || acc === "__ignorer") { g.lignes = []; return; }
+    if (acc === "__nouveau") {
+      g.lignes = impApparie(g, "__nouveau__", { notes: [], plan: [] }, impTitresAutres(g));
+    } else g.lignes = impApparie(g, acc, pools || impPools(), impTitresAutres(g));
+  }
+  function impSoldeVal(g) {
+    if (g.soldeSaisi != null && String(g.soldeSaisi).trim() !== "") { var v = parseSigned(g.soldeSaisi); return isNaN(v) ? null : v; }
+    return g.solde != null ? g.solde : null;
+  }
+  function impControle(g) {
+    if (!g.compte || g.compte === "__ignorer") return null;
+    var bank = impSoldeVal(g);
+    if (bank == null) return { manque: true };
+    var i = g.compte === "__nouveau" ? null : soldeInfo(g.compte);
+    if (!i) return { premier: true, bank: bank };
+    var jour = isoOf(new Date(i.le)), pred = i.montant;
+    var effet = function (L) {
+      var a = L.montant;
+      if (L.statut === "nouveau") return L.o.date >= jour ? -a : 0;
+      if (L.statut === "rentree") return L.o.date >= jour ? a : 0;
+      if (L.statut === "prevu" || L.statut === "epargne") return -a;
+      if (L.statut === "revenu") return a;
+      if (L.statut === "virprevu") return L.sens * a;
+      return 0;
+    };
+    g.lignes.forEach(function (L) { if (L.coche && !L.bloque) pred += effet(L); });
+    pred = r2(pred);
+    var ec = r2(bank - pred), piste = null;
+    if (Math.abs(ec) >= 0.005) g.lignes.forEach(function (L) {
+      if (piste || L.bloque) return;
+      var e = effet(L); if (!e) return;
+      if (L.coche && Math.abs(e + ec) < 0.005) piste = { L: L, faire: "decocher" };
+      else if (!L.coche && ["nouveau", "rentree", "prevu", "epargne", "revenu", "virprevu"].indexOf(L.statut) >= 0 && Math.abs(e - ec) < 0.005) piste = { L: L, faire: "cocher" };
+    });
+    return { base: i.montant, pred: pred, bank: bank, ecart: ec, le: i.le, piste: piste };
+  }
+
+  /* ---------- Écran d'import ---------- */
+  function impBarre() {
+    if (S.canWrite === false) return "";
+    var u = S.meta && S.meta.dernierImport;
+    return '<div class="imp-bar"><button type="button" class="mini" data-imp-ouvrir="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Importer une capture</button>' +
+      (u ? '<button type="button" class="link-btn" data-imp-annuler="1">' + (S.impConfirmeAnnul ? "Confirmer l'annulation" : "Annuler le dernier import") + "</button>" : "") + "</div>";
+  }
+  function impOuvrir() {
+    S.imp = { etape: "choix", groupes: [], msg: "" };
+    try { $("imp-file").value = ""; } catch (e) {}
+    $("imp-sheet").hidden = false; document.body.classList.add("sheet-open");
+    impRender();
+  }
+  function impFermer() {
+    $("imp-sheet").hidden = true; document.body.classList.remove("sheet-open");
+    S.imp = null; impProg = null;
+  }
+  function impLibStatut(L) {
+    return { note: ["Déjà noté", "neutral"], coche: ["Déjà coché", "neutral"], interne: ["Entre tes comptes", "neutral"], prevu: ["À cocher", "good"], epargne: ["À cocher", "good"], virprevu: ["À cocher", "good"], revenu: ["Reçu", "good"], nouveau: ["Nouvelle dépense", "warn"], rentree: ["Rentrée", "warn"] }[L.statut] || ["", "neutral"];
+  }
+  function impLigneHTML(gi, L, li) {
+    var st = impLibStatut(L), act = ["prevu", "epargne", "virprevu", "revenu", "nouveau", "rentree"].indexOf(L.statut) >= 0, id = gi + ":" + li;
+    var m = (L.sens < 0 ? "−" : "+") + eur.format(L.montant);
+    var h = '<li class="imp-row' + (act ? "" : " fait") + '">';
+    h += act ? '<input type="checkbox" class="imp-ck" data-imp-l="' + id + '"' + (L.coche ? " checked" : "") + (L.bloque ? " disabled" : "") + ' aria-label="Importer ' + esc(L.libelle) + '">' : '<span class="imp-ok" aria-hidden="true">✓</span>';
+    h += '<div class="imp-main"><span class="imp-lib">' + esc(L.statut === "nouveau" || L.statut === "rentree" ? L.o.libelle : L.o.libelle) + "</span>";
+    h += '<span class="imp-meta">' + esc(fmtShort.format(dateOf(L.o.date))) + (L.o.sansDate ? " ?" : "") + ' <span class="pill sm ' + st[1] + '">' + esc(st[0]) + "</span>" + (L.o.douteux ? ' <span class="pill sm bad">Montant à vérifier</span>' : "") + "</span>";
+    if (L.detail) h += '<span class="imp-det">' + esc(L.detail) + "</span>";
+    if (L.statut === "nouveau" && !L.bloque) h += '<select class="imp-sel" data-imp-cat="' + id + '" aria-label="Catégorie">' + CATS.map(function (c) { return '<option' + (c === L.cat ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>";
+    if (L.statut === "rentree" && !L.bloque) h += '<select class="imp-sel" data-imp-type="' + id + '" aria-label="Type de rentrée">' + INC_TYPES.map(function (c) { return '<option' + (c === L.type ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>";
+    h += "</div>";
+    if (act && L.o.douteux) h += '<input class="imp-mi" data-imp-m="' + id + '" inputmode="decimal" value="' + esc(String(L.montant.toFixed(2)).replace(".", ",")) + '" aria-label="Montant">';
+    else h += '<span class="imp-m' + (L.sens > 0 ? " pos" : "") + '">' + esc(m) + "</span>";
+    return h + "</li>";
+  }
+  function impGroupeHTML(g, gi) {
+    var ids = impComptesListe(), h = '<section class="imp-grp" aria-label="Capture ' + esc(g.titre || "") + '">';
+    h += '<div class="imp-gh"><span class="label">Écran de ta banque</span><b class="imp-titre">' + esc(g.titre || "Titre illisible") + "</b>" + (g.nb > 1 ? '<span class="note">' + g.nb + " captures</span>" : "") + "</div>";
+    h += '<label class="f"><span>Compte dans l\'appli</span><select data-imp-compte="' + gi + '">' +
+      (g.compte ? "" : '<option value="" selected>Choisis le compte…</option>') +
+      ids.map(function (id) { return '<option value="' + esc(id) + '"' + (g.compte === id ? " selected" : "") + ">" + esc((COMPTES.filter(function (c) { return c[0] === id; })[0] || [id, id])[1]) + "</option>"; }).join("") +
+      '<option value="__nouveau"' + (g.compte === "__nouveau" ? " selected" : "") + '>Nouveau compte…</option><option value="__ignorer"' + (g.compte === "__ignorer" ? " selected" : "") + ">Ne pas importer</option></select></label>";
+    if (g.devine && g.compte && g.compte[0] !== "_") h += '<p class="note">Compte deviné d\'après les opérations déjà notées : vérifie.</p>';
+    if (g.compte === "__nouveau") h += '<label class="f"><span>Nom du nouveau compte</span><input data-imp-nom="' + gi + '" value="' + esc(g.nouveauNom || "") + '" placeholder="ex. Compte SG" autocomplete="off"></label>' +
+      '<label class="imp-suivi"><input type="checkbox" data-imp-suivi="' + gi + '"' + (g.suivi !== false ? " checked" : "") + "> Suivre son solde et ses dépenses dans le budget</label>";
+    if (!g.compte || g.compte === "__ignorer") return h + "</section>";
+    var bank = impSoldeVal(g);
+    h += '<div class="imp-solde"><span>Solde affiché par ta banque</span>' + (g.solde != null && g.soldeSaisi == null ? "<b>" + esc(eur.format(g.solde)) + '</b><button type="button" class="link-btn" data-imp-soldeedit="' + gi + '">Corriger</button>'
+      : '<input class="imp-mi" data-imp-solde="' + gi + '" inputmode="decimal" placeholder="ex. 548,06" value="' + esc(g.soldeSaisi != null ? g.soldeSaisi : g.solde != null ? String(g.solde).replace(".", ",") : "") + '" aria-label="Solde affiché par ta banque">') + "</div>";
+    var act = [], deja = [];
+    g.lignes.forEach(function (L, li) { (["note", "coche", "interne"].indexOf(L.statut) >= 0 ? deja : act).push(impLigneHTML(gi, L, li)); });
+    if (g.lignes.length && g.lignes.every(function (L) { return L.bloque || ["note", "coche", "interne"].indexOf(L.statut) >= 0; }) && g.lignes.some(function (L) { return L.bloque; })) h += '<p class="imp-ctrl">Aucun mois de budget ne couvre ces dates : prépare d\'abord ton mois dans Budget pour importer les opérations. Le solde, lui, sera bien recalé.</p>';
+    if (act.length) h += '<ul class="imp-list">' + act.join("") + "</ul>";
+    else if (g.lignes.length) h += '<p class="note">Rien de nouveau sur cette capture.</p>';
+    else h += '<p class="note">Aucune opération lue sur cette capture.</p>';
+    if (deja.length) h += '<details class="imp-deja"><summary>Déjà dans l\'appli · ' + deja.length + '</summary><ul class="imp-list">' + deja.join("") + "</ul></details>";
+    var c = impControle(g);
+    if (c) {
+      if (c.manque) h += '<p class="imp-ctrl warn">Solde introuvable sur la capture : indique-le pour recaler le compte.</p>';
+      else if (c.premier) h += '<p class="imp-ctrl">Premier solde pour ce compte : ' + esc(eur.format(c.bank)) + ". L'appli le tiendra à jour à partir d'ici.</p>";
+      else if (Math.abs(c.ecart) < 0.005) h += '<p class="imp-ctrl ok"><span aria-hidden="true">✓</span> Contrôle : ' + esc(eur.format(c.base)) + " dans l'appli, " + esc(eur.format(c.pred)) + " après import, exactement comme ta banque.</p>";
+      else if (c.piste) h += '<p class="imp-ctrl warn"><span aria-hidden="true">⚠</span> Écart de ' + esc(signe(c.ecart)) + " avec ta banque : " + (c.piste.faire === "decocher"
+          ? "« " + esc(c.piste.L.o.libelle) + " » (" + esc((c.piste.L.sens < 0 ? "−" : "+") + eur.format(c.piste.L.montant)) + ") est sans doute déjà compté dans ton solde. Décoche-le et ça tombe juste."
+          : "coche « " + esc(c.piste.L.o.libelle) + " » (" + esc((c.piste.L.sens < 0 ? "−" : "+") + eur.format(c.piste.L.montant)) + ") et ça tombe juste.") + "</p>";
+      else h += '<p class="imp-ctrl warn"><span aria-hidden="true">⚠</span> Écart de ' + esc(signe(c.ecart)) + " : " + esc(eur.format(c.pred)) + " après import, " + esc(eur.format(c.bank)) + " à la banque. Il manque peut-être une opération (ajoute une capture plus bas dans la liste) ou un montant a été mal lu. Le solde sera quand même recalé sur celui de ta banque.</p>";
+    }
+    (g.alertes || []).forEach(function (a) { if (!/^Solde introuvable/.test(a)) h += '<p class="note">' + esc(a) + "</p>"; });
+    return h + "</section>";
+  }
+  function impResume() {
+    var r = { dep: 0, ren: 0, coche: 0, soldes: 0, manque: 0 };
+    (S.imp.groupes || []).forEach(function (g) {
+      if (!g.compte) { r.manque++; return; }
+      if (g.compte === "__ignorer") return;
+      g.lignes.forEach(function (L) {
+        if (!L.coche || L.bloque) return;
+        if (L.statut === "nouveau") r.dep++; else if (L.statut === "rentree") r.ren++; else r.coche++;
+      });
+      if (impSoldeVal(g) != null) r.soldes++;
+    });
+    return r;
+  }
+  function impRender() {
+    var box = $("imp-body"); if (!box || !S.imp) return;
+    var I = S.imp, h = "";
+    if (I.etape === "choix") {
+      h = '<p class="note">Fais une capture de l\'écran des opérations de ta banque, avec le solde en haut, puis choisis-la ici. Tu peux en prendre plusieurs d\'un coup, même de comptes différents.</p>' +
+        '<button type="button" class="btn" data-imp-choisir="1">Choisir des captures</button>' +
+        (I.msg ? '<p class="imp-ctrl warn" role="alert">' + esc(I.msg) + "</p>" : "") +
+        '<p class="note">La lecture se fait sur ton téléphone : rien n\'est envoyé. La première fois, il faut internet pour télécharger le module de lecture, ensuite il marche hors ligne.</p>' +
+        '<details class="imp-coller"' + (I.collerOuvert ? " open" : "") + '><summary>Coller du texte à la place</summary><p class="note">Dans Photos, ouvre la capture, touche l\'icône Texte en direct puis « Tout copier », et colle ici.</p><textarea id="imp-texte" rows="6" placeholder="Solde : + 548,06 €&#10;13 novembre&#10;Gemo Montivilliers - 9,99 €"></textarea><button type="button" class="mini" data-imp-coller="1">Lire le texte</button></details>';
+    } else if (I.etape === "lecture") {
+      var pc = Math.round((I.pc || 0) * 100);
+      h = '<p class="imp-prog-t" role="status">' + esc(I.prog || "Lecture…") + '</p><div class="imp-prog" aria-hidden="true"><span style="width:' + pc + '%"></span></div>' +
+        '<p class="note">Une capture prend quelques secondes.</p>';
+    } else if (I.etape === "revue") {
+      h = I.groupes.map(impGroupeHTML).join("");
+      var r = impResume(), parts = [];
+      if (r.dep) parts.push(r.dep + (r.dep > 1 ? " dépenses à ajouter" : " dépense à ajouter"));
+      if (r.coche) parts.push(r.coche + (r.coche > 1 ? " éléments prévus à cocher" : " élément prévu à cocher"));
+      if (r.ren) parts.push(r.ren + (r.ren > 1 ? " rentrées à ajouter" : " rentrée à ajouter"));
+      if (r.soldes) parts.push(r.soldes + (r.soldes > 1 ? " soldes recalés" : " solde recalé"));
+      h += '<div class="imp-foot"><p class="note">' + (r.manque ? "Choisis le compte de chaque capture pour continuer." : parts.length ? esc(parts.join(" · ")) + "." : "Rien à changer.") + "</p>" +
+        (I.msg ? '<p class="imp-ctrl warn" role="alert">' + esc(I.msg) + "</p>" : "") +
+        '<div class="imp-btns"><button type="button" class="btn ghost" data-imp-fermer="1">Annuler</button><button type="button" class="btn" data-imp-valider="1"' + (r.manque || (!parts.length) ? " disabled" : "") + '>Valider l\'import</button></div></div>';
+    }
+    box.innerHTML = h;
+  }
+  function impConstruireGroupes(lectures) {
+    var groupes = [], parCle = {};
+    lectures.forEach(function (res, i) {
+      var cle = res.titre ? impNorm(res.titre).replace(/[^a-z0-9/ ]/g, "").trim() : "";
+      var g = cle && parCle[cle];
+      if (!g) {
+        g = { cle: cle, titre: res.titre, solde: res.solde ? res.solde.v : null, ops: [], alertes: [], nb: 0, vus: {} };
+        groupes.push(g); if (cle) parCle[cle] = g;
+      }
+      g.nb++;
+      if (g.solde == null && res.solde) g.solde = res.solde.v;
+      res.alertes.forEach(function (a) { if (g.alertes.indexOf(a) < 0) g.alertes.push(a); });
+      res.ops.forEach(function (o) {
+        var k = o.date + "|" + o.montant.toFixed(2) + "|" + impNorm(o.libelle).slice(0, 18);
+        if (g.vus[k]) return; g.vus[k] = 1; g.ops.push(o);
+      });
+    });
+    var pools = impPools();
+    groupes.forEach(function (g) { var d = impDeviner(g, pools); g.compte = d.compte; g.devine = d.devine; });
+    groupes.forEach(function (g) { impRapprocher(g, pools); });
+    return groupes;
+  }
+  function impLancer(files) {
+    var I = S.imp; if (!I || !files.length) return;
+    var ref = todayISO(), lectures = [], n = files.length, k = 0;
+    I.etape = "lecture"; I.pc = 0; I.prog = "Préparation du module de lecture…"; impRender();
+    var maj = function (t, pc) { if (!S.imp) return; I.prog = t; if (pc != null) I.pc = pc; impRender(); };
+    var phase = "";
+    impProg = function (m) {
+      if (!m) return;
+      if (m.status === "recognizing text") maj((phase === "verif" ? "Vérification des montants" : "Lecture de la capture " + (k + 1) + " sur " + n) + "…", (k + (phase === "verif" ? 0.9 : Math.min(0.85, m.progress * 0.85))) / n);
+      else if (/load|initializ/.test(m.status)) maj("Préparation du module de lecture (la 1re fois, il faut internet)…", null);
+    };
+    impChargerMoteur().then(function (moteur) {
+      function suivant() {
+        if (k >= n) return Promise.resolve();
+        phase = "lecture"; maj("Lecture de la capture " + (k + 1) + " sur " + n + "…", k / n);
+        return impLireImage(files[k], moteur, ref, function (ph) { phase = ph; }).then(function (res) { lectures.push(res); k++; return suivant(); });
+      }
+      return suivant();
+    }).then(function () {
+      if (!S.imp) return;
+      impProg = null;
+      if (!lectures.some(function (r) { return r.ops.length || r.solde; })) { I.etape = "choix"; I.msg = "Je n'ai rien pu lire sur ces captures. Prends l'écran des opérations, avec le solde en haut."; impRender(); return; }
+      I.groupes = impConstruireGroupes(lectures); I.etape = "revue"; I.msg = ""; impRender();
+    }).catch(function () {
+      if (!S.imp) return;
+      impProg = null; I.etape = "choix"; I.collerOuvert = true;
+      I.msg = lectures.length ? "La lecture s'est arrêtée en route. Réessaie avec moins de captures à la fois." : "Le module de lecture n'a pas pu se charger : il faut internet la première fois. En attendant, tu peux coller le texte de ta capture ci-dessous.";
+      impRender();
+    });
+  }
+  function impLigneDe(id) { var p = String(id).split(":"), g = S.imp && S.imp.groupes[+p[0]]; return g ? { g: g, L: g.lignes[+p[1]] } : null; }
+
+  /* ---------- Valider : tout écrire dans le bon ordre, en gardant de quoi annuler ---------- */
+  function impValider() {
+    var I = S.imp; if (!I) return;
+    var gs = I.groupes.filter(function (g) { return g.compte && g.compte !== "__ignorer"; });
+    for (var gi = 0; gi < gs.length; gi++) if (gs[gi].compte === "__nouveau" && !String(gs[gi].nouveauNom || "").trim()) { I.msg = "Donne un nom au nouveau compte."; impRender(); return; }
+    var all = window.__localdb ? window.__localdb.tout() : {}, t0 = Date.now();
+    var tsOps = new Date(t0 - 4000).toISOString(), tsRel = new Date(t0).toISOString();
+    var undo = { le: tsRel, crees: [], avant: {} }, ecr = [], perMod = {}, cotes = [], bilan = { dep: 0, ren: 0, coche: 0, soldes: 0 };
+    function garde(path) { if (!(path in undo.avant)) undo.avant[path] = all[path] ? clone(all[path]) : null; }
+    function per(pid) { if (!perMod[pid]) { garde("periodes/" + pid); perMod[pid] = clone(all["periodes/" + pid] || {}); } return perMod[pid]; }
+    var profil = clone(PROFIL || PROFIL_VIDE), profilChange = false;
+    var soldes = clone(S.soldes) || { comptes: {}, decouvert: {}, historique: [] };
+    soldes.comptes = soldes.comptes || {}; soldes.decouvert = soldes.decouvert || {}; soldes.historique = soldes.historique || [];
+    var imports = clone(S.imports) || {}; imports.titres = imports.titres || {}; imports.libelles = imports.libelles || {};
+    var nid = function (pre) { return pre + t0.toString(36) + Math.random().toString(36).slice(2, 7); };
+    gs.forEach(function (g) {
+      var acc = g.compte;
+      if (acc === "__nouveau") {
+        var nom = String(g.nouveauNom).trim().slice(0, 40), base = courtDe(nom).replace(/[^\wÀ-ÿ-]+/g, "") || "Compte", id = base, k = 2;
+        while (profil.comptes.some(function (c) { return c.id === id; })) id = base + k++;
+        profil.comptes.push({ id: id, nom: nom, court: courtDe(nom), suivi: g.suivi !== false }); profilChange = true;
+        soldes.decouvert[id] = soldes.decouvert[id] || 0; acc = id;
+      }
+      var ctrl = g.compte === "__nouveau" ? null : impControle(g);
+      g.lignes.forEach(function (L) {
+        if (!L.coche || L.bloque) return;
+        var o = L.o, a = L.montant, p = periodFor(o.date);
+        if (L.statut === "nouveau" && p) {
+          var id = nid("imp"), doc = { periode: p.id, date: o.date, libelle: String(o.libelle).slice(0, 60), categorie: L.cat || "Autre", montant: a, compte: acc, creeLe: tsOps, source: "capture" };
+          ecr.push(["depenses/" + id, doc]); undo.crees.push("depenses/" + id); bilan.dep++;
+          var kl = impCleLib(o.brut); if (kl) imports.libelles[kl] = doc.categorie;
+        } else if (L.statut === "rentree" && p) {
+          var id2 = nid("imp"), inc = { periode: p.id, date: o.date, libelle: String(o.libelle).slice(0, 60), type: L.type || "Autre", montant: a, compte: acc, creeLe: tsOps, source: "capture" };
+          ecr.push(["rentrees/" + id2, inc]); undo.crees.push("rentrees/" + id2); bilan.ren++;
+        } else if (L.avec && L.avec.p) {
+          var c = L.avec, d = per(c.p.id), list = d[c.k] || [], x = list[c.i]; if (!x) return;
+          if (c.k === "charges" || c.k === "epargne") {
+            var old = Number(x.montant) || 0;
+            x.passe = true; x.passeLe = tsOps;
+            if (L.prixAvant != null && Math.abs(old - a) > 0.005) {
+              x.montant = a;
+              (S.periods || []).forEach(function (q) {
+                if (q.debut <= c.p.debut) return;
+                (q[c.k] || []).forEach(function (y, j) {
+                  if (y.libelle === x.libelle && y.compte === x.compte && !y.passe && Math.abs((Number(y.montant) || 0) - old) < 0.005) { var dq = per(q.id); dq[c.k][j].montant = a; }
+                });
+              });
+            }
+            cotes.push({ x: x, p: c.p, k: c.k });
+          } else if (c.k === "revenus") { x.recu = true; x.recuLe = tsOps; x.recuMontant = a; }
+          else if (c.k === "virements") { x.fait = true; x.faitLe = tsOps; }
+          bilan.coche++;
+        }
+      });
+      var bank = impSoldeVal(g);
+      if (bank != null) {
+        soldes.comptes[acc] = { montant: bank, le: tsRel };
+        soldes.historique = soldes.historique.concat([{ compte: acc, le: tsRel, banque: bank, calcul: ctrl && !ctrl.premier && !ctrl.manque ? ctrl.pred : null, ecart: ctrl && !ctrl.premier && !ctrl.manque ? ctrl.ecart : null, source: "Capture" + (g.titre ? " : " + g.titre : "") }]).slice(-30);
+        bilan.soldes++;
+      }
+      if (g.cle) imports.titres[g.cle] = acc;
+    });
+    ["config/soldes", "config/imports"].forEach(garde);
+    if (profilChange) garde("config/profil");
+    cotes.forEach(function (c) {
+      if (c.x.partage && c.x.partage.personne) garde("prets/" + partageId(c.x));
+      if (c.k === "epargne" && c.x.objectif && c.x.cle) garde("versements/ep-" + c.x.cle);
+    });
+    var meta = Object.assign({}, S.meta || {}); meta.dernierImport = undo;
+    write(function () {
+      var seq = Promise.resolve();
+      var etape = function (fn) { seq = seq.then(fn); };
+      if (profilChange) etape(function () { return S.db.doc("config/profil").set(profil); });
+      ecr.forEach(function (e) { etape(function () { return S.db.doc(e[0]).set(e[1]); }); });
+      Object.keys(perMod).forEach(function (pid) { etape(function () { return S.db.doc("periodes/" + pid).set(perMod[pid]); }); });
+      cotes.forEach(function (c) {
+        if (c.x.partage && c.x.partage.personne) etape(function () { syncPartage(c.x, c.p); });
+        if (c.k === "epargne" && c.x.objectif && c.x.cle) etape(function () { return S.db.doc("versements/ep-" + c.x.cle).set({ objectif: c.x.objectif, date: todayISO(), montant: Number(c.x.montant) || 0, qui: "Les deux", creeLe: tsOps, epargne: c.p.id }); });
+      });
+      etape(function () { return S.db.doc("config/imports").set(imports); });
+      etape(function () { return S.db.doc("config/soldes").set(soldes); });
+      etape(function () { return S.db.doc("local/meta").set(meta); });
+      return seq;
+    }, "Import fait : " + [bilan.dep ? bilan.dep + (bilan.dep > 1 ? " dépenses ajoutées" : " dépense ajoutée") : "", bilan.coche ? bilan.coche + (bilan.coche > 1 ? " éléments cochés" : " élément coché") : "", bilan.ren ? bilan.ren + (bilan.ren > 1 ? " rentrées ajoutées" : " rentrée ajoutée") : "", bilan.soldes ? (bilan.soldes > 1 ? bilan.soldes + " soldes recalés" : "solde recalé") : ""].filter(Boolean).join(", ") + ".").then(function (ok) {
+      if (ok) { impFermer(); S.compteSel = gs.length && gs[0].compte !== "__nouveau" ? gs[0].compte : S.compteSel; renderSoldes(); }
+    });
+  }
+  function impAnnulerDernier() {
+    var u = S.meta && S.meta.dernierImport; if (!u) return;
+    S.impConfirmeAnnul = false;
+    write(function () {
+      var seq = Promise.resolve();
+      (u.crees || []).forEach(function (p) { seq = seq.then(function () { return S.db.doc(p).delete(); }); });
+      Object.keys(u.avant || {}).forEach(function (p) { seq = seq.then(function () { return u.avant[p] == null ? S.db.doc(p).delete() : S.db.doc(p).set(u.avant[p]); }); });
+      return seq.then(function () { var m = Object.assign({}, S.meta || {}); delete m.dernierImport; return S.db.doc("local/meta").set(m); });
+    }, "Import annulé : tout est revenu comme avant.");
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-imp-ouvrir], [data-imp-annuler], [data-imp-choisir], [data-imp-coller], [data-imp-valider], [data-imp-fermer], [data-imp-soldeedit]");
+    if (!b) return;
+    if (b.dataset.impOuvrir) { S.impConfirmeAnnul = false; impOuvrir(); return; }
+    if (b.dataset.impAnnuler) {
+      if (!S.impConfirmeAnnul) { S.impConfirmeAnnul = true; renderSoldes(); clearTimeout(S.impAnnulT); S.impAnnulT = setTimeout(function () { S.impConfirmeAnnul = false; renderSoldes(); }, 5000); return; }
+      impAnnulerDernier(); return;
+    }
+    if (!S.imp) return;
+    if (b.dataset.impChoisir) { $("imp-file").value = ""; $("imp-file").click(); return; }
+    if (b.dataset.impColler) {
+      var t = ($("imp-texte") || {}).value || "";
+      var res = impLireTexte(t, todayISO());
+      if (!res.ops.length && !res.solde) { S.imp.msg = "Je n'ai trouvé ni solde ni opération dans ce texte."; S.imp.collerOuvert = true; impRender(); return; }
+      S.imp.groupes = impConstruireGroupes([res]); S.imp.etape = "revue"; S.imp.msg = ""; impRender(); return;
+    }
+    if (b.dataset.impValider) { impValider(); return; }
+    if (b.dataset.impFermer) { impFermer(); return; }
+    if (b.dataset.impSoldeedit) { var g = S.imp.groupes[+b.dataset.impSoldeedit]; g.soldeSaisi = g.solde != null ? String(g.solde).replace(".", ",") : ""; impRender(); var i = document.querySelector('[data-imp-solde="' + b.dataset.impSoldeedit + '"]'); if (i) i.focus(); }
+  });
+  document.addEventListener("change", function (e) {
+    var t = e.target; if (!S.imp || !t || !t.closest || !t.closest("#imp-sheet")) return;
+    if (t.id === "imp-file") { var fs = Array.prototype.slice.call(t.files || []); if (fs.length) impLancer(fs); return; }
+    if (t.dataset.impCompte != null) { var g = S.imp.groupes[+t.dataset.impCompte]; g.compte = t.value; g.devine = false; impRapprocher(g); S.imp.msg = ""; impRender(); return; }
+    if (t.dataset.impSuivi != null) { S.imp.groupes[+t.dataset.impSuivi].suivi = t.checked; return; }
+    var x;
+    if (t.dataset.impL != null && (x = impLigneDe(t.dataset.impL))) { x.L.coche = t.checked; impRender(); return; }
+    if (t.dataset.impCat != null && (x = impLigneDe(t.dataset.impCat))) { x.L.cat = t.value; return; }
+    if (t.dataset.impType != null && (x = impLigneDe(t.dataset.impType))) { x.L.type = t.value; return; }
+    if (t.dataset.impM != null && (x = impLigneDe(t.dataset.impM))) { var v = parseAmount(t.value, false); if (!isNaN(v)) { x.L.montant = v; x.L.o.douteux = false; } impRender(); return; }
+    if (t.dataset.impSolde != null) { S.imp.groupes[+t.dataset.impSolde].soldeSaisi = t.value; impRender(); return; }
+  });
+  document.addEventListener("input", function (e) {
+    var t = e.target; if (!S.imp || !t || !t.dataset || t.dataset.impNom == null) return;
+    S.imp.groupes[+t.dataset.impNom].nouveauNom = t.value;
+  });
+  $("imp-close").addEventListener("click", impFermer);
+  $("imp-sheet").addEventListener("click", function (e) { if (e.target === $("imp-sheet") && S.imp && S.imp.etape !== "lecture") impFermer(); });
+
   /* ---------- Démarrage ---------- */
   appliquerProfil(null);
   renderAll();
@@ -4431,7 +5679,8 @@ body.sheet-open { overflow: hidden; }
       renderAll(); paRender(); renderBanner();
       if (S.tab === "reglages") renderReglages();
     }, onError);
-    db.doc("local/meta").onSnapshot(function (s) { S.meta = s.exists ? s.data() : {}; renderBanner(); }, onError);
+    db.doc("local/meta").onSnapshot(function (s) { S.meta = s.exists ? s.data() : {}; renderBanner(); if (S.loaded) { renderConseil(); renderSoldes(); } }, onError);
+    db.doc("config/imports").onSnapshot(function (s) { S.imports = s.exists ? s.data() : null; }, onError);
     try { var user = await c.use("user"); S.canWrite = user ? await user.can("data.write") : null; } catch (e) { S.canWrite = null; }
     db.collection("periodes").onSnapshot(function (snap) {
       S.periods = snap.docs.filter(function (d) { return d.exists; }).map(function (d) { return Object.assign({ id: d.id }, d.data()); })

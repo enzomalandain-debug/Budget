@@ -1,12 +1,12 @@
 /* Paie & Budget : fonctionne sans réseau.
    L'application est gardée sur le téléphone ; à chaque connexion, la dernière version est récupérée. */
-const VERSION = "paie-budget-1.0";
+const VERSION = "paie-budget-1.2";
 const APP = ["./", "./index.html", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== "polices").map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION && k !== "polices" && k !== "lecture").map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener("fetch", e => {
   const req = e.request; if (req.method !== "GET") return;
@@ -14,6 +14,11 @@ self.addEventListener("fetch", e => {
   /* Police Manrope : gardée au premier lancement avec réseau */
   if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
     e.respondWith(caches.open("polices").then(c => c.match(req).then(r => r || fetch(req).then(res => { if (res.ok || res.type === "opaque") c.put(req, res.clone()); return res; }))).catch(() => new Response("", { status: 504 })));
+    return;
+  }
+  /* Module de lecture des captures (Tesseract) : téléchargé à la première lecture, puis gardé */
+  if (url.hostname === "cdn.jsdelivr.net" || url.hostname === "tessdata.projectnaptha.com") {
+    e.respondWith(caches.open("lecture").then(c => c.match(req).then(r => r || fetch(req).then(res => { if (res.ok || res.type === "opaque") c.put(req, res.clone()); return res; }))).catch(() => new Response("", { status: 504 })));
     return;
   }
   if (url.origin !== location.origin) return;
