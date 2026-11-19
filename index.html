@@ -777,6 +777,41 @@ body.sheet-open { overflow: hidden; }
 .imp-coller summary { cursor: pointer; font-weight: 600; color: var(--accent); padding: 4px 0; }
 .imp-coller textarea { width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 10px; font: inherit; font-size: 15px; background: var(--field); margin: 8px 0; resize: vertical; }
 
+/* Cartes cadeaux */
+.carte-add { justify-self: stretch; width: 100%; }
+#cartes { display: grid; gap: 12px; }
+.carte { display: grid; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px; min-width: 0; }
+.carte.vide { opacity: .78; }
+.carte-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.carte-nom { display: grid; gap: 2px; min-width: 0; }
+.carte-nom b { font-size: 17px; overflow-wrap: anywhere; }
+.carte-ch { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.carte-solde { display: grid; justify-items: end; text-align: right; }
+.carte-solde b { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.carte-solde span { font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+.carte-bar { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.carte-bar span { display: block; height: 100%; background: var(--good); border-radius: 999px; }
+.carte.vide .carte-bar span { background: var(--ink-2); }
+.carte-meta { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.carte-meta .pill.sm { margin-left: 0; }
+.carte-hist summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--ink-2); padding: 2px 0; }
+.carte-hist ul { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+.carte-hist li { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; }
+.carte-hist li span { min-width: 0; overflow-wrap: anywhere; color: var(--ink-2); }
+.carte-hist li b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.carte-hist li b.plus { color: var(--good); }
+.carte-form h3 { margin: 0; font-size: 17px; }
+.carte-btns { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; }
+.carte-btns .btn.ghost { height: 52px; padding: 0 18px; }
+.carte-ajust { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; align-items: end; }
+.carte-ajust .btn { height: 48px; padding: 0 18px; }
+.carte-ajust .link-btn, .carte-ajust .form-msg { grid-column: 1 / -1; justify-self: start; }
+.cartes-vides summary { cursor: pointer; font-weight: 600; color: var(--ink-2); padding: 4px 0; }
+.cartes-vides[open] { display: grid; gap: 10px; }
+.f-carte { display: grid; gap: 6px; background: var(--warn-soft); border-radius: 14px; padding: 10px 12px; }
+.f-carte p { margin: 0; font-size: 14px; color: var(--warn); font-weight: 600; }
+.f-carte select { height: 46px; border: 1px solid var(--line); border-radius: 12px; background: var(--field); color: var(--ink); padding: 0 10px; font: inherit; font-size: 16px; width: 100%; }
+
 </style>
 
 <div class="wrap">
@@ -918,6 +953,14 @@ body.sheet-open { overflow: hidden; }
   </section>
   </div>
 
+  <div class="tab" id="tab-cartes" data-tab="cartes" hidden>
+  <div class="scr-top"><button type="button" class="back" data-goto="accueil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Accueil</button></div>
+  <section class="sec" id="cartes-sec" aria-labelledby="cartes-title">
+    <div class="sec-head"><h2 id="cartes-title">Cartes cadeaux</h2><span class="count" id="cartes-count"></span></div>
+    <div id="cartes"></div>
+  </section>
+  </div>
+
   <div class="tab" id="tab-reglages" data-tab="reglages" hidden>
   <div class="scr-top"><button type="button" class="back" data-goto="accueil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Accueil</button></div>
   <section class="sec" aria-labelledby="reg-title">
@@ -946,7 +989,7 @@ body.sheet-open { overflow: hidden; }
     <p class="note">Remet l'application à zéro sur ce téléphone. Fais une sauvegarde avant.</p>
     <button class="btn ghost" id="wipe-btn" type="button">Tout effacer</button>
     <div class="confirm" id="wipe-confirm" hidden>Effacer toutes les données de ce téléphone ?<button type="button" class="link-btn danger" id="wipe-yes">Tout effacer</button><button type="button" class="link-btn" id="wipe-no">Annuler</button></div>
-    <p class="note app-v">Paie &amp; Budget · version 1.2</p>
+    <p class="note app-v">Paie &amp; Budget · version 1.3</p>
   </section>
   </div>
 
@@ -977,7 +1020,11 @@ body.sheet-open { overflow: hidden; }
       <label class="f"><span id="f-libelle-label">Dépense</span><input id="f-libelle" maxlength="60" autocomplete="off" placeholder="Intermarché, essence, resto…"></label>
       <div class="row two" id="f-catrow">
         <label class="f"><span id="f-cat-label">Catégorie</span><select id="f-cat"></select></label>
-        <label class="f"><span>Compte</span><select id="f-compte"></select></label>
+        <label class="f"><span id="f-compte-label">Payé avec</span><select id="f-compte"></select></label>
+      </div>
+      <div class="f-carte" id="f-carte-row" hidden>
+        <p id="f-carte-txt"></p>
+        <select id="f-carte-reste" aria-label="Payer le reste avec"></select>
       </div>
       <div class="row two" id="f-virrow" hidden>
         <label class="f"><span>De</span><select id="f-de"></select></label>
@@ -1184,9 +1231,9 @@ body.sheet-open { overflow: hidden; }
     return p ? p.id : null;
   }
   function inEnv(e, x) { return !!e.categorie && x.categorie === e.categorie && (!e.debut || String(x.date) >= e.debut) && (!e.fin || String(x.date) <= e.fin); }
-  function isEnvExpense(x) { return S.envs.some(function (e) { return inEnv(e, x); }); }
-  function dailyExpenses() { return S.expenses.filter(function (x) { return !isEnvExpense(x); }); }
-  function envSpent(e) { return total(S.envExpenses.filter(function (x) { return inEnv(e, x); })); }
+  function isEnvExpense(x) { return !x.carte && S.envs.some(function (e) { return inEnv(e, x); }); }
+  function dailyExpenses() { return S.expenses.filter(function (x) { return !x.carte && !isEnvExpense(x); }); }
+  function envSpent(e) { return total(S.envExpenses.filter(function (x) { return !x.carte && inEnv(e, x); })); }
   /* Lien avec l'onglet Paie : la paie du mois M finance le budget du mois M+1 (paie fin de mois → période qui démarre vers le 28) */
   function paieDe(pid) { var a = String(pid || "").split("-").map(Number); if (!a[0] || !a[1]) return null; var d = new Date(a[0], a[1] - 2, 1); return d.getFullYear() + "-" + pad(d.getMonth() + 1); }
   function lienPaie(pid, x) {
@@ -1513,7 +1560,7 @@ body.sheet-open { overflow: hidden; }
   /* ---------- Bilan d'un mois terminé : prévu et réel, catégories, épargne, comparaison avec le mois d'avant ---------- */
   function catsDe(exps) { var c = {}; exps.forEach(function (x) { var k = x.categorie || "Autre"; c[k] = r2((c[k] || 0) + (Number(x.montant) || 0)); }); return c; }
   function bilanDe(p) {
-    var exps = S.allExp.filter(function (x) { return x.periode === p.id; }), incs = S.allInc.filter(function (x) { return x.periode === p.id; });
+    var exps = S.allExp.filter(function (x) { return x.periode === p.id && !x.carte; }), incs = S.allInc.filter(function (x) { return x.periode === p.id; });
     var daily = exps.filter(function (x) { return !isEnvExpense(x); }), envE = exps.filter(isEnvExpense);
     var revDetail = (p.revenus || []).map(function (x) { var prevu = revAmount(p, x), recu = x.recu && x.recuMontant != null ? Number(x.recuMontant) : null; return { lib: x.libelle, prevu: r2(prevu), recu: recu }; });
     var rev = r2(revDetail.reduce(function (t, x) { return t + (x.recu != null ? x.recu : x.prevu); }, 0) + total(incs));
@@ -1524,7 +1571,7 @@ body.sheet-open { overflow: hidden; }
     var vers = r2(total(S.versements.filter(function (v) { return !v.epargne && v.date >= p.debut && v.date <= p.fin; })));
     var epReel = r2(total((p.epargne || []).filter(function (x) { return x.passe; })) + vers);
     var prev = S.periods.filter(function (q) { return q.fin < p.debut; }).sort(byDebut).pop() || null;
-    var prevCats = prev ? catsDe(S.allExp.filter(function (x) { return x.periode === prev.id && !isEnvExpense(x); })) : null;
+    var prevCats = prev ? catsDe(S.allExp.filter(function (x) { return x.periode === prev.id && !x.carte && !isEnvExpense(x); })) : null;
     var constats = [];
     constats.push(reste >= 0 ? "Mois terminé avec " + eur.format(reste) + " de reste." : "Mois terminé en dépassement de " + eur.format(-reste) + ".");
     budgets.filter(function (b) { return b.prevu > 0; }).sort(function (a, b) { return (b.reel - b.prevu) - (a.reel - a.prevu); }).slice(0, 1).forEach(function (b) {
@@ -1585,7 +1632,7 @@ body.sheet-open { overflow: hidden; }
     } else card.hidden = true;
   }
 
-  function renderAll() { if (typeof renderFirstMonth === "function") { renderFirstMonth(); renderBanner(); } var p = current(); renderHeader(p); renderHero(p); renderSoldes(); renderBilans(); renderConseil(); renderAnalyse(); renderPrets(); renderPlans(); renderEnvelopes(); renderBudgets(p); renderPending(p); renderForm(p); renderList(p); renderGoals(); renderLedger(p); renderTiles(); }
+  function renderAll() { if (typeof renderFirstMonth === "function") { renderFirstMonth(); renderBanner(); } var p = current(); renderHeader(p); renderHero(p); renderSoldes(); renderBilans(); renderConseil(); renderAnalyse(); renderPrets(); renderPlans(); renderCartes(); renderEnvelopes(); renderBudgets(p); renderPending(p); renderForm(p); renderList(p); renderGoals(); renderLedger(p); renderTiles(); }
 
   /* Date approximative d'un prélèvement dans le mois, d'après son texte « jour » */
   function itemDate(p, x) {
@@ -1893,8 +1940,8 @@ body.sheet-open { overflow: hidden; }
       .concat(S.incomes.map(function (x) { return Object.assign({ _col: "rentrees" }, x); }))
       .concat(p ? S.virs.filter(function (x) { return x.periode === p.id || (!x.periode && x.date >= p.debut && x.date <= p.fin); }).map(function (x) { return Object.assign({ _col: "virements" }, x); }) : [])
       .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)) || String(b.creeLe || "").localeCompare(String(a.creeLe || "")); });
-    var daily = S.expenses.filter(function (x) { return !isEnvExpense(x); }), envSum = total(S.expenses) - total(daily), parts = [];
-    if (S.expenses.length) parts.push(S.expenses.length + (S.expenses.length > 1 ? " dépenses · " : " dépense · ") + eur.format(total(daily)) + (envSum > 0 ? " + " + eur.format(envSum) + " d'enveloppe" : ""));
+    var horsC = S.expenses.filter(function (x) { return !x.carte; }), daily = horsC.filter(function (x) { return !isEnvExpense(x); }), envSum = total(horsC) - total(daily), cSum = r2(total(S.expenses) - total(horsC)), parts = [];
+    if (S.expenses.length) parts.push(S.expenses.length + (S.expenses.length > 1 ? " dépenses · " : " dépense · ") + eur.format(total(daily)) + (envSum > 0 ? " + " + eur.format(envSum) + " d'enveloppe" : "") + (cSum > 0 ? " + " + eur.format(cSum) + " en cartes cadeaux" : ""));
     if (S.incomes.length) parts.push("+ " + eur.format(total(S.incomes)) + " de revenus");
     $("list-count").textContent = parts.join(" · ");
     if (S.failed) { empty.textContent = "Les dépenses n'ont pas pu se charger sur ce téléphone."; empty.hidden = false; }
@@ -1903,7 +1950,7 @@ body.sheet-open { overflow: hidden; }
     var ro = S.canWrite === false;
     list.innerHTML = items.map(function (x) {
       var isInc = x._col === "rentrees", isVir = x._col === "virements", path = x._col + "/" + x.id, what = isVir ? "ce virement" : isInc ? "ce revenu" : "cette dépense";
-      var meta = (isVir ? ["Virement " + x.de + " → " + x.vers, x.date ? fmtRow.format(dateOf(x.date)) : ""] : [isInc ? x.type : x.categorie, x.compte, x.date ? fmtRow.format(dateOf(x.date)) : ""]).filter(Boolean).map(esc).join(" · ");
+      var meta = (isVir ? ["Virement " + x.de + " → " + x.vers, x.date ? fmtRow.format(dateOf(x.date)) : ""] : [isInc ? x.type : x.categorie, x.carte ? "Carte " + (x.carteNom || "cadeau") + " · hors budget" : x.compte, x.date ? fmtRow.format(dateOf(x.date)) : ""]).filter(Boolean).map(esc).join(" · ");
       var confirming = S.confirmId === path && !ro;
       return '<li class="erow">' +
         '<div class="emain"><div class="ename">' + esc(x.libelle || (isInc ? "Revenu" : "Dépense")) + '</div><div class="emeta">' + meta + "</div></div>" +
@@ -1913,7 +1960,7 @@ body.sheet-open { overflow: hidden; }
         "</li>";
     }).join("");
     var byCat = {};
-    S.expenses.forEach(function (x) { var k = x.categorie || "Autre"; byCat[k] = (byCat[k] || 0) + (Number(x.montant) || 0); });
+    S.expenses.forEach(function (x) { if (x.carte) return; var k = x.categorie || "Autre"; byCat[k] = (byCat[k] || 0) + (Number(x.montant) || 0); });
     var rows = Object.keys(byCat).map(function (k) { return [k, byCat[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
     var max = rows.length ? rows[0][1] : 0;
     cats.hidden = rows.length === 0;
@@ -3111,6 +3158,10 @@ body.sheet-open { overflow: hidden; }
     const gs = S.goals || [];
     const gSaved = r2(gs.reduce((a, g) => a + total(S.versements.filter(x => x.objectif === g.id)), 0));
     T.push(gs.length ? { k: "Projets", go: "projets", v: big(e0(gSaved)), s: "de côté · " + pl(gs.length, "projet", "projets") } : { k: "Projets", go: "projets", v: small("Aucun"), s: "projet pour l'instant" });
+    /* Cartes cadeaux */
+    const cAct = cartesActives(), cExp = cartesExpirent();
+    T.push(cAct.length ? { k: "Cartes cadeaux", go: "cartes", v: big(eur.format(r2(cAct.reduce((a, c) => a + carteSolde(c), 0)))), alert: !!cExp, s: cExp ? "⚠ " + cExp : pl(cAct.length, "carte", "cartes") + " à utiliser" }
+      : { k: "Cartes cadeaux", go: "cartes", v: small("Aucune"), s: "ajoute tes cartes" });
     /* Prêts */
     const reste = l => r2(l.reduce((a, x) => a + Math.max(0, pretReste(x)), 0));
     const tOn = reste(S.prets.filter(jePrete)), tJe = reste(S.prets.filter(x => !jePrete(x)));
@@ -3915,6 +3966,7 @@ body.sheet-open { overflow: hidden; }
     }
     $("add-btn").textContent = vir ? "Ajouter le virement" : rev ? "Ajouter le revenu" : "Ajouter la dépense";
     $("form-msg").textContent = "";
+    if (typeof cartesDansFormulaire === "function") cartesDansFormulaire();
   }
   setMode("dep");
   $("mode-dep").addEventListener("click", function () { setMode("dep"); });
@@ -4123,6 +4175,7 @@ body.sheet-open { overflow: hidden; }
       });
       return;
     }
+    if (carteChoisie()) { ajouterDepenseCarte(per, date, libelle, montant); return; }
     var doc = { periode: per.id, date: date, libelle: libelle.slice(0, 60), categorie: $("f-cat").value, montant: montant, compte: $("f-compte").value, creeLe: new Date().toISOString() };
     var env = S.envs.filter(function (e) { return inEnv(e, doc); })[0];
     var p = current(), envBefore = env ? (Number(env.budget) || 0) - envSpent(env) : null;
@@ -4147,7 +4200,7 @@ body.sheet-open { overflow: hidden; }
   /* ---------- Écrans ----------
      L'accueil (tuiles) mène à chaque écran ; « ‹ Accueil » ramène. L'écran Budget a trois vues : Dépenses, À passer, Le mois.
      Les anciens liens #depenses et #apasser ouvrent le Budget sur la bonne vue. */
-  var TABS = ["accueil", "budget", "paie", "projets", "prets", "plans", "reglages", "bienvenue"], SUBS = ["depenses", "apasser", "mois"];
+  var TABS = ["accueil", "budget", "paie", "projets", "prets", "plans", "cartes", "reglages", "bienvenue"], SUBS = ["depenses", "apasser", "mois"];
   var ALIAS = { depenses: ["budget", "depenses"], apasser: ["budget", "apasser"] };
   S.tab = "accueil"; S.sub = "depenses";
   try { var savedSub = localStorage.getItem("budget-vue"); if (SUBS.indexOf(savedSub) >= 0) S.sub = savedSub; } catch (e) {}
@@ -4205,7 +4258,7 @@ body.sheet-open { overflow: hidden; }
   })();
 
   /* ================= Version hors ligne : réglages, bienvenue, sauvegarde, premier mois, lignes du budget ================= */
-  var APP_VERSION = "1.2";
+  var APP_VERSION = "1.3";
   var ROULEMENT_TYPE = {"jours": ["1", "1", "2", "2", "2", "JNT", "R", "R", "JNT", "1", "1", "3", "3", "3", "JNT", "R", "JNT", "JN", "1", "2", "2", "3", "3", "JNT", "R", "JNT", "1", "1", "2", "2", "3", "3", "JNT", "JNT", "R"], "libelles": {"1": "1 · 6h–14h", "2": "2 · 14h–22h", "3": "3 · 22h–6h", "JN": "JN", "JNT": "JNT", "R": "R"}};
   var MODELE_VIERGE = {"decalage": 1, "rubriques": [{"code": "HS_NE", "libelle": "Heures sup. 25 % non exonérées", "unite": "h", "taux": 0}, {"code": "HS_EXO", "exo": true, "libelle": "Heures sup. 25 % exonérées", "unite": "h", "taux": 0}, {"code": "PAO", "libelle": "Heures de PAO", "unite": "h", "taux": 0}, {"code": "INCOMMODES", "libelle": "Heures incommodes 66 %", "unite": "h", "taux": 0}, {"code": "RAPPEL", "libelle": "Heures de rappel", "unite": "h", "taux": 0}, {"code": "APPEL", "libelle": "Heures d'appel", "unite": "h", "taux": 0}, {"code": "FERIES", "libelle": "Jours fériés payés 100 %", "unite": "h", "taux": 0}, {"code": "FERIES_233", "libelle": "Jours fériés payés 233 % (Noël, jour de l'an)", "unite": "h", "taux": 0}, {"code": "PENIBLES", "libelle": "Travaux pénibles 20 %", "unite": "h", "taux": 0}, {"code": "HABILLAGE", "libelle": "Habillage / déshabillage", "unite": "u", "taux": 0}, {"code": "REMPLACEMENT", "controle": false, "libelle": "Jours de remplacement", "unite": "jour", "taux": 0}, {"code": "QUART_HS", "derive": ["HS_NE", "HS_EXO"], "libelle": "Prime de quart sur heures sup.", "unite": "h", "taux": 0}, {"code": "RET_QUART", "derive": ["INCOMMODES"], "libelle": "Retenue quart", "unite": "h", "taux": 0}, {"code": "TF", "libelle": "Tickets flexibilité (8 h par TF)", "unite": "h", "taux": 0}], "fixes": [{"libelle": "Salaire de base", "montant": 0}, {"libelle": "Prime d'ancienneté", "montant": 0}, {"libelle": "Prime de transport P/I", "montant": 0}, {"libelle": "Prime de quart", "montant": 0}, {"libelle": "Prime mensuelle", "montant": 0}, {"imposable": false, "libelle": "Forfait prime de panier", "montant": 0}], "nonSoumis": [{"libelle": "Prime de transport NP/NI", "montant": 0}, {"libelle": "Prime panier non passible", "montant": 0}], "cotis": {"csgAjout": 0, "csgAssiette": 98.25, "csgDed": 6.8, "csgNonDed": 2.9, "deplafonnee": 0.4, "fixes": 0, "hsNetFiscal": 93.32, "pass": 4005, "plafonnee": 11.61, "reducHS": 10.66, "reintegration": 0, "t2": 8.45}, "tauxPAS": 0};
   var PROFIL = null;
@@ -4238,6 +4291,7 @@ body.sheet-open { overflow: hidden; }
     var keep = function (id) { var el = $(id); return el ? el.value : ""; };
     var fc = keep("f-compte"), fd = keep("f-de"), fv = keep("f-vers"), has = function (v) { return cs.some(function (c) { return c.id === v; }); };
     $("f-compte").innerHTML = cs.map(function (c) { return opt(c, has(fc) ? fc : cs[0].id); }).join("");
+    if (typeof cartesDansFormulaire === "function" && S.mode) cartesDansFormulaire();
     $("f-de").innerHTML = cs.map(function (c) { return opt(c, has(fd) ? fd : (cs[1] || cs[0]).id); }).join("") + '<option value="Autre">Autre compte</option>';
     $("f-vers").innerHTML = cs.map(function (c) { return opt(c, has(fv) ? fv : cs[0].id); }).join("") + '<option value="Autre">Autre compte</option>';
     var pn = String(PROFIL.prenom || "").trim();
@@ -4541,7 +4595,7 @@ body.sheet-open { overflow: hidden; }
     if (!p) return null;
     var prev = S.periods.filter(function (q) { return q.fin < p.debut; }).sort(byDebut).pop();
     if (!prev) return { p: p, sansPrev: true };
-    var conso = r2(total(S.allExp.filter(function (x) { return x.periode === prev.id && !isEnvExpense(x); })));
+    var conso = r2(total(S.allExp.filter(function (x) { return x.periode === prev.id && !x.carte && !isEnvExpense(x); })));
     if (!(conso > 0)) return { p: p, sansPrev: true, prev: prev };
     var sal = (p.revenus || []).filter(function (x) { return x.lien === "bulletin"; });
     var paie = sal.length ? r2(sal.reduce(function (t, x) { return t + recuOuPrevu(p, x); }, 0)) : null;
@@ -4552,7 +4606,7 @@ body.sheet-open { overflow: hidden; }
     var bs = sortedBulletins().filter(function (b) { return isNum(b.netPaye) && Number(b.netPaye) > 0; }).slice(0, 6);
     var moy = bs.length >= 2 ? r2(bs.reduce(function (t, b) { return t + Number(b.netPaye); }, 0) / bs.length) : null;
     var t = todayISO(), dl = t < p.debut ? daysBetween(p.debut, p.fin) + 1 : t > p.fin ? 0 : daysBetween(t, p.fin) + 1;
-    var deja = r2(total(S.allExp.filter(function (x) { return x.periode === p.id && !isEnvExpense(x); })));
+    var deja = r2(total(S.allExp.filter(function (x) { return x.periode === p.id && !x.carte && !isEnvExpense(x); })));
     var c = { p: p, prev: prev, conso: conso, paie: paie, paieRecue: sal.length > 0 && sal.every(function (x) { return x.recu; }), moy: moy, rev: rev, charges: charges, epargne: epargne,
       marge: marge, cas: marge >= CONSEIL_SEUIL ? "plus" : marge >= 0 ? "stable" : "moins", ajout: ajout, ajoutTot: r2(total(ajout)), projet: projetConseil(),
       parJour: dl > 0 ? r2((rev - charges - epargne - r2(total(ajout)) - deja) / dl) : null, parJourAvant: r2(conso / (daysBetween(prev.debut, prev.fin) + 1)) };
@@ -4562,7 +4616,7 @@ body.sheet-open { overflow: hidden; }
   }
   function ideesDe(c) {
     var out = [], manque = -c.marge;
-    var cats = catsDe(S.allExp.filter(function (x) { return x.periode === c.prev.id && !isEnvExpense(x); }));
+    var cats = catsDe(S.allExp.filter(function (x) { return x.periode === c.prev.id && !x.carte && !isEnvExpense(x); }));
     Object.keys(cats).map(function (k) { var r = CATS_SOUPLES[k] || 0; return { k: k, m: cats[k], r: r, e: Math.round(cats[k] * r) }; })
       .filter(function (a) { return a.r > 0 && a.e >= 5; }).sort(function (a, b) { return b.e - a.e; }).slice(0, 3)
       .forEach(function (a) { out.push(a.k + " : " + eur0.format(a.m) + " le mois passé. Avec " + Math.round(a.r * 100) + " % de moins, " + eur0.format(a.e) + " d'économie."); });
@@ -4644,7 +4698,8 @@ body.sheet-open { overflow: hidden; }
   S.anaSel = {};
   function anaMois() { var t = todayISO(); return S.periods.filter(function (p) { return p.debut <= t; }).sort(byDebut).reverse(); }
   function anaDe(p, cut) {
-    var exps = S.allExp.filter(function (x) { return x.periode === p.id && (!cut || String(x.date) <= cut); });
+    var exps = S.allExp.filter(function (x) { return x.periode === p.id && !x.carte && (!cut || String(x.date) <= cut); });
+    var carteSum = r2(total(S.allExp.filter(function (x) { return x.periode === p.id && x.carte && (!cut || String(x.date) <= cut); })));
     var daily = exps.filter(function (x) { return !isEnvExpense(x); }), envE = exps.filter(isEnvExpense);
     var rev = r2((p.revenus || []).reduce(function (t, x) { return t + recuOuPrevu(p, x); }, 0) + total(S.allInc.filter(function (x) { return x.periode === p.id; })));
     var v = { prel: r2(total(p.charges)), dep: r2(total(daily)), epa: r2(total(p.epargne)) }, cats = catsDe(daily), known = ANA_CATS.map(function (a) { return a[0]; });
@@ -4654,7 +4709,7 @@ body.sheet-open { overflow: hidden; }
     if (autres.length) parts2.push({ key: "Autres", nom: "Autres (" + autres.join(", ") + ")", m: r2(autres.reduce(function (t, k) { return t + cats[k]; }, 0)), col: ANA_AUTRES, sous: autres });
     var cmp1 = {}, cmp2 = {}; parts1.forEach(function (x) { cmp1[x.key] = x.m; }); ANA_C1.forEach(function (a) { if (!(a[0] in cmp1)) cmp1[a[0]] = 0; });
     Object.keys(cats).forEach(function (k) { if (known.indexOf(k) >= 0) cmp2[k] = cats[k]; else cmp2.Autres = r2((cmp2.Autres || 0) + cats[k]); });
-    return { p: p, rev: rev, v: v, cats: cats, daily: daily, parts1: parts1, parts2: parts2, cmp1: cmp1, cmp2: cmp2, envSpent: r2(total(envE)),
+    return { p: p, rev: rev, v: v, cats: cats, daily: daily, parts1: parts1, parts2: parts2, cmp1: cmp1, cmp2: cmp2, envSpent: r2(total(envE)), carteSum: carteSum,
       sorti: r2(v.prel + v.dep + v.epa), reste: r2(rev - v.prel - v.dep - v.epa), enCours: todayISO() <= p.fin };
   }
   function anaArc(R, r, a0, a1) {
@@ -4735,7 +4790,8 @@ body.sheet-open { overflow: hidden; }
       anaListe("c1", a.parts1, b ? b.cmp1 : null, prevNom, s1) + (s1 ? anaDetail(a, "c1", s1) : "") + "</div>";
     h += '<div class="ana-card"><h3>Dépenses du quotidien</h3><p class="ana-note">Sans les prélèvements ni l\'épargne.</p>' +
       (a.parts2.length ? anaDonut("c2", a.parts2, eur0.format(a.v.dep), "dépensés", s2) + anaListe("c2", a.parts2, b ? b.cmp2 : null, prevNom, s2) + (s2 ? anaDetail(a, "c2", s2) : "") : '<p class="empty">Aucune dépense notée ce mois-ci.</p>') +
-      (a.envSpent ? '<p class="ana-note">Plus ' + esc(eur.format(a.envSpent)) + " dépensés dans les enveloppes (Noël…), comptés à part.</p>" : "") + "</div>";
+      (a.envSpent ? '<p class="ana-note">Plus ' + esc(eur.format(a.envSpent)) + " dépensés dans les enveloppes (Noël…), comptés à part.</p>" : "") +
+      (a.carteSum ? '<p class="ana-note">Plus ' + esc(eur.format(a.carteSum)) + " payés en cartes cadeaux, comptés à part.</p>" : "") + "</div>";
     box.innerHTML = h;
   }
   function anaMini(p) {
@@ -5206,7 +5262,7 @@ body.sheet-open { overflow: hidden; }
   }
   function impPools() {
     var notes = [], plan = [];
-    (S.allExp || []).forEach(function (x) { notes.push({ k: "dep", x: x, compte: x.compte, date: x.date, m: Number(x.montant) || 0, lib: x.libelle || "", sens: -1 }); });
+    (S.allExp || []).forEach(function (x) { if (x.carte) return; notes.push({ k: "dep", x: x, compte: x.compte, date: x.date, m: Number(x.montant) || 0, lib: x.libelle || "", sens: -1 }); });
     (S.allInc || []).forEach(function (x) { notes.push({ k: "inc", x: x, compte: x.compte, date: x.date, m: Number(x.montant) || 0, lib: x.libelle || "", sens: 1 }); });
     (S.mouvements || []).forEach(function (x) { notes.push({ k: "pret", x: x, compte: x.compte, date: x.date || String(x.le || "").slice(0, 10), m: Number(x.montant) || 0, lib: x.libelle || "", sens: Number(x.sens) > 0 ? 1 : -1 }); });
     (S.virs || []).forEach(function (x) {
@@ -5663,6 +5719,199 @@ body.sheet-open { overflow: hidden; }
   $("imp-close").addEventListener("click", impFermer);
   $("imp-sheet").addEventListener("click", function (e) { if (e.target === $("imp-sheet") && S.imp && S.imp.etape !== "lecture") impFermer(); });
 
+  /* ---------- Cartes cadeaux ----------
+     Chaque carte a un montant de départ. Les achats payés avec (compte « Carte ») en sont déduits et restent à part :
+     ni dans le reste à dépenser, ni dans les comptes. On ne garde que les 4 derniers chiffres d'une carte. */
+  function carteSolde(c) {
+    var aj = (c.ajustements || []).reduce(function (t, a) { return t + (Number(a.montant) || 0); }, 0);
+    var dep = (S.allExp || []).filter(function (x) { return x.carte === c.id; }).reduce(function (t, x) { return t + (Number(x.montant) || 0); }, 0);
+    return r2((Number(c.montant) || 0) + aj - dep);
+  }
+  function carteNom(c) { return (c.enseigne || "Carte") + (c.chiffres ? " ··" + c.chiffres : ""); }
+  function carteDate(iso) { var t = fmtShort.format(dateOf(iso)); return String(iso).slice(0, 4) !== todayISO().slice(0, 4) ? t + " " + String(iso).slice(0, 4) : t; }
+  function carteExpireDans(c) { return c.expire ? daysBetween(todayISO(), c.expire) : null; }
+  function cartesActives() {
+    return (S.cartes || []).filter(function (c) { return carteSolde(c) > 0.004; })
+      .sort(function (a, b) { return String(a.expire || "9999").localeCompare(String(b.expire || "9999")) || String(a.enseigne || "").localeCompare(String(b.enseigne || "")); });
+  }
+  function cartesExpirent() {
+    var l = cartesActives().filter(function (c) { var d = carteExpireDans(c); return d != null && d <= 30; });
+    if (!l.length) return "";
+    var c = l[0], d = carteExpireDans(c);
+    return c.enseigne + " (" + eur0.format(Math.round(carteSolde(c))) + ") " + (d < 0 ? "a expiré le " : "expire le ") + carteDate(c.expire) + (l.length > 1 ? " · +" + (l.length - 1) : "");
+  }
+  function cartesQui() {
+    var l = [], add = function (n) { n = String(n || "").trim(); if (n && l.indexOf(n) < 0) l.push(n); };
+    add((PROFIL && PROFIL.prenom) || "Moi");
+    ((PROFIL && PROFIL.comptes) || []).forEach(function (c) { var m = String(c.nom || "").match(/^compte (?:d'|de |du |de la )(.+)$/i); if (m) add(m[1]); });
+    add("Les deux");
+    return l;
+  }
+  function carteFormHTML(c) {
+    var v = c || {}, qs = cartesQui(); if (v.qui && qs.indexOf(v.qui) < 0) qs.push(v.qui);
+    var id = c ? c.id : "";
+    return '<form class="carte carte-form" data-carte-form="' + esc(id) + '" novalidate>' +
+      '<h3>' + (c ? "Modifier la carte" : "Nouvelle carte") + "</h3>" +
+      '<label class="f"><span>Enseigne</span><input name="enseigne" maxlength="40" autocomplete="off" placeholder="Fnac, Amazon, Illicado…" value="' + esc(v.enseigne || "") + '"></label>' +
+      '<div class="row two"><label class="f"><span>Montant chargé</span><input name="montant" inputmode="decimal" autocomplete="off" placeholder="50,00" value="' + esc(c ? String(Number(v.montant) || 0).replace(".", ",") : "") + '"></label>' +
+      '<label class="f"><span>Expire le</span><input name="expire" type="date" value="' + esc(v.expire || "") + '"></label></div>' +
+      '<div class="row two"><label class="f"><span>4 derniers chiffres</span><input name="chiffres" inputmode="numeric" maxlength="30" autocomplete="off" placeholder="ex. 1234" value="' + esc(v.chiffres || "") + '"></label>' +
+      '<label class="f"><span>À qui</span><select name="qui"><option value="">—</option>' + qs.map(function (q) { return '<option' + (q === v.qui ? " selected" : "") + ">" + esc(q) + "</option>"; }).join("") + "</select></label></div>" +
+      '<label class="f"><span>Note (facultatif)</span><input name="note" maxlength="80" autocomplete="off" placeholder="Offerte par…" value="' + esc(v.note || "") + '"></label>' +
+      '<p class="form-msg" role="alert"></p>' +
+      '<div class="carte-btns"><button type="button" class="btn ghost" data-carte-annul="1">Annuler</button><button class="btn" type="submit">' + (c ? "Enregistrer" : "Ajouter la carte") + "</button></div>" +
+      (c ? (S.carteSuppr === c.id
+        ? '<div class="confirm">Supprimer la carte ' + esc(c.enseigne) + ' ? Les achats déjà notés restent dans tes dépenses.<button type="button" class="link-btn danger" data-carte-suppr-ok="' + esc(c.id) + '">Supprimer</button><button type="button" class="link-btn" data-carte-suppr-non="1">Annuler</button></div>'
+        : '<button type="button" class="link-btn danger" data-carte-suppr="' + esc(c.id) + '">Supprimer la carte</button>') : "") +
+      "</form>";
+  }
+  function carteHTML(c) {
+    if (S.carteForm && S.carteForm.id === c.id) return carteFormHTML(c);
+    var s = carteSolde(c), aj = (c.ajustements || []).reduce(function (t, a) { return t + (Number(a.montant) || 0); }, 0);
+    var base = Math.max(0.01, (Number(c.montant) || 0) + Math.max(0, aj)), pc = Math.max(0, Math.min(100, s / base * 100)), d = carteExpireDans(c), ro = S.canWrite === false;
+    var exp = c.expire ? (d < 0 ? '<span class="pill sm bad">Expirée le ' + esc(carteDate(c.expire)) + "</span>" : d <= 30 && s > 0.004 ? '<span class="pill sm warn">Expire le ' + esc(carteDate(c.expire)) + "</span>" : "Expire le " + esc(carteDate(c.expire))) : "";
+    var hist = (S.allExp || []).filter(function (x) { return x.carte === c.id; }).map(function (x) { return { date: x.date, lib: x.libelle || "Achat", m: -(Number(x.montant) || 0) }; })
+      .concat((c.ajustements || []).map(function (a) { return { date: a.date, lib: "Solde ajusté", m: Number(a.montant) || 0 }; }))
+      .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    var meta = [exp, c.qui ? (c.qui === "Les deux" ? "À vous deux" : "À " + esc(c.qui)) : "", c.note ? esc(c.note) : ""].filter(Boolean).join(" · ");
+    return '<article class="carte' + (s <= 0.004 ? " vide" : "") + '" aria-label="Carte ' + esc(c.enseigne || "") + '">' +
+      '<div class="carte-top"><div class="carte-nom"><b>' + esc(c.enseigne || "Carte") + "</b>" + (c.chiffres ? '<span class="carte-ch">•••• ' + esc(c.chiffres) + "</span>" : "") + "</div>" +
+      '<div class="carte-solde"><b>' + esc(eur.format(s)) + "</b><span>sur " + esc(eur.format(Number(c.montant) || 0)) + "</span></div></div>" +
+      '<div class="carte-bar" aria-hidden="true"><span style="width:' + pc.toFixed(1) + '%"></span></div>' +
+      (meta ? '<div class="carte-meta">' + meta + "</div>" : "") +
+      (hist.length ? '<details class="carte-hist"><summary>Historique · ' + hist.length + '</summary><ul>' + hist.map(function (h) {
+        return "<li><span>" + esc(h.date ? fmtShort.format(dateOf(h.date)) : "") + " · " + esc(h.lib) + '</span><b class="' + (h.m > 0 ? "plus" : "") + '">' + (h.m > 0 ? "+" : "−") + esc(eur.format(Math.abs(h.m))) + "</b></li>";
+      }).join("") + "</ul></details>" : "") +
+      (S.carteAjust === c.id ? '<form class="carte-ajust" data-carte-ajust-form="' + esc(c.id) + '" novalidate><label class="f"><span>Solde réel sur la carte</span><input name="solde" inputmode="decimal" autocomplete="off" value="' + esc(String(s.toFixed(2)).replace(".", ",")) + '"></label><button class="btn" type="submit">OK</button><button type="button" class="link-btn" data-carte-ajust-annul="1">Annuler</button><p class="form-msg" role="alert"></p></form>' : "") +
+      (ro || S.carteAjust === c.id ? "" : '<div class="gbtns"><button type="button" class="link-btn" data-carte-ajust="' + esc(c.id) + '">Ajuster le solde</button><button type="button" class="link-btn" data-carte-edit="' + esc(c.id) + '">Modifier</button></div>') +
+      "</article>";
+  }
+  function renderCartes() {
+    var box = $("cartes"); if (!box) return;
+    var ae = document.activeElement;
+    if (ae && box.contains(ae) && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName)) return;
+    if (S.failed || !S.loaded) { box.innerHTML = ""; $("cartes-count").textContent = ""; return; }
+    var ro = S.canWrite === false, act = cartesActives(), vides = (S.cartes || []).filter(function (c) { return carteSolde(c) <= 0.004; })
+      .sort(function (a, b) { return String(b.creeLe || "").localeCompare(String(a.creeLe || "")); });
+    var tot = r2(act.reduce(function (t, c) { return t + carteSolde(c); }, 0));
+    $("cartes-count").textContent = act.length ? eur.format(tot) + " à utiliser" : "";
+    var h = "";
+    if (!ro) h += S.carteForm && S.carteForm.id === "" ? carteFormHTML(null) : '<button type="button" class="btn ghost carte-add" data-carte-new="1">+ Ajouter une carte</button>';
+    if (!(S.cartes || []).length) h += '<p class="empty">Aucune carte pour l\'instant. Ajoute tes cartes une par une, avec le montant qu\'il y a dessus.</p>';
+    h += act.map(carteHTML).join("");
+    if (vides.length) h += '<details class="cartes-vides"' + (vides.some(function (c) { return S.carteForm && S.carteForm.id === c.id || S.carteAjust === c.id; }) ? " open" : "") + '><summary>Cartes utilisées · ' + vides.length + "</summary>" + vides.map(carteHTML).join("") + "</details>";
+    if ((S.cartes || []).length) h += '<p class="note">Les achats payés avec une carte cadeau sont à part : ils ne comptent ni dans ton reste à dépenser, ni dans tes comptes. Pour payer avec une carte, choisis-la dans « Payé avec » en ajoutant la dépense.</p>';
+    box.innerHTML = h;
+  }
+  /* Dans « + Dépense » : les cartes apparaissent dans « Payé avec » */
+  function cartesDansFormulaire() {
+    var sel = $("f-compte"); if (!sel) return;
+    var prev = sel.value, og = sel.querySelector("optgroup[data-cartes]");
+    if (og) og.remove();
+    var l = S.mode === "dep" ? cartesActives() : [];
+    if (l.length) {
+      og = document.createElement("optgroup"); og.label = "Cartes cadeaux"; og.setAttribute("data-cartes", "1");
+      og.innerHTML = l.map(function (c) { return '<option value="carte:' + esc(c.id) + '">' + esc((c.enseigne || "Carte") + " · " + eur.format(carteSolde(c)) + (c.chiffres ? " ··" + c.chiffres : "")) + "</option>"; }).join("");
+      sel.appendChild(og);
+    }
+    if (prev && Array.prototype.some.call(sel.options, function (o) { return o.value === prev; })) sel.value = prev;
+    var lab = $("f-compte-label"); if (lab) lab.textContent = S.mode === "rev" ? "Reçu sur" : "Payé avec";
+    carteSplitMaj();
+  }
+  function carteChoisie() {
+    var v = ($("f-compte") || {}).value || "";
+    return S.mode === "dep" && /^carte:/.test(v) ? (S.cartes || []).filter(function (x) { return "carte:" + x.id === v; })[0] || null : null;
+  }
+  function carteSplitMaj() {
+    var row = $("f-carte-row"); if (!row) return;
+    var c = carteChoisie();
+    if (!c) { row.hidden = true; return; }
+    var s = carteSolde(c), m = parseAmount($("f-montant").value, false);
+    if (isNaN(m) || m <= s + 0.004) { row.hidden = true; return; }
+    $("f-carte-txt").textContent = "Il ne reste que " + eur.format(s) + " sur cette carte. Le reste, " + eur.format(r2(m - s)) + ", est payé avec :";
+    var rs = $("f-carte-reste"), pv = rs.value;
+    rs.innerHTML = COMPTES_P.map(function (k) { return '<option value="' + esc(k[0]) + '">' + esc(k[1]) + "</option>"; }).join("");
+    if (pv && Array.prototype.some.call(rs.options, function (o) { return o.value === pv; })) rs.value = pv;
+    row.hidden = false;
+  }
+  $("f-compte").addEventListener("change", carteSplitMaj);
+  $("f-montant").addEventListener("input", carteSplitMaj);
+  function ajouterDepenseCarte(per, date, libelle, montant) {
+    var c = carteChoisie(), msg = $("form-msg");
+    if (!c) { msg.textContent = "Cette carte n'existe plus."; return; }
+    var s = carteSolde(c), now = new Date().toISOString(), docs = [], reste = 0, cpt = "";
+    var base = { periode: per.id, date: date, libelle: libelle.slice(0, 60), categorie: $("f-cat").value, creeLe: now };
+    if (s <= 0.004) { msg.textContent = "Il ne reste rien sur cette carte."; return; }
+    if (montant <= s + 0.004) docs.push(Object.assign({}, base, { montant: montant, compte: "Carte", carte: c.id, carteNom: carteNom(c) }));
+    else {
+      reste = r2(montant - s); cpt = $("f-carte-reste").value || (COMPTES_P[0] || [""])[0];
+      var lien = "l" + Date.now().toString(36);
+      docs.push(Object.assign({}, base, { montant: s, compte: "Carte", carte: c.id, carteNom: carteNom(c), lien: lien }));
+      docs.push(Object.assign({}, base, { montant: reste, compte: cpt, lien: lien }));
+    }
+    var p = current(), before = reste && p && per.id === p.id ? calc(p).left : null;
+    var sTxt = reste && cpt !== "Liquide" ? soldeApres(cpt, -reste, date) : "";
+    write(function () {
+      var seq = Promise.resolve();
+      docs.forEach(function (d) { seq = seq.then(function () { return S.db.collection("depenses").add(d); }); });
+      return seq;
+    }).then(function (ok) {
+      if (!ok) return;
+      $("f-montant").value = ""; $("f-libelle").value = ""; $("f-carte-row").hidden = true; closeSheet();
+      if (reste) toast("Payé " + eur.format(s) + " avec la carte " + c.enseigne + ", maintenant vide, et " + eur.format(reste) + (cpt === "Liquide" ? " en liquide." : " avec " + (libCompte(cpt) || cpt).replace(/^Compte/, "le compte").replace(/^Mon compte/, "ton compte") + ".") + (before != null ? " Il reste " + eur.format(before - reste) + " ce mois-ci." : "") + sTxt);
+      else toast("Payé avec la carte " + c.enseigne + " : il reste " + eur.format(r2(s - montant)) + " dessus. Hors budget.");
+    });
+  }
+  /* Ajout, modification, ajustement et suppression des cartes */
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-carte-new], [data-carte-edit], [data-carte-annul], [data-carte-ajust], [data-carte-ajust-annul], [data-carte-suppr], [data-carte-suppr-ok], [data-carte-suppr-non]");
+    if (!b || S.canWrite === false) return;
+    var d = b.dataset;
+    if (d.carteNew) { S.carteForm = { id: "" }; S.carteAjust = null; S.carteSuppr = null; renderCartes(); var i = document.querySelector('[data-carte-form=""] [name="enseigne"]'); if (i) i.focus(); return; }
+    if (d.carteEdit) { S.carteForm = { id: d.carteEdit }; S.carteAjust = null; S.carteSuppr = null; renderCartes(); return; }
+    if (d.carteAnnul) { S.carteForm = null; S.carteSuppr = null; if (document.activeElement) document.activeElement.blur(); renderCartes(); return; }
+    if (d.carteAjust) { S.carteAjust = d.carteAjust; S.carteForm = null; renderCartes(); var j = document.querySelector('[data-carte-ajust-form] [name="solde"]'); if (j) { j.focus(); j.select(); } return; }
+    if (d.carteAjustAnnul) { S.carteAjust = null; if (document.activeElement) document.activeElement.blur(); renderCartes(); return; }
+    if (d.carteSuppr) { S.carteSuppr = d.carteSuppr; if (document.activeElement) document.activeElement.blur(); renderCartes(); return; }
+    if (d.carteSupprNon) { S.carteSuppr = null; renderCartes(); return; }
+    if (d.carteSupprOk) {
+      var c = (S.cartes || []).filter(function (x) { return x.id === d.carteSupprOk; })[0];
+      S.carteSuppr = null; S.carteForm = null; if (document.activeElement) document.activeElement.blur();
+      write(function () { return S.db.doc("cartes/" + d.carteSupprOk).delete(); }, "Carte " + (c ? c.enseigne : "") + " supprimée.").then(function () { renderCartes(); });
+    }
+  });
+  document.addEventListener("submit", function (e) {
+    var f = e.target;
+    if (f.matches && f.matches("[data-carte-form]")) {
+      e.preventDefault();
+      var id = f.dataset.carteForm, msg = f.querySelector(".form-msg"), val = function (n) { return String((f.elements[n] || {}).value || "").trim(); };
+      var ens = val("enseigne"), m = parseAmount(val("montant"), false), ch = val("chiffres").replace(/\D/g, "").slice(-4), exp = val("expire");
+      if (!ens) { msg.textContent = "Indique l'enseigne de la carte."; f.elements.enseigne.focus(); return; }
+      if (isNaN(m) || m <= 0) { msg.textContent = "Indique le montant chargé sur la carte."; f.elements.montant.focus(); return; }
+      var doc = { enseigne: ens.slice(0, 40), montant: m, expire: exp, chiffres: ch, qui: val("qui"), note: val("note").slice(0, 80) };
+      var old = id ? (S.cartes || []).filter(function (x) { return x.id === id; })[0] : null;
+      if (document.activeElement) document.activeElement.blur();
+      S.carteForm = null;
+      write(function () {
+        if (old) { var o2 = Object.assign({}, old, doc); delete o2.id; return S.db.doc("cartes/" + id).set(o2); }
+        return S.db.collection("cartes").add(Object.assign(doc, { ajustements: [], creeLe: nowISO() }));
+      }, old ? "Carte " + ens + " modifiée." : "Carte " + ens + " ajoutée : " + eur.format(m) + " à utiliser.").then(function () { renderCartes(); });
+      return;
+    }
+    if (f.matches && f.matches("[data-carte-ajust-form]")) {
+      e.preventDefault();
+      var cid = f.dataset.carteAjustForm, c = (S.cartes || []).filter(function (x) { return x.id === cid; })[0], reel = parseAmount(String(f.elements.solde.value || ""), true);
+      if (!c) return;
+      if (isNaN(reel) || reel < 0) { f.querySelector(".form-msg").textContent = "Indique le solde que t'annonce le magasin."; return; }
+      var delta = r2(reel - carteSolde(c));
+      if (document.activeElement) document.activeElement.blur();
+      S.carteAjust = null;
+      if (Math.abs(delta) < 0.005) { renderCartes(); return; }
+      var aj = (c.ajustements || []).concat([{ date: todayISO(), le: nowISO(), montant: delta }]);
+      write(function () { return S.db.doc("cartes/" + cid).update({ ajustements: aj }); }, "Solde de la carte " + c.enseigne + " ajusté : " + eur.format(reel) + ".").then(function () { renderCartes(); });
+    }
+  });
+
   /* ---------- Démarrage ---------- */
   appliquerProfil(null);
   renderAll();
@@ -5703,7 +5952,7 @@ body.sheet-open { overflow: hidden; }
         if (S.unsubEnv) { S.unsubEnv(); S.unsubEnv = null; }
         S.envExpenses = [];
         if (cats.length) S.unsubEnv = db.collection("depenses").where("categorie", "in", cats).onSnapshot(function (s2) {
-          S.envExpenses = s2.docs.filter(function (d) { return d.exists; }).map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+          S.envExpenses = s2.docs.filter(function (d) { return d.exists; }).map(function (d) { return Object.assign({ id: d.id }, d.data()); }).filter(function (x) { return !x.carte; });
           renderAll();
         }, onError);
       }
@@ -5712,7 +5961,8 @@ body.sheet-open { overflow: hidden; }
     paStart(db);
     function docsOf(snap) { return snap.docs.filter(function (d) { return d.exists; }).map(function (d) { return Object.assign({ id: d.id }, d.data()); }); }
     db.doc("config/soldes").onSnapshot(function (s) { S.soldes = s.exists ? s.data() : null; renderAll(); }, onError);
-    db.collection("depenses").onSnapshot(function (s) { S.allExp = docsOf(s); renderSoldes(); renderBilans(); }, onError);
+    db.collection("depenses").onSnapshot(function (s) { S.allExp = docsOf(s); renderSoldes(); renderBilans(); renderCartes(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
+    db.collection("cartes").onSnapshot(function (s) { S.cartes = docsOf(s); renderCartes(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
     db.collection("rentrees").onSnapshot(function (s) { S.allInc = docsOf(s); renderSoldes(); renderBilans(); }, onError);
     db.collection("virements").onSnapshot(function (s) { S.virs = docsOf(s); renderAll(); }, onError);
     db.collection("prets").onSnapshot(function (s) { S.prets = docsOf(s); S.mouvements = mouvementsPrets(); renderAll(); }, onError);
