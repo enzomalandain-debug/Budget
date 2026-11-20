@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -812,6 +812,32 @@ body.sheet-open { overflow: hidden; }
 .f-carte p { margin: 0; font-size: 14px; color: var(--warn); font-weight: 600; }
 .f-carte select { height: 46px; border: 1px solid var(--line); border-radius: 12px; background: var(--field); color: var(--ink); padding: 0 10px; font: inherit; font-size: 16px; width: 100%; }
 
+/* 1.4 : pas de zoom au double-tap, fiche dépense, en attente, date des prélèvements */
+html { touch-action: manipulation; }
+.pedit { background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; text-align: left; display: grid; gap: 1px; min-width: 0; cursor: pointer; }
+.pedit .pname, .pedit .pdate { display: block; }
+.pedit .pdate { text-decoration: underline dotted; text-underline-offset: 3px; }
+.pedit-form { margin: 2px 0 12px; }
+.ebtn { background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; min-width: 0; display: block; width: 100%; }
+.ebtn .ename, .ebtn .emeta { display: block; }
+.ename .pill.sm { margin-left: 4px; }
+.attente { display: grid; gap: 8px; background: var(--warn-soft); border-radius: 16px; padding: 12px 14px; margin-bottom: 12px; }
+.att-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.att-head h3 { margin: 0; font-size: 16px; }
+.att-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; align-items: center; padding-top: 10px; border-top: 1px solid var(--line); }
+.att-row .mini { grid-column: 1 / -1; justify-self: start; }
+.att-main { display: grid; gap: 2px; }
+.f-opts { display: grid; gap: 0; }
+.f-opts .f { margin-bottom: 6px; }
+#f-suppr { justify-self: center; }
+.imp-lib-in { font: inherit; font-weight: 600; border: 0; border-bottom: 1px dashed var(--ink-2); background: transparent; padding: 2px 0; width: 100%; min-width: 0; color: var(--ink); border-radius: 0; font-size: 16px; }
+.imp-lib-in:focus { outline: none; border-bottom: 1px solid var(--accent); }
+.imp-hb { display: flex; gap: 6px; align-items: center; font-size: 13px; font-weight: 600; margin-top: 3px; }
+.imp-hb input { width: 18px; height: 18px; accent-color: var(--ink); }
+.imp-hbm { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--ink-2); }
+.imp-row .imp-mi { border-color: var(--line); font-size: 16px; }
+.imp-row .imp-mi.dout { border-color: var(--bad); }
+
 </style>
 
 <div class="wrap">
@@ -871,6 +897,7 @@ body.sheet-open { overflow: hidden; }
   <div class="subpanel" data-subpanel="depenses">
   <section class="sec" aria-labelledby="list-title">
     <div class="sec-head"><h2 id="list-title">Dépenses et revenus du mois</h2><span class="count" id="list-count"></span></div>
+    <div class="attente" id="attente" hidden></div>
     <div class="cats" id="cats" hidden></div>
     <ul class="list" id="list"></ul>
     <p class="empty" id="list-empty">Les dépenses du mois apparaîtront ici dès que le budget sera chargé.</p>
@@ -989,7 +1016,7 @@ body.sheet-open { overflow: hidden; }
     <p class="note">Remet l'application à zéro sur ce téléphone. Fais une sauvegarde avant.</p>
     <button class="btn ghost" id="wipe-btn" type="button">Tout effacer</button>
     <div class="confirm" id="wipe-confirm" hidden>Effacer toutes les données de ce téléphone ?<button type="button" class="link-btn danger" id="wipe-yes">Tout effacer</button><button type="button" class="link-btn" id="wipe-no">Annuler</button></div>
-    <p class="note app-v">Paie &amp; Budget · version 1.3</p>
+    <p class="note app-v">Paie &amp; Budget · version 1.4</p>
   </section>
   </div>
 
@@ -1026,12 +1053,18 @@ body.sheet-open { overflow: hidden; }
         <p id="f-carte-txt"></p>
         <select id="f-carte-reste" aria-label="Payer le reste avec"></select>
       </div>
+      <div class="f-opts" id="f-opts">
+        <label class="chkline"><input type="checkbox" id="f-hb"> Hors budget (cagnotte, remboursé…)</label>
+        <label class="f" id="f-hbrow" hidden><span>Montant hors budget (€) · le reste compte dans le budget</span><input id="f-hbm" inputmode="decimal" autocomplete="off"></label>
+        <label class="chkline"><input type="checkbox" id="f-att"> Pas encore passée à la banque</label>
+      </div>
       <div class="row two" id="f-virrow" hidden>
         <label class="f"><span>De</span><select id="f-de"></select></label>
         <label class="f"><span>Vers</span><select id="f-vers"></select></label>
       </div>
       <p class="form-msg" id="form-msg" role="alert"></p>
       <button class="btn" id="add-btn" type="submit" disabled>Ajouter la dépense</button>
+      <button type="button" class="link-btn danger" id="f-suppr" hidden>Supprimer cette dépense</button>
       <p class="note" id="form-hint"></p>
     </form>
     <p class="empty" id="ro-note" hidden>Lecture seule : tu peux consulter ce budget, pas le modifier.</p>
@@ -1233,7 +1266,7 @@ body.sheet-open { overflow: hidden; }
   function inEnv(e, x) { return !!e.categorie && x.categorie === e.categorie && (!e.debut || String(x.date) >= e.debut) && (!e.fin || String(x.date) <= e.fin); }
   function isEnvExpense(x) { return !x.carte && S.envs.some(function (e) { return inEnv(e, x); }); }
   function dailyExpenses() { return S.expenses.filter(function (x) { return !x.carte && !isEnvExpense(x); }); }
-  function envSpent(e) { return total(S.envExpenses.filter(function (x) { return !x.carte && inEnv(e, x); })); }
+  function envSpent(e) { return totalB(S.envExpenses.filter(function (x) { return !x.carte && inEnv(e, x); })); }
   /* Lien avec l'onglet Paie : la paie du mois M finance le budget du mois M+1 (paie fin de mois → période qui démarre vers le 28) */
   function paieDe(pid) { var a = String(pid || "").split("-").map(Number); if (!a[0] || !a[1]) return null; var d = new Date(a[0], a[1] - 2, 1); return d.getFullYear() + "-" + pad(d.getMonth() + 1); }
   function lienPaie(pid, x) {
@@ -1245,7 +1278,7 @@ body.sheet-open { overflow: hidden; }
   function totalRev(p) { return (p.revenus || []).reduce(function (s, x) { return s + revAmount(p, x); }, 0); }
   function calc(p) {
     var avail = totalRev(p) + total(S.incomes) - total(p.charges) - total(p.epargne);
-    var spent = total(dailyExpenses()), t = todayISO(), len = daysBetween(p.debut, p.fin) + 1;
+    var spent = totalB(dailyExpenses()), t = todayISO(), len = daysBetween(p.debut, p.fin) + 1;
     var phase, daysLeft, elapsed;
     if (t < p.debut) { phase = "before"; daysLeft = len; elapsed = 0; }
     else if (t > p.fin) { phase = "after"; daysLeft = 0; elapsed = len; }
@@ -1307,7 +1340,13 @@ body.sheet-open { overflow: hidden; }
     var jourRel = isoOf(new Date(le));
     function neuf(ts, d) { return apres(ts, le) && (!d || String(d).slice(0, 10) >= jourRel); }
     function mv(sens, x, t, lib) { var m = sens * (Number(x) || 0); v += m; n++; ops.push({ t: String(t), lib: lib || "", m: r2(m) }); }
-    S.allExp.forEach(function (x) { if (x.compte === compte && neuf(x.creeLe, x.date)) mv(-1, x.montant, x.creeLe, x.libelle); });
+    var att = 0;
+    S.allExp.forEach(function (x) {
+      if (x.compte !== compte) return;
+      if (x.attente) { att += Number(x.montant) || 0; mv(-1, x.montant, x.creeLe, (x.libelle || "") + " (en attente)"); }
+      else if (x.passeLe) { if (apres(x.passeLe, le)) mv(-1, x.montant, x.passeLe, x.libelle); }
+      else if (neuf(x.creeLe, x.date)) mv(-1, x.montant, x.creeLe, x.libelle);
+    });
     S.allInc.forEach(function (x) { if (x.compte === compte && neuf(x.creeLe, x.date)) mv(1, x.montant, x.creeLe, x.libelle); });
     S.virs.forEach(function (x) { if (neuf(x.creeLe, x.date) && (x.de === compte || x.vers === compte)) mv(x.vers === compte ? 1 : -1, x.montant, x.creeLe, "Virement " + x.de + " → " + x.vers); });
     S.periods.forEach(function (p) {
@@ -1317,7 +1356,7 @@ body.sheet-open { overflow: hidden; }
     });
     (S.mouvements || []).forEach(function (x) { if (x.compte === compte && neuf(x.le, x.date)) mv(Number(x.sens) || -1, x.montant, x.le, x.libelle); });
     ops.sort(function (a, b) { return b.t.localeCompare(a.t); });
-    return { montant: r2(v), base: Number(a.montant), le: le, n: n, ops: ops };
+    return { montant: r2(v), base: Number(a.montant), le: le, n: n, ops: ops, attente: r2(att) };
   }
   /* Ce qui reste prévu sur ce compte d'ici la fin du mois en cours : prélèvements et épargne pas encore passés, virements pas encore faits */
   function aVenir(compte) {
@@ -1406,6 +1445,7 @@ body.sheet-open { overflow: hidden; }
           h += '<p class="solde-sub">D\'ici le ' + esc(fmtShort.format(dateOf(av.p.fin))) + ' : <b class="' + (fin < 0 ? "neg" : "") + '">≈ ' + esc(eur.format(fin)) + "</b>, après " +
             [av.out ? esc(eur.format(av.out)) + " encore à passer" : "", av.inn ? esc(eur.format(av.inn)) + " de virement à recevoir" : ""].filter(Boolean).join(" et ") + ".</p>";
         }
+        if (i.attente) h += '<p class="solde-sub">Dont ' + esc(eur.format(i.attente)) + " de dépenses en attente, pas encore passées à la banque.</p>";
         var pr = projection(compte);
         if (pr) { S.courbes = S.courbes || {}; S.courbes[compte] = pr; h += alerteHTML(compte, pr) + courbeHTML(compte, pr) + joursHTML(pr); }
         h += '<p class="solde-meta">Calculé à partir de ' + esc(eur.format(i.base)) + " relevés le " + esc(fmtHeure.format(new Date(i.le))) + " · " + (i.n ? i.n + (i.n > 1 ? " opérations notées depuis" : " opération notée depuis") : "rien de noté depuis") + "</p>";
@@ -1558,13 +1598,13 @@ body.sheet-open { overflow: hidden; }
   }
 
   /* ---------- Bilan d'un mois terminé : prévu et réel, catégories, épargne, comparaison avec le mois d'avant ---------- */
-  function catsDe(exps) { var c = {}; exps.forEach(function (x) { var k = x.categorie || "Autre"; c[k] = r2((c[k] || 0) + (Number(x.montant) || 0)); }); return c; }
+  function catsDe(exps) { var c = {}; exps.forEach(function (x) { var k = x.categorie || "Autre"; c[k] = r2((c[k] || 0) + partBudget(x)); }); return c; }
   function bilanDe(p) {
     var exps = S.allExp.filter(function (x) { return x.periode === p.id && !x.carte; }), incs = S.allInc.filter(function (x) { return x.periode === p.id; });
     var daily = exps.filter(function (x) { return !isEnvExpense(x); }), envE = exps.filter(isEnvExpense);
     var revDetail = (p.revenus || []).map(function (x) { var prevu = revAmount(p, x), recu = x.recu && x.recuMontant != null ? Number(x.recuMontant) : null; return { lib: x.libelle, prevu: r2(prevu), recu: recu }; });
     var rev = r2(revDetail.reduce(function (t, x) { return t + (x.recu != null ? x.recu : x.prevu); }, 0) + total(incs));
-    var charges = r2(total(p.charges)), epargne = r2(total(p.epargne)), spent = r2(total(daily)), reste = r2(rev - charges - epargne - spent);
+    var charges = r2(total(p.charges)), epargne = r2(total(p.epargne)), spent = totalB(daily), reste = r2(rev - charges - epargne - spent);
     var cats = catsDe(daily);
     var budgets = (p.budgets || []).map(function (b) { return { lib: b.libelle || b.categorie, cat: b.categorie, prevu: Number(b.montant) || 0, reel: cats[b.categorie] || 0 }; });
     var oublis = (p.charges || []).concat(p.epargne || []).filter(function (x) { return !x.passe && (Number(x.montant) || 0) > 0; });
@@ -1647,6 +1687,8 @@ body.sheet-open { overflow: hidden; }
 
   function renderPending(p) {
     var sec = $("pending-sec"), box = $("pending"), ro = S.canWrite === false;
+    if (S.pEdit && box.contains(document.activeElement) && /^(INPUT|SELECT)$/.test(document.activeElement.tagName)) return;
+    if (S.pEdit && (!p || S.pEdit.pid !== p.id)) S.pEdit = null;
     if (!p || S.failed) { box.innerHTML = ""; $("pending-count").textContent = ""; $("pending-empty").hidden = false; $("badge-apasser").hidden = true; S.aPasser = null; return; }
     var items = [];
     ["charges", "epargne"].forEach(function (ln) {
@@ -1673,8 +1715,9 @@ body.sheet-open { overflow: hidden; }
         var when = it.d ? "~" + fmtShort.format(it.d) : (it.x.jour || "");
         var btn = ro ? '<span class="chk ro" aria-hidden="true">✓</span>'
           : '<button type="button" class="chk" data-pass="' + it.ln + ":" + it.i + '" aria-label="Marquer comme passé : ' + esc(it.x.libelle) + '">✓</button>';
-        return '<div class="prow">' + btn + '<div><div class="pname">' + esc(it.x.libelle + ech) + '</div><div class="pdate">' + esc(when) + "</div></div>" +
-          '<span class="pamt">' + esc(eur.format(Number(it.x.montant) || 0)) + "</span></div>";
+        var k = it.ln + ":" + it.i, txt = '<span class="pname">' + esc(it.x.libelle + ech) + '</span><span class="pdate">' + esc(when || "Ajouter une date") + "</span>";
+        return '<div class="prow">' + btn + (ro ? "<div>" + txt + "</div>" : '<button type="button" class="pedit" data-pedit="' + k + '" aria-label="Changer la date ou le montant : ' + esc(it.x.libelle) + '">' + txt + "</button>") +
+          '<span class="pamt">' + esc(eur.format(Number(it.x.montant) || 0)) + "</span></div>" + (S.pEdit && S.pEdit.k === k && !ro ? pEditHTML(p, it) : "");
       }).join("");
       return '<div class="pgroup"><div class="phead"><h3>' + esc(g[1]) + '</h3><span class="psum">' + esc(eur.format(sum)) + "</span></div>" +
         (rows || '<div class="pdone">✓ Tout est passé</div>') + "</div>";
@@ -1833,7 +1876,7 @@ body.sheet-open { overflow: hidden; }
     var c = calc(p), timeFrac = c.elapsed / c.len;
     box.innerHTML = list.map(function (b) {
       var budget = Number(b.montant) || 0;
-      var spent = total(dailyExpenses().filter(function (x) { return x.categorie === b.categorie; }));
+      var spent = totalB(dailyExpenses().filter(function (x) { return x.categorie === b.categorie; }));
       var left = budget - spent, frac = budget > 0 ? Math.max(0, Math.min(1, spent / budget)) : (spent > 0 ? 1 : 0);
       var tone = left < 0 ? "bad" : (c.phase === "during" && frac > timeFrac + 0.1 ? "warn" : "ok");
       var meta = "Dépensé " + eur.format(spent) + " sur " + eur.format(budget);
@@ -1924,7 +1967,7 @@ body.sheet-open { overflow: hidden; }
   function renderForm(p) {
     var ro = S.canWrite === false;
     $("add-form").hidden = ro || S.failed;
-    $("mode-seg").hidden = ro || S.failed;
+    $("mode-seg").hidden = ro || S.failed || !!S.editExp;
     $("ro-note").hidden = !ro;
     $("add-btn").disabled = !p || !S.db || S.busy;
     var dateEl = $("f-date");
@@ -1940,8 +1983,8 @@ body.sheet-open { overflow: hidden; }
       .concat(S.incomes.map(function (x) { return Object.assign({ _col: "rentrees" }, x); }))
       .concat(p ? S.virs.filter(function (x) { return x.periode === p.id || (!x.periode && x.date >= p.debut && x.date <= p.fin); }).map(function (x) { return Object.assign({ _col: "virements" }, x); }) : [])
       .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)) || String(b.creeLe || "").localeCompare(String(a.creeLe || "")); });
-    var horsC = S.expenses.filter(function (x) { return !x.carte; }), daily = horsC.filter(function (x) { return !isEnvExpense(x); }), envSum = total(horsC) - total(daily), cSum = r2(total(S.expenses) - total(horsC)), parts = [];
-    if (S.expenses.length) parts.push(S.expenses.length + (S.expenses.length > 1 ? " dépenses · " : " dépense · ") + eur.format(total(daily)) + (envSum > 0 ? " + " + eur.format(envSum) + " d'enveloppe" : "") + (cSum > 0 ? " + " + eur.format(cSum) + " en cartes cadeaux" : ""));
+    var horsC = S.expenses.filter(function (x) { return !x.carte; }), daily = horsC.filter(function (x) { return !isEnvExpense(x); }), envSum = r2(totalB(horsC) - totalB(daily)), cSum = r2(total(S.expenses) - total(horsC)), hbSum = horsBudgetDe(horsC), parts = [];
+    if (S.expenses.length) parts.push(S.expenses.length + (S.expenses.length > 1 ? " dépenses · " : " dépense · ") + eur.format(totalB(daily)) + (envSum > 0 ? " + " + eur.format(envSum) + " d'enveloppe" : "") + (hbSum > 0 ? " + " + eur.format(hbSum) + " hors budget" : "") + (cSum > 0 ? " + " + eur.format(cSum) + " en cartes cadeaux" : ""));
     if (S.incomes.length) parts.push("+ " + eur.format(total(S.incomes)) + " de revenus");
     $("list-count").textContent = parts.join(" · ");
     if (S.failed) { empty.textContent = "Les dépenses n'ont pas pu se charger sur ce téléphone."; empty.hidden = false; }
@@ -1953,14 +1996,19 @@ body.sheet-open { overflow: hidden; }
       var meta = (isVir ? ["Virement " + x.de + " → " + x.vers, x.date ? fmtRow.format(dateOf(x.date)) : ""] : [isInc ? x.type : x.categorie, x.carte ? "Carte " + (x.carteNom || "cadeau") + " · hors budget" : x.compte, x.date ? fmtRow.format(dateOf(x.date)) : ""]).filter(Boolean).map(esc).join(" · ");
       var confirming = S.confirmId === path && !ro;
       return '<li class="erow">' +
-        '<div class="emain"><div class="ename">' + esc(x.libelle || (isInc ? "Revenu" : "Dépense")) + '</div><div class="emeta">' + meta + "</div></div>" +
+        (x._col === "depenses" && !ro ? '<button type="button" class="emain ebtn" data-exp-edit="' + esc(x.id) + '" aria-label="Modifier ' + esc(x.libelle || "la dépense") + '">' : '<div class="emain">') +
+        '<span class="ename">' + esc(x.libelle || (isInc ? "Revenu" : "Dépense")) +
+        (x.attente ? ' <span class="pill sm warn">En attente</span>' : "") +
+        (x._col === "depenses" && !x.carte && Number(x.horsBudget) > 0 ? ' <span class="pill sm neutral">' + (Number(x.horsBudget) >= (Number(x.montant) || 0) ? "Hors budget" : esc(eur.format(Number(x.horsBudget))) + " hors budget") + "</span>" : "") +
+        '</span><span class="emeta" style="display:block">' + meta + "</span>" + (x._col === "depenses" && !ro ? "</button>" : "</div>") +
         '<div class="eamt' + (isInc ? " plus" : isVir ? " vir" : "") + '">' + (isInc ? "+ " : isVir ? "⇄ " : "") + esc(eur.format(Number(x.montant) || 0)) + "</div>" +
         (ro ? "<span></span>" : '<button type="button" class="icon-btn" data-del="' + esc(path) + '" aria-label="Supprimer ' + esc(x.libelle || what) + '">×</button>') +
         (confirming ? '<div class="confirm">Supprimer ' + what + ' ?<button type="button" class="link-btn danger" data-yes="' + esc(path) + '">Supprimer</button><button type="button" class="link-btn" data-no="1">Annuler</button></div>' : "") +
         "</li>";
     }).join("");
     var byCat = {};
-    S.expenses.forEach(function (x) { if (x.carte) return; var k = x.categorie || "Autre"; byCat[k] = (byCat[k] || 0) + (Number(x.montant) || 0); });
+    S.expenses.forEach(function (x) { if (x.carte || !partBudget(x)) return; var k = x.categorie || "Autre"; byCat[k] = (byCat[k] || 0) + partBudget(x); });
+    renderAttente();
     var rows = Object.keys(byCat).map(function (k) { return [k, byCat[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
     var max = rows.length ? rows[0][1] : 0;
     cats.hidden = rows.length === 0;
@@ -3967,6 +4015,7 @@ body.sheet-open { overflow: hidden; }
     $("add-btn").textContent = vir ? "Ajouter le virement" : rev ? "Ajouter le revenu" : "Ajouter la dépense";
     $("form-msg").textContent = "";
     if (typeof cartesDansFormulaire === "function") cartesDansFormulaire();
+    if (typeof formOptsMaj === "function") formOptsMaj();
   }
   setMode("dep");
   $("mode-dep").addEventListener("click", function () { setMode("dep"); });
@@ -4139,6 +4188,7 @@ body.sheet-open { overflow: hidden; }
     e.preventDefault();
     var msg = $("form-msg"); msg.textContent = "";
     if (!S.db) return;
+    if (S.editExp) { enregistrerEdition(); return; }
     var rev = S.mode === "rev";
     var montant = parseAmount($("f-montant").value, false), libelle = $("f-libelle").value.trim(), date = $("f-date").value;
     if (isNaN(montant)) { msg.textContent = "Indique un montant, par exemple 45,20."; $("f-montant").focus(); return; }
@@ -4177,14 +4227,17 @@ body.sheet-open { overflow: hidden; }
     }
     if (carteChoisie()) { ajouterDepenseCarte(per, date, libelle, montant); return; }
     var doc = { periode: per.id, date: date, libelle: libelle.slice(0, 60), categorie: $("f-cat").value, montant: montant, compte: $("f-compte").value, creeLe: new Date().toISOString() };
-    var env = S.envs.filter(function (e) { return inEnv(e, doc); })[0];
+    if ($("f-hb").checked) { var hbv = parseAmount($("f-hbm").value || "", false); doc.horsBudget = isNaN(hbv) || hbv >= montant ? montant : r2(hbv); }
+    if ($("f-att").checked) doc.attente = true;
+    var env = doc.horsBudget ? null : S.envs.filter(function (e) { return inEnv(e, doc); })[0];
     var p = current(), envBefore = env ? (Number(env.budget) || 0) - envSpent(env) : null;
-    var before = !env && p && per.id === p.id ? calc(p).left : null, sTxt = soldeApres(doc.compte, -montant, date);
+    var before = !env && p && per.id === p.id ? calc(p).left : null, sTxt = soldeApres(doc.compte, -montant, doc.attente ? null : date);
+    var extra = (doc.horsBudget ? (doc.horsBudget >= montant ? " Hors budget." : " Dont " + eur.format(doc.horsBudget) + " hors budget.") : "") + (doc.attente ? " En attente : elle se validera à l'import ou avec « C'est passé »." : "");
     write(function () { return S.db.collection("depenses").add(doc); }).then(function (ok) {
       if (!ok) return;
-      $("f-montant").value = ""; $("f-libelle").value = ""; closeSheet();
-      if (env) toast("Ajouté à l'enveloppe " + (env.nom || env.categorie) + " : il reste " + eur.format(envBefore - montant) + "." + sTxt);
-      else toast((before == null ? "Dépense ajoutée à " + (per.nom || per.id) : "Ajouté. Il reste " + eur.format(before - montant) + " ce mois-ci.") + sTxt);
+      $("f-montant").value = ""; $("f-libelle").value = ""; formOptsVider(); closeSheet();
+      if (env) toast("Ajouté à l'enveloppe " + (env.nom || env.categorie) + " : il reste " + eur.format(envBefore - montant) + "." + extra + sTxt);
+      else toast((before == null ? "Dépense ajoutée à " + (per.nom || per.id) + "." : "Ajouté. Il reste " + eur.format(before - partBudget(doc)) + " ce mois-ci.") + extra + sTxt);
     });
   });
 
@@ -4244,6 +4297,7 @@ body.sheet-open { overflow: hidden; }
   function closeSheet() {
     if ($("add-sheet").hidden) return;
     $("add-sheet").hidden = true; document.body.classList.remove("sheet-open"); updateFab();
+    if (S.editExp) finEdition();
     try { if (sheetFrom && document.contains(sheetFrom)) sheetFrom.focus(); } catch (e) {}
   }
   $("fab").addEventListener("click", function () { openSheet("dep"); });
@@ -4258,7 +4312,7 @@ body.sheet-open { overflow: hidden; }
   })();
 
   /* ================= Version hors ligne : réglages, bienvenue, sauvegarde, premier mois, lignes du budget ================= */
-  var APP_VERSION = "1.3";
+  var APP_VERSION = "1.4";
   var ROULEMENT_TYPE = {"jours": ["1", "1", "2", "2", "2", "JNT", "R", "R", "JNT", "1", "1", "3", "3", "3", "JNT", "R", "JNT", "JN", "1", "2", "2", "3", "3", "JNT", "R", "JNT", "1", "1", "2", "2", "3", "3", "JNT", "JNT", "R"], "libelles": {"1": "1 · 6h–14h", "2": "2 · 14h–22h", "3": "3 · 22h–6h", "JN": "JN", "JNT": "JNT", "R": "R"}};
   var MODELE_VIERGE = {"decalage": 1, "rubriques": [{"code": "HS_NE", "libelle": "Heures sup. 25 % non exonérées", "unite": "h", "taux": 0}, {"code": "HS_EXO", "exo": true, "libelle": "Heures sup. 25 % exonérées", "unite": "h", "taux": 0}, {"code": "PAO", "libelle": "Heures de PAO", "unite": "h", "taux": 0}, {"code": "INCOMMODES", "libelle": "Heures incommodes 66 %", "unite": "h", "taux": 0}, {"code": "RAPPEL", "libelle": "Heures de rappel", "unite": "h", "taux": 0}, {"code": "APPEL", "libelle": "Heures d'appel", "unite": "h", "taux": 0}, {"code": "FERIES", "libelle": "Jours fériés payés 100 %", "unite": "h", "taux": 0}, {"code": "FERIES_233", "libelle": "Jours fériés payés 233 % (Noël, jour de l'an)", "unite": "h", "taux": 0}, {"code": "PENIBLES", "libelle": "Travaux pénibles 20 %", "unite": "h", "taux": 0}, {"code": "HABILLAGE", "libelle": "Habillage / déshabillage", "unite": "u", "taux": 0}, {"code": "REMPLACEMENT", "controle": false, "libelle": "Jours de remplacement", "unite": "jour", "taux": 0}, {"code": "QUART_HS", "derive": ["HS_NE", "HS_EXO"], "libelle": "Prime de quart sur heures sup.", "unite": "h", "taux": 0}, {"code": "RET_QUART", "derive": ["INCOMMODES"], "libelle": "Retenue quart", "unite": "h", "taux": 0}, {"code": "TF", "libelle": "Tickets flexibilité (8 h par TF)", "unite": "h", "taux": 0}], "fixes": [{"libelle": "Salaire de base", "montant": 0}, {"libelle": "Prime d'ancienneté", "montant": 0}, {"libelle": "Prime de transport P/I", "montant": 0}, {"libelle": "Prime de quart", "montant": 0}, {"libelle": "Prime mensuelle", "montant": 0}, {"imposable": false, "libelle": "Forfait prime de panier", "montant": 0}], "nonSoumis": [{"libelle": "Prime de transport NP/NI", "montant": 0}, {"libelle": "Prime panier non passible", "montant": 0}], "cotis": {"csgAjout": 0, "csgAssiette": 98.25, "csgDed": 6.8, "csgNonDed": 2.9, "deplafonnee": 0.4, "fixes": 0, "hsNetFiscal": 93.32, "pass": 4005, "plafonnee": 11.61, "reducHS": 10.66, "reintegration": 0, "t2": 8.45}, "tauxPAS": 0};
   var PROFIL = null;
@@ -4595,7 +4649,7 @@ body.sheet-open { overflow: hidden; }
     if (!p) return null;
     var prev = S.periods.filter(function (q) { return q.fin < p.debut; }).sort(byDebut).pop();
     if (!prev) return { p: p, sansPrev: true };
-    var conso = r2(total(S.allExp.filter(function (x) { return x.periode === prev.id && !x.carte && !isEnvExpense(x); })));
+    var conso = totalB(S.allExp.filter(function (x) { return x.periode === prev.id && !x.carte && !isEnvExpense(x); }));
     if (!(conso > 0)) return { p: p, sansPrev: true, prev: prev };
     var sal = (p.revenus || []).filter(function (x) { return x.lien === "bulletin"; });
     var paie = sal.length ? r2(sal.reduce(function (t, x) { return t + recuOuPrevu(p, x); }, 0)) : null;
@@ -4606,7 +4660,7 @@ body.sheet-open { overflow: hidden; }
     var bs = sortedBulletins().filter(function (b) { return isNum(b.netPaye) && Number(b.netPaye) > 0; }).slice(0, 6);
     var moy = bs.length >= 2 ? r2(bs.reduce(function (t, b) { return t + Number(b.netPaye); }, 0) / bs.length) : null;
     var t = todayISO(), dl = t < p.debut ? daysBetween(p.debut, p.fin) + 1 : t > p.fin ? 0 : daysBetween(t, p.fin) + 1;
-    var deja = r2(total(S.allExp.filter(function (x) { return x.periode === p.id && !x.carte && !isEnvExpense(x); })));
+    var deja = totalB(S.allExp.filter(function (x) { return x.periode === p.id && !x.carte && !isEnvExpense(x); }));
     var c = { p: p, prev: prev, conso: conso, paie: paie, paieRecue: sal.length > 0 && sal.every(function (x) { return x.recu; }), moy: moy, rev: rev, charges: charges, epargne: epargne,
       marge: marge, cas: marge >= CONSEIL_SEUIL ? "plus" : marge >= 0 ? "stable" : "moins", ajout: ajout, ajoutTot: r2(total(ajout)), projet: projetConseil(),
       parJour: dl > 0 ? r2((rev - charges - epargne - r2(total(ajout)) - deja) / dl) : null, parJourAvant: r2(conso / (daysBetween(prev.debut, prev.fin) + 1)) };
@@ -4702,14 +4756,14 @@ body.sheet-open { overflow: hidden; }
     var carteSum = r2(total(S.allExp.filter(function (x) { return x.periode === p.id && x.carte && (!cut || String(x.date) <= cut); })));
     var daily = exps.filter(function (x) { return !isEnvExpense(x); }), envE = exps.filter(isEnvExpense);
     var rev = r2((p.revenus || []).reduce(function (t, x) { return t + recuOuPrevu(p, x); }, 0) + total(S.allInc.filter(function (x) { return x.periode === p.id; })));
-    var v = { prel: r2(total(p.charges)), dep: r2(total(daily)), epa: r2(total(p.epargne)) }, cats = catsDe(daily), known = ANA_CATS.map(function (a) { return a[0]; });
+    var v = { prel: r2(total(p.charges)), dep: totalB(daily), epa: r2(total(p.epargne)) }, cats = catsDe(daily), known = ANA_CATS.map(function (a) { return a[0]; });
     var parts1 = ANA_C1.map(function (a) { return { key: a[0], nom: a[1], m: v[a[0]], col: a[2] }; }).filter(function (x) { return x.m > 0; });
     var parts2 = ANA_CATS.filter(function (a) { return cats[a[0]] > 0; }).map(function (a) { return { key: a[0], nom: a[0], m: cats[a[0]], col: a[1] }; });
     var autres = Object.keys(cats).filter(function (k) { return known.indexOf(k) < 0 && cats[k] > 0; });
     if (autres.length) parts2.push({ key: "Autres", nom: "Autres (" + autres.join(", ") + ")", m: r2(autres.reduce(function (t, k) { return t + cats[k]; }, 0)), col: ANA_AUTRES, sous: autres });
     var cmp1 = {}, cmp2 = {}; parts1.forEach(function (x) { cmp1[x.key] = x.m; }); ANA_C1.forEach(function (a) { if (!(a[0] in cmp1)) cmp1[a[0]] = 0; });
     Object.keys(cats).forEach(function (k) { if (known.indexOf(k) >= 0) cmp2[k] = cats[k]; else cmp2.Autres = r2((cmp2.Autres || 0) + cats[k]); });
-    return { p: p, rev: rev, v: v, cats: cats, daily: daily, parts1: parts1, parts2: parts2, cmp1: cmp1, cmp2: cmp2, envSpent: r2(total(envE)), carteSum: carteSum,
+    return { p: p, rev: rev, v: v, cats: cats, daily: daily, parts1: parts1, parts2: parts2, cmp1: cmp1, cmp2: cmp2, envSpent: totalB(envE), carteSum: carteSum, hbSum: horsBudgetDe(exps),
       sorti: r2(v.prel + v.dep + v.epa), reste: r2(rev - v.prel - v.dep - v.epa), enCours: todayISO() <= p.fin };
   }
   function anaArc(R, r, a0, a1) {
@@ -4791,7 +4845,8 @@ body.sheet-open { overflow: hidden; }
     h += '<div class="ana-card"><h3>Dépenses du quotidien</h3><p class="ana-note">Sans les prélèvements ni l\'épargne.</p>' +
       (a.parts2.length ? anaDonut("c2", a.parts2, eur0.format(a.v.dep), "dépensés", s2) + anaListe("c2", a.parts2, b ? b.cmp2 : null, prevNom, s2) + (s2 ? anaDetail(a, "c2", s2) : "") : '<p class="empty">Aucune dépense notée ce mois-ci.</p>') +
       (a.envSpent ? '<p class="ana-note">Plus ' + esc(eur.format(a.envSpent)) + " dépensés dans les enveloppes (Noël…), comptés à part.</p>" : "") +
-      (a.carteSum ? '<p class="ana-note">Plus ' + esc(eur.format(a.carteSum)) + " payés en cartes cadeaux, comptés à part.</p>" : "") + "</div>";
+      (a.carteSum ? '<p class="ana-note">Plus ' + esc(eur.format(a.carteSum)) + " payés en cartes cadeaux, comptés à part.</p>" : "") +
+      (a.hbSum ? '<p class="ana-note">Plus ' + esc(eur.format(a.hbSum)) + " de dépenses sorties du budget (hors budget).</p>" : "") + "</div>";
     box.innerHTML = h;
   }
   function anaMini(p) {
@@ -5304,14 +5359,20 @@ body.sheet-open { overflow: hidden; }
       var best = -1, bs = -1;
       pools.notes.forEach(function (c, j) {
         if (pris["n" + j] || c.sens !== sens || Math.abs(c.m - a) > 0.005 || !c.date) return;
-        var dj = Math.abs(daysBetween(String(c.date).slice(0, 10), o.date)); if (dj > 4) return;
-        var sim = impSim(c.lib, txt);
+        var dd = daysBetween(String(c.date).slice(0, 10), o.date), enAtt = c.k === "dep" && c.x.attente;
+        if (enAtt ? (c.compte !== compte || dd < -3 || dd > 60) : Math.abs(dd) > 4) return;
+        var dj = Math.abs(dd), sim = impSim(c.lib, txt);
         if (c.compte !== compte && sim < 1) return;
         var s = 10 - dj + 3 * sim + (c.compte === compte ? 6 : 0);
         if (s > bs) { bs = s; best = j; }
       });
       if (best >= 0) {
         var c = pools.notes[best]; pris["n" + best] = 1;
+        if (c.k === "dep" && c.x.attente) {
+          L.statut = "attente"; L.avec = c; L.coche = true; L.libelle = c.lib;
+          L.detail = "En attente depuis le " + fmtShort.format(dateOf(c.date)) + " : « " + c.lib + " » est passée à la banque";
+          lignes.push(L); return;
+        }
         L.statut = "note"; L.avec = c;
         L.detail = (c.k === "dep" ? "Dépense notée" : c.k === "inc" ? "Rentrée notée" : c.k === "pret" ? "Noté dans les prêts" : "Virement noté") + " : " + c.lib + (c.compte !== compte ? " (sur " + courtCompte(c.compte) + ")" : "");
         lignes.push(L); return;
@@ -5348,7 +5409,9 @@ body.sheet-open { overflow: hidden; }
       }
       /* 3. Virement entre tes comptes */
       if (impInterne(o, compte, autresTitres)) { L.statut = "interne"; L.detail = "Virement entre tes comptes : pas une dépense"; lignes.push(L); return; }
-      /* 4. Nouveau */
+      /* 4. Nouveau (avec le nom que tu lui avais donné la dernière fois) */
+      var noms = S.imports && S.imports.noms, cleN = impCleLib(o.brut);
+      if (noms && cleN && noms[cleN] && !o.renomme) o.libelle = noms[cleN];
       var per = periodFor(o.date);
       if (sens < 0) {
         L.statut = "nouveau"; L.cat = impCategorie(o);
@@ -5409,6 +5472,14 @@ body.sheet-open { overflow: hidden; }
       if (L.statut === "virprevu") return L.sens * a;
       return 0;
     };
+    /* Les dépenses en attente pas reconnues sur la capture ne sont pas encore dans le solde de la banque */
+    var attRest = 0;
+    (S.allExp || []).forEach(function (x) {
+      if (!x.attente || x.compte !== g.compte) return;
+      if (g.lignes.some(function (L) { return L.statut === "attente" && L.coche && L.avec && L.avec.x === x; })) return;
+      attRest += Number(x.montant) || 0;
+    });
+    pred += attRest;
     g.lignes.forEach(function (L) { if (L.coche && !L.bloque) pred += effet(L); });
     pred = r2(pred);
     var ec = r2(bank - pred), piste = null;
@@ -5418,7 +5489,7 @@ body.sheet-open { overflow: hidden; }
       if (L.coche && Math.abs(e + ec) < 0.005) piste = { L: L, faire: "decocher" };
       else if (!L.coche && ["nouveau", "rentree", "prevu", "epargne", "revenu", "virprevu"].indexOf(L.statut) >= 0 && Math.abs(e - ec) < 0.005) piste = { L: L, faire: "cocher" };
     });
-    return { base: i.montant, pred: pred, bank: bank, ecart: ec, le: i.le, piste: piste };
+    return { base: i.montant, pred: pred, bank: bank, ecart: ec, le: i.le, piste: piste, attRest: r2(attRest) };
   }
 
   /* ---------- Écran d'import ---------- */
@@ -5439,20 +5510,23 @@ body.sheet-open { overflow: hidden; }
     S.imp = null; impProg = null;
   }
   function impLibStatut(L) {
-    return { note: ["Déjà noté", "neutral"], coche: ["Déjà coché", "neutral"], interne: ["Entre tes comptes", "neutral"], prevu: ["À cocher", "good"], epargne: ["À cocher", "good"], virprevu: ["À cocher", "good"], revenu: ["Reçu", "good"], nouveau: ["Nouvelle dépense", "warn"], rentree: ["Rentrée", "warn"] }[L.statut] || ["", "neutral"];
+    return { note: ["Déjà noté", "neutral"], coche: ["Déjà coché", "neutral"], interne: ["Entre tes comptes", "neutral"], prevu: ["À cocher", "good"], epargne: ["À cocher", "good"], virprevu: ["À cocher", "good"], revenu: ["Reçu", "good"], attente: ["Passée", "good"], nouveau: ["Nouvelle dépense", "warn"], rentree: ["Rentrée", "warn"] }[L.statut] || ["", "neutral"];
   }
   function impLigneHTML(gi, L, li) {
-    var st = impLibStatut(L), act = ["prevu", "epargne", "virprevu", "revenu", "nouveau", "rentree"].indexOf(L.statut) >= 0, id = gi + ":" + li;
+    var st = impLibStatut(L), act = ["prevu", "epargne", "virprevu", "revenu", "nouveau", "rentree", "attente"].indexOf(L.statut) >= 0, id = gi + ":" + li;
+    var nomEd = (L.statut === "nouveau" || L.statut === "rentree") && !L.bloque, mEd = act && L.statut !== "attente" && !L.bloque;
     var m = (L.sens < 0 ? "−" : "+") + eur.format(L.montant);
     var h = '<li class="imp-row' + (act ? "" : " fait") + '">';
     h += act ? '<input type="checkbox" class="imp-ck" data-imp-l="' + id + '"' + (L.coche ? " checked" : "") + (L.bloque ? " disabled" : "") + ' aria-label="Importer ' + esc(L.libelle) + '">' : '<span class="imp-ok" aria-hidden="true">✓</span>';
-    h += '<div class="imp-main"><span class="imp-lib">' + esc(L.statut === "nouveau" || L.statut === "rentree" ? L.o.libelle : L.o.libelle) + "</span>";
+    h += '<div class="imp-main">' + (nomEd ? '<input class="imp-lib-in" data-imp-lib="' + id + '" maxlength="60" autocomplete="off" value="' + esc(L.o.libelle) + '" aria-label="Nom de la dépense">' : '<span class="imp-lib">' + esc(L.o.libelle) + "</span>");
     h += '<span class="imp-meta">' + esc(fmtShort.format(dateOf(L.o.date))) + (L.o.sansDate ? " ?" : "") + ' <span class="pill sm ' + st[1] + '">' + esc(st[0]) + "</span>" + (L.o.douteux ? ' <span class="pill sm bad">Montant à vérifier</span>' : "") + "</span>";
     if (L.detail) h += '<span class="imp-det">' + esc(L.detail) + "</span>";
     if (L.statut === "nouveau" && !L.bloque) h += '<select class="imp-sel" data-imp-cat="' + id + '" aria-label="Catégorie">' + CATS.map(function (c) { return '<option' + (c === L.cat ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>";
     if (L.statut === "rentree" && !L.bloque) h += '<select class="imp-sel" data-imp-type="' + id + '" aria-label="Type de rentrée">' + INC_TYPES.map(function (c) { return '<option' + (c === L.type ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>";
+    if (L.statut === "nouveau" && !L.bloque) h += '<label class="imp-hb"><input type="checkbox" data-imp-hb="' + id + '"' + (L.hb > 0 ? " checked" : "") + "> Hors budget</label>" +
+      (L.hb > 0 ? '<label class="imp-hbm"><span>dont hors budget</span><input class="imp-mi" data-imp-hbm="' + id + '" inputmode="decimal" autocomplete="off" value="' + esc(num2.format(L.hb)) + '" aria-label="Montant hors budget"></label>' : "");
     h += "</div>";
-    if (act && L.o.douteux) h += '<input class="imp-mi" data-imp-m="' + id + '" inputmode="decimal" value="' + esc(String(L.montant.toFixed(2)).replace(".", ",")) + '" aria-label="Montant">';
+    if (mEd) h += '<input class="imp-mi' + (L.o.douteux ? " dout" : "") + '" data-imp-m="' + id + '" inputmode="decimal" autocomplete="off" value="' + esc(String(L.montant.toFixed(2)).replace(".", ",")) + '" aria-label="Montant">';
     else h += '<span class="imp-m' + (L.sens > 0 ? " pos" : "") + '">' + esc(m) + "</span>";
     return h + "</li>";
   }
@@ -5481,12 +5555,15 @@ body.sheet-open { overflow: hidden; }
     if (c) {
       if (c.manque) h += '<p class="imp-ctrl warn">Solde introuvable sur la capture : indique-le pour recaler le compte.</p>';
       else if (c.premier) h += '<p class="imp-ctrl">Premier solde pour ce compte : ' + esc(eur.format(c.bank)) + ". L'appli le tiendra à jour à partir d'ici.</p>";
-      else if (Math.abs(c.ecart) < 0.005) h += '<p class="imp-ctrl ok"><span aria-hidden="true">✓</span> Contrôle : ' + esc(eur.format(c.base)) + " dans l'appli, " + esc(eur.format(c.pred)) + " après import, exactement comme ta banque.</p>";
+      else if (Math.abs(c.ecart) < 0.005) h += '<p class="imp-ctrl ok"><span aria-hidden="true">✓</span> Contrôle : ' + (c.attRest
+          ? "exactement comme ta banque (" + esc(eur.format(c.bank)) + "). Avec " + esc(eur.format(c.attRest)) + " de dépenses en attente pas encore passées, ton solde dans l'appli sera de " + esc(eur.format(r2(c.bank - c.attRest))) + ".</p>"
+          : esc(eur.format(c.base)) + " dans l'appli, " + esc(eur.format(c.pred)) + " après import, exactement comme ta banque.</p>");
       else if (c.piste) h += '<p class="imp-ctrl warn"><span aria-hidden="true">⚠</span> Écart de ' + esc(signe(c.ecart)) + " avec ta banque : " + (c.piste.faire === "decocher"
           ? "« " + esc(c.piste.L.o.libelle) + " » (" + esc((c.piste.L.sens < 0 ? "−" : "+") + eur.format(c.piste.L.montant)) + ") est sans doute déjà compté dans ton solde. Décoche-le et ça tombe juste."
           : "coche « " + esc(c.piste.L.o.libelle) + " » (" + esc((c.piste.L.sens < 0 ? "−" : "+") + eur.format(c.piste.L.montant)) + ") et ça tombe juste.") + "</p>";
       else h += '<p class="imp-ctrl warn"><span aria-hidden="true">⚠</span> Écart de ' + esc(signe(c.ecart)) + " : " + esc(eur.format(c.pred)) + " après import, " + esc(eur.format(c.bank)) + " à la banque. Il manque peut-être une opération (ajoute une capture plus bas dans la liste) ou un montant a été mal lu. Le solde sera quand même recalé sur celui de ta banque.</p>";
     }
+    if (c && c.attRest && !(Math.abs(c.ecart) < 0.005)) h += '<p class="note">' + esc(eur.format(c.attRest)) + " de dépenses en attente ne sont pas encore passées à la banque : elles restent déduites de ton solde.</p>";
     (g.alertes || []).forEach(function (a) { if (!/^Solde introuvable/.test(a)) h += '<p class="note">' + esc(a) + "</p>"; });
     return h + "</section>";
   }
@@ -5497,7 +5574,7 @@ body.sheet-open { overflow: hidden; }
       if (g.compte === "__ignorer") return;
       g.lignes.forEach(function (L) {
         if (!L.coche || L.bloque) return;
-        if (L.statut === "nouveau") r.dep++; else if (L.statut === "rentree") r.ren++; else r.coche++;
+        if (L.statut === "nouveau") r.dep++; else if (L.statut === "rentree") r.ren++; else if (L.statut === "attente") r.att = (r.att || 0) + 1; else r.coche++;
       });
       if (impSoldeVal(g) != null) r.soldes++;
     });
@@ -5521,6 +5598,7 @@ body.sheet-open { overflow: hidden; }
       var r = impResume(), parts = [];
       if (r.dep) parts.push(r.dep + (r.dep > 1 ? " dépenses à ajouter" : " dépense à ajouter"));
       if (r.coche) parts.push(r.coche + (r.coche > 1 ? " éléments prévus à cocher" : " élément prévu à cocher"));
+      if (r.att) parts.push(r.att + (r.att > 1 ? " dépenses en attente passées" : " dépense en attente passée"));
       if (r.ren) parts.push(r.ren + (r.ren > 1 ? " rentrées à ajouter" : " rentrée à ajouter"));
       if (r.soldes) parts.push(r.soldes + (r.soldes > 1 ? " soldes recalés" : " solde recalé"));
       h += '<div class="imp-foot"><p class="note">' + (r.manque ? "Choisis le compte de chaque capture pour continuer." : parts.length ? esc(parts.join(" · ")) + "." : "Rien à changer.") + "</p>" +
@@ -5590,7 +5668,7 @@ body.sheet-open { overflow: hidden; }
     for (var gi = 0; gi < gs.length; gi++) if (gs[gi].compte === "__nouveau" && !String(gs[gi].nouveauNom || "").trim()) { I.msg = "Donne un nom au nouveau compte."; impRender(); return; }
     var all = window.__localdb ? window.__localdb.tout() : {}, t0 = Date.now();
     var tsOps = new Date(t0 - 4000).toISOString(), tsRel = new Date(t0).toISOString();
-    var undo = { le: tsRel, crees: [], avant: {} }, ecr = [], perMod = {}, cotes = [], bilan = { dep: 0, ren: 0, coche: 0, soldes: 0 };
+    var undo = { le: tsRel, crees: [], avant: {} }, ecr = [], maj = [], perMod = {}, cotes = [], bilan = { dep: 0, ren: 0, coche: 0, soldes: 0 };
     function garde(path) { if (!(path in undo.avant)) undo.avant[path] = all[path] ? clone(all[path]) : null; }
     function per(pid) { if (!perMod[pid]) { garde("periodes/" + pid); perMod[pid] = clone(all["periodes/" + pid] || {}); } return perMod[pid]; }
     var profil = clone(PROFIL || PROFIL_VIDE), profilChange = false;
@@ -5612,8 +5690,12 @@ body.sheet-open { overflow: hidden; }
         var o = L.o, a = L.montant, p = periodFor(o.date);
         if (L.statut === "nouveau" && p) {
           var id = nid("imp"), doc = { periode: p.id, date: o.date, libelle: String(o.libelle).slice(0, 60), categorie: L.cat || "Autre", montant: a, compte: acc, creeLe: tsOps, source: "capture" };
+          if (L.hb > 0) doc.horsBudget = Math.min(r2(L.hb), a);
           ecr.push(["depenses/" + id, doc]); undo.crees.push("depenses/" + id); bilan.dep++;
           var kl = impCleLib(o.brut); if (kl) imports.libelles[kl] = doc.categorie;
+          if (kl && o.renomme) { imports.noms = imports.noms || {}; imports.noms[kl] = doc.libelle; }
+        } else if (L.statut === "attente" && L.avec && L.avec.x && L.avec.x.id) {
+          garde("depenses/" + L.avec.x.id); maj.push(["depenses/" + L.avec.x.id, { attente: false, passeLe: tsOps }]); bilan.coche++;
         } else if (L.statut === "rentree" && p) {
           var id2 = nid("imp"), inc = { periode: p.id, date: o.date, libelle: String(o.libelle).slice(0, 60), type: L.type || "Autre", montant: a, compte: acc, creeLe: tsOps, source: "capture" };
           ecr.push(["rentrees/" + id2, inc]); undo.crees.push("rentrees/" + id2); bilan.ren++;
@@ -5657,6 +5739,7 @@ body.sheet-open { overflow: hidden; }
       var etape = function (fn) { seq = seq.then(fn); };
       if (profilChange) etape(function () { return S.db.doc("config/profil").set(profil); });
       ecr.forEach(function (e) { etape(function () { return S.db.doc(e[0]).set(e[1]); }); });
+      maj.forEach(function (e) { etape(function () { return S.db.doc(e[0]).update(e[1]); }); });
       Object.keys(perMod).forEach(function (pid) { etape(function () { return S.db.doc("periodes/" + pid).set(perMod[pid]); }); });
       cotes.forEach(function (c) {
         if (c.x.partage && c.x.partage.personne) etape(function () { syncPartage(c.x, c.p); });
@@ -5709,11 +5792,15 @@ body.sheet-open { overflow: hidden; }
     if (t.dataset.impL != null && (x = impLigneDe(t.dataset.impL))) { x.L.coche = t.checked; impRender(); return; }
     if (t.dataset.impCat != null && (x = impLigneDe(t.dataset.impCat))) { x.L.cat = t.value; return; }
     if (t.dataset.impType != null && (x = impLigneDe(t.dataset.impType))) { x.L.type = t.value; return; }
-    if (t.dataset.impM != null && (x = impLigneDe(t.dataset.impM))) { var v = parseAmount(t.value, false); if (!isNaN(v)) { x.L.montant = v; x.L.o.douteux = false; } impRender(); return; }
+    if (t.dataset.impM != null && (x = impLigneDe(t.dataset.impM))) { var v = parseAmount(t.value, false); if (!isNaN(v)) { x.L.montant = v; x.L.o.douteux = false; if (x.L.hb > v) x.L.hb = v; } impRender(); return; }
+    if (t.dataset.impHb != null && (x = impLigneDe(t.dataset.impHb))) { x.L.hb = t.checked ? x.L.montant : 0; impRender(); return; }
+    if (t.dataset.impHbm != null && (x = impLigneDe(t.dataset.impHbm))) { var hv = parseAmount(t.value, false); x.L.hb = isNaN(hv) ? x.L.montant : Math.min(r2(hv), x.L.montant); impRender(); return; }
     if (t.dataset.impSolde != null) { S.imp.groupes[+t.dataset.impSolde].soldeSaisi = t.value; impRender(); return; }
   });
   document.addEventListener("input", function (e) {
-    var t = e.target; if (!S.imp || !t || !t.dataset || t.dataset.impNom == null) return;
+    var t = e.target; if (!S.imp || !t || !t.dataset) return;
+    if (t.dataset.impLib != null) { var y = impLigneDe(t.dataset.impLib); if (y) { y.L.o.libelle = t.value; y.L.o.renomme = true; } return; }
+    if (t.dataset.impNom == null) return;
     S.imp.groupes[+t.dataset.impNom].nouveauNom = t.value;
   });
   $("imp-close").addEventListener("click", impFermer);
@@ -5912,6 +5999,169 @@ body.sheet-open { overflow: hidden; }
     }
   });
 
+  /* ---------- 1.4 : hors budget, dépenses en attente, modifier une dépense, date des prélèvements ---------- */
+  /* Hors budget : tout ou partie d'une dépense sort du budget ; le solde du compte, lui, baisse quand même */
+  function partBudget(x) {
+    if (!x || x.carte) return 0;
+    var m = Number(x.montant) || 0, hb = Number(x.horsBudget) || 0;
+    return r2(Math.max(0, m - Math.min(m, hb)));
+  }
+  function totalB(list) { return r2((list || []).reduce(function (s, x) { return s + partBudget(x); }, 0)); }
+  function horsBudgetDe(list) { return r2((list || []).reduce(function (s, x) { return s + (x.carte ? 0 : (Number(x.montant) || 0) - partBudget(x)); }, 0)); }
+
+  /* Options de la fiche dépense : hors budget, en attente */
+  function formOptsMaj() {
+    var box = $("f-opts"); if (!box) return;
+    box.hidden = S.mode !== "dep" || !!carteChoisie();
+    $("f-hbrow").hidden = !$("f-hb").checked;
+  }
+  function formOptsVider() { $("f-hb").checked = false; $("f-hbm").value = ""; $("f-att").checked = false; formOptsMaj(); }
+  $("f-hb").addEventListener("change", function () {
+    if (this.checked && !$("f-hbm").value) { var m = parseAmount($("f-montant").value, false); if (!isNaN(m)) $("f-hbm").value = num2.format(m); }
+    formOptsMaj();
+  });
+  $("f-compte").addEventListener("change", formOptsMaj);
+
+  /* Modifier une dépense : la fiche « + Dépense » s'ouvre remplie */
+  function ouvrirEdition(id) {
+    var x = (S.allExp || []).filter(function (d) { return d.id === id; })[0];
+    if (!x || S.canWrite === false) return;
+    S.editExp = { id: id, doc: x };
+    openSheet("dep");
+    $("add-title").textContent = "Modifier la dépense";
+    $("mode-seg").hidden = true;
+    $("f-montant").value = num2.format(Number(x.montant) || 0);
+    $("f-date").value = x.date || todayISO(); $("f-date").dataset.touched = "1";
+    $("f-libelle").value = x.libelle || "";
+    var cat = $("f-cat");
+    if (x.categorie && !Array.prototype.some.call(cat.options, function (o) { return o.value === x.categorie; })) cat.insertAdjacentHTML("beforeend", '<option value="' + esc(x.categorie) + '">' + esc(x.categorie) + "</option>");
+    cat.value = x.categorie || "Autre";
+    cartesDansFormulaire();
+    var sel = $("f-compte"), v = x.carte ? "carte:" + x.carte : x.compte;
+    if (v && !Array.prototype.some.call(sel.options, function (o) { return o.value === v; })) sel.insertAdjacentHTML("beforeend", '<option value="' + esc(v) + '">' + esc(x.carte ? (x.carteNom || "Carte cadeau") : courtCompte(x.compte)) + "</option>");
+    sel.value = v;
+    $("f-hb").checked = !x.carte && Number(x.horsBudget) > 0;
+    $("f-hbm").value = Number(x.horsBudget) > 0 ? num2.format(Number(x.horsBudget)) : "";
+    $("f-att").checked = !!x.attente;
+    $("add-btn").textContent = "Enregistrer";
+    $("f-suppr").hidden = false; $("f-suppr").textContent = "Supprimer cette dépense"; delete $("f-suppr").dataset.armed;
+    $("f-carte-row").hidden = true;
+    formOptsMaj();
+  }
+  function finEdition() {
+    S.editExp = null;
+    $("add-title").textContent = "Ajouter";
+    $("f-suppr").hidden = true;
+    $("f-montant").value = ""; $("f-libelle").value = "";
+    delete $("f-date").dataset.touched; $("f-date").value = todayISO();
+    formOptsVider();
+    setMode("dep");
+    renderForm(current());
+  }
+  function enregistrerEdition() {
+    var msg = $("form-msg"), E = S.editExp, x = E.doc;
+    var montant = parseAmount($("f-montant").value, false), libelle = $("f-libelle").value.trim(), date = $("f-date").value;
+    if (isNaN(montant)) { msg.textContent = "Indique un montant, par exemple 45,20."; $("f-montant").focus(); return; }
+    if (!libelle) { msg.textContent = "Indique à quoi correspond la dépense."; $("f-libelle").focus(); return; }
+    if (!date) { msg.textContent = "Choisis une date."; return; }
+    var per = periodFor(date);
+    if (!per) { msg.textContent = "Aucun mois ne couvre cette date."; return; }
+    var v = $("f-compte").value, upd = { libelle: libelle.slice(0, 60), montant: montant, date: date, periode: per.id, categorie: $("f-cat").value };
+    if (/^carte:/.test(v)) {
+      var cid = v.slice(6), c = (S.cartes || []).filter(function (k) { return k.id === cid; })[0];
+      if (!c) { msg.textContent = "Cette carte n'existe plus."; return; }
+      var dispo = r2(carteSolde(c) + (x.carte === cid ? Number(x.montant) || 0 : 0));
+      if (montant > dispo + 0.004) { msg.textContent = "Il ne reste que " + eur.format(dispo) + " sur cette carte."; return; }
+      upd.compte = "Carte"; upd.carte = cid; upd.carteNom = carteNom(c); upd.horsBudget = 0; upd.attente = false;
+    } else {
+      upd.compte = v; upd.carte = ""; upd.carteNom = "";
+      if ($("f-hb").checked) { var hbv = parseAmount($("f-hbm").value || "", false); upd.horsBudget = isNaN(hbv) || hbv >= montant ? montant : r2(hbv); }
+      else upd.horsBudget = 0;
+      var att = $("f-att").checked;
+      if (att && !x.attente) upd.attente = true;
+      if (!att && x.attente) { upd.attente = false; upd.passeLe = nowISO(); }
+    }
+    write(function () { return S.db.doc("depenses/" + E.id).update(upd); }, "Dépense modifiée.").then(function (ok) { if (ok) closeSheet(); });
+  }
+  $("f-suppr").addEventListener("click", function () {
+    var b = this, E = S.editExp; if (!E) return;
+    if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "Confirmer la suppression"; return; }
+    write(function () { return S.db.doc("depenses/" + E.id).delete(); }, "Dépense supprimée : " + (E.doc.libelle || "")).then(function (ok) { if (ok) closeSheet(); });
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-exp-edit]"); if (!b) return;
+    ouvrirEdition(b.dataset.expEdit);
+  });
+
+  /* Dépenses en attente : déjà déduites du solde, validées à l'import ou à la main */
+  function renderAttente() {
+    var box = $("attente"); if (!box) return;
+    var l = (S.allExp || []).filter(function (x) { return x.attente && !x.carte; }).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
+    if (!l.length || S.failed) { box.innerHTML = ""; box.hidden = true; return; }
+    var ro = S.canWrite === false;
+    box.hidden = false;
+    box.innerHTML = '<div class="att-head"><h3>En attente · ' + l.length + '</h3><span class="count">' + esc(eur.format(total(l))) + "</span></div>" +
+      '<p class="note">Pas encore passées à la banque, mais déjà déduites de ton solde. Elles se valident à l\'import d\'une capture, ou avec « C\'est passé ».</p>' +
+      l.map(function (x) {
+        var j = daysBetween(x.date, todayISO());
+        return '<div class="att-row"><button type="button" class="att-main ebtn" data-exp-edit="' + esc(x.id) + '" aria-label="Modifier ' + esc(x.libelle || "la dépense") + '"><span class="ename">' + esc(x.libelle || "Dépense") + '</span><span class="emeta">' +
+          esc([x.categorie, courtCompte(x.compte), fmtShort.format(dateOf(x.date)) + (j > 1 ? " · il y a " + j + " jours" : "")].filter(Boolean).join(" · ")) + "</span></button>" +
+          '<span class="eamt">' + esc(eur.format(Number(x.montant) || 0)) + "</span>" +
+          (ro ? "" : '<button type="button" class="mini" data-att-ok="' + esc(x.id) + '">C\'est passé</button>') + "</div>";
+      }).join("");
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-att-ok]"); if (!b || S.canWrite === false) return;
+    var x = (S.allExp || []).filter(function (d) { return d.id === b.dataset.attOk; })[0]; if (!x) return;
+    write(function () { return S.db.doc("depenses/" + x.id).update({ attente: false, passeLe: nowISO() }); }, "« " + (x.libelle || "Dépense") + " » est passée à la banque : c'est noté.");
+  });
+
+  /* Changer la date (et le montant) d'un prélèvement prévu, depuis « À passer » */
+  function pEditHTML(p, it) {
+    var d = it.d ? isoOf(it.d) : "";
+    return '<form class="pform pedit-form" data-pedit-form="' + it.ln + ":" + it.i + '" novalidate>' +
+      '<div class="row two"><label class="f"><span>Passe le</span><input type="date" name="d" value="' + esc(d) + '" min="' + esc(p.debut) + '" max="' + esc(p.fin) + '"></label>' +
+      '<label class="f"><span>Montant (€)</span><input name="m" inputmode="decimal" autocomplete="off" value="' + esc(num2.format(Number(it.x.montant) || 0)) + '"></label></div>' +
+      '<label class="chkline"><input type="checkbox" name="suite" checked> Aussi les mois suivants</label>' +
+      '<p class="form-msg" role="alert"></p><div class="acts"><button type="submit" class="mini">Enregistrer</button><button type="button" class="mini ghost" data-pedit-annul="1">Annuler</button></div></form>';
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-pedit], [data-pedit-annul]"); if (!b || S.canWrite === false) return;
+    var p = current(); if (!p) return;
+    if (b.dataset.pedit) {
+      S.pEdit = { k: b.dataset.pedit, pid: p.id }; renderPending(p);
+      setTimeout(function () { var i = document.querySelector('[data-pedit-form] [name="d"]'); if (i) { i.focus(); i.scrollIntoView({ block: "center" }); } }, 30);
+      return;
+    }
+    S.pEdit = null; if (document.activeElement) document.activeElement.blur(); renderPending(p);
+  });
+  document.addEventListener("submit", function (e) {
+    var f = e.target; if (!f.matches || !f.matches("[data-pedit-form]")) return;
+    e.preventDefault();
+    var p = current(); if (!p) return;
+    var a = f.dataset.peditForm.split(":"), ln = a[0], idx = Number(a[1]), list = clone(p[ln] || []), x = list[idx], msg = f.querySelector(".form-msg");
+    if (!x) return;
+    var d = f.elements.d.value, m = parseAmount(f.elements.m.value, true), suite = f.elements.suite.checked;
+    if (!d) { msg.textContent = "Choisis la date."; return; }
+    if (isNaN(m)) { msg.textContent = "Montant invalide : écris par exemple 89,00"; return; }
+    var jour = "le " + dateOf(d).getDate(), oldM = Number(x.montant) || 0, oldLib = x.libelle, oldC = x.compte;
+    x.jour = jour; x.montant = m;
+    var patchs = {}; patchs[p.id] = {}; patchs[p.id][ln] = list;
+    var n = 0;
+    if (suite) S.periods.forEach(function (q) {
+      if (q.debut <= p.debut) return;
+      var l2 = clone(q[ln] || []), ch = false;
+      l2.forEach(function (y) { if (y.libelle === oldLib && y.compte === oldC && !y.passe) { y.jour = jour; if (Math.abs((Number(y.montant) || 0) - oldM) < 0.005) y.montant = m; ch = true; } });
+      if (ch) { patchs[q.id] = {}; patchs[q.id][ln] = l2; n++; }
+    });
+    S.pEdit = null; if (document.activeElement) document.activeElement.blur();
+    write(function () {
+      var seq = Promise.resolve();
+      Object.keys(patchs).forEach(function (id) { seq = seq.then(function () { return S.db.doc("periodes/" + id).update(patchs[id]); }); });
+      return seq;
+    }, oldLib + " passe " + jour + (Math.abs(m - oldM) > 0.004 ? " (" + eur.format(m) + ")" : "") + (suite ? ", ce mois-ci et les suivants." : ", ce mois-ci seulement."));
+  });
+
   /* ---------- Démarrage ---------- */
   appliquerProfil(null);
   renderAll();
@@ -5961,7 +6211,7 @@ body.sheet-open { overflow: hidden; }
     paStart(db);
     function docsOf(snap) { return snap.docs.filter(function (d) { return d.exists; }).map(function (d) { return Object.assign({ id: d.id }, d.data()); }); }
     db.doc("config/soldes").onSnapshot(function (s) { S.soldes = s.exists ? s.data() : null; renderAll(); }, onError);
-    db.collection("depenses").onSnapshot(function (s) { S.allExp = docsOf(s); renderSoldes(); renderBilans(); renderCartes(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
+    db.collection("depenses").onSnapshot(function (s) { S.allExp = docsOf(s); renderSoldes(); renderBilans(); renderCartes(); renderAttente(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
     db.collection("cartes").onSnapshot(function (s) { S.cartes = docsOf(s); renderCartes(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
     db.collection("rentrees").onSnapshot(function (s) { S.allInc = docsOf(s); renderSoldes(); renderBilans(); }, onError);
     db.collection("virements").onSnapshot(function (s) { S.virs = docsOf(s); renderAll(); }, onError);
