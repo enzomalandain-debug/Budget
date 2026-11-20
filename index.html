@@ -924,6 +924,20 @@ html { touch-action: manipulation; }
 .sec > *, .subpanel > *, #evo { min-width: 0; }
 .evo-chips { max-width: 100%; }
 
+.ana-detli { list-style: none; padding: 2px 0 8px; }
+.ana-detbox { display: grid; gap: 8px; }
+.ana-row.sub { padding-left: 22px; font-size: 13px; min-height: 38px; color: var(--ink-2); }
+.ana-row.sub .ana-sw { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-2); justify-self: center; }
+.ana-dethead { margin: 0; font-size: 13px; color: var(--ink-2); padding: 0 4px; }
+.ana-dethead b { color: var(--ink); }
+.ana-det .ana-detb { width: 100%; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; padding: 4px 0; min-height: 40px; cursor: pointer; }
+.ana-det div.ana-detb { cursor: default; }
+.ana-det .ana-detb > span { min-width: 0; overflow-wrap: anywhere; }
+.ana-det .ana-detb > b { text-align: right; }
+.ana-det .ana-detb > b small { font-weight: 500; }
+#form-msg .link-btn { padding: 4px 2px; }
+.fm-q { color: var(--ink); font-weight: 600; }
+
 </style>
 
 <div class="wrap">
@@ -983,7 +997,7 @@ html { touch-action: manipulation; }
   <div class="subpanel" data-subpanel="depenses">
   <section class="sec" aria-labelledby="list-title">
     <div class="sec-head"><h2 id="list-title">Dépenses et revenus du mois</h2><span class="count" id="list-count"></span></div>
-    <div class="rech"><input type="search" id="rech" placeholder="Chercher : Voltigeur, Shopping, 13…" autocomplete="off" enterkeyhint="search" aria-label="Chercher dans toutes les dépenses"><select id="rech-per" aria-label="Période de recherche"><option value="mois">Ce mois</option><option value="3">3 mois</option><option value="tout" selected>Tout</option></select></div>
+    <div class="rech"><input type="search" id="rech" placeholder="Chercher : Intermarché, Shopping, 13…" autocomplete="off" enterkeyhint="search" aria-label="Chercher dans toutes les dépenses"><select id="rech-per" aria-label="Période de recherche"><option value="mois">Ce mois</option><option value="3">3 mois</option><option value="tout" selected>Tout</option></select></div>
     <div class="rech-res" id="rech-res" hidden></div>
     <div class="attente" id="attente" hidden></div>
     <div class="cats" id="cats" hidden></div>
@@ -1124,7 +1138,7 @@ html { touch-action: manipulation; }
     <p class="note">Remet l'application à zéro sur ce téléphone. Fais une sauvegarde avant.</p>
     <button class="btn ghost" id="wipe-btn" type="button">Tout effacer</button>
     <div class="confirm" id="wipe-confirm" hidden>Effacer toutes les données de ce téléphone ?<button type="button" class="link-btn danger" id="wipe-yes">Tout effacer</button><button type="button" class="link-btn" id="wipe-no">Annuler</button></div>
-    <p class="note app-v">Paie &amp; Budget · version 1.8</p>
+    <p class="note app-v">Paie &amp; Budget · version 1.9</p>
   </section>
   </div>
 
@@ -1332,7 +1346,7 @@ html { touch-action: manipulation; }
 <script>
 (function () {
   "use strict";
-  var CATS = ["Courses", "Carburant", "Restos & sorties", "Enfants", "Maison", "Shopping", "Santé", "Loisirs", "Cadeaux", "Noël", "Autre"];
+  var CATS = ["Courses", "Carburant", "Restos & sorties", "Tabac", "Enfants", "Maison", "Shopping", "Santé", "Loisirs", "Cadeaux", "Noël", "Autre"];
   var INC_TYPES = ["Vacations pompier", "Vente", "Remboursement", "Cadeau reçu", "Autre"];
   var COMPTES = [["Perso", "Mon compte"], ["Commun", "Compte commun"]];
   var eur = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
@@ -4454,7 +4468,7 @@ html { touch-action: manipulation; }
   })();
 
   /* ================= Version hors ligne : réglages, bienvenue, sauvegarde, premier mois, lignes du budget ================= */
-  var APP_VERSION = "1.8";
+  var APP_VERSION = "1.9";
   var ROULEMENT_TYPE = {"jours": ["1", "1", "2", "2", "2", "JNT", "R", "R", "JNT", "1", "1", "3", "3", "3", "JNT", "R", "JNT", "JN", "1", "2", "2", "3", "3", "JNT", "R", "JNT", "1", "1", "2", "2", "3", "3", "JNT", "JNT", "R"], "libelles": {"1": "1 · 6h–14h", "2": "2 · 14h–22h", "3": "3 · 22h–6h", "JN": "JN", "JNT": "JNT", "R": "R"}};
   var MODELE_VIERGE = {"decalage": 1, "rubriques": [{"code": "HS_NE", "libelle": "Heures sup. 25 % non exonérées", "unite": "h", "taux": 0}, {"code": "HS_EXO", "exo": true, "libelle": "Heures sup. 25 % exonérées", "unite": "h", "taux": 0}, {"code": "PAO", "libelle": "Heures de PAO", "unite": "h", "taux": 0}, {"code": "INCOMMODES", "libelle": "Heures incommodes 66 %", "unite": "h", "taux": 0}, {"code": "RAPPEL", "libelle": "Heures de rappel", "unite": "h", "taux": 0}, {"code": "APPEL", "libelle": "Heures d'appel", "unite": "h", "taux": 0}, {"code": "FERIES", "libelle": "Jours fériés payés 100 %", "unite": "h", "taux": 0}, {"code": "FERIES_233", "libelle": "Jours fériés payés 233 % (Noël, jour de l'an)", "unite": "h", "taux": 0}, {"code": "PENIBLES", "libelle": "Travaux pénibles 20 %", "unite": "h", "taux": 0}, {"code": "HABILLAGE", "libelle": "Habillage / déshabillage", "unite": "u", "taux": 0}, {"code": "REMPLACEMENT", "controle": false, "libelle": "Jours de remplacement", "unite": "jour", "taux": 0}, {"code": "QUART_HS", "derive": ["HS_NE", "HS_EXO"], "libelle": "Prime de quart sur heures sup.", "unite": "h", "taux": 0}, {"code": "RET_QUART", "derive": ["INCOMMODES"], "libelle": "Retenue quart", "unite": "h", "taux": 0}, {"code": "TF", "libelle": "Tickets flexibilité (8 h par TF)", "unite": "h", "taux": 0}], "fixes": [{"libelle": "Salaire de base", "montant": 0}, {"libelle": "Prime d'ancienneté", "montant": 0}, {"libelle": "Prime de transport P/I", "montant": 0}, {"libelle": "Prime de quart", "montant": 0}, {"libelle": "Prime mensuelle", "montant": 0}, {"imposable": false, "libelle": "Forfait prime de panier", "montant": 0}], "nonSoumis": [{"libelle": "Prime de transport NP/NI", "montant": 0}, {"libelle": "Prime panier non passible", "montant": 0}], "cotis": {"csgAjout": 0, "csgAssiette": 98.25, "csgDed": 6.8, "csgNonDed": 2.9, "deplafonnee": 0.4, "fixes": 0, "hsNetFiscal": 93.32, "pass": 4005, "plafonnee": 11.61, "reducHS": 10.66, "reintegration": 0, "t2": 8.45}, "tauxPAS": 0};
   var PROFIL = null;
@@ -4802,7 +4816,7 @@ html { touch-action: manipulation; }
      comparés à la consommation du mois passé (dépenses du quotidien, sans les prélèvements).
      Marge ≥ 150 € : mettre la moitié de côté pour le projet. Entre 0 et 150 € : même rythme. Négative : ralentir, avec des idées chiffrées. */
   var CONSEIL_SEUIL = 150, CONSEIL_PART = 0.5;
-  var CATS_SOUPLES = { "Restos & sorties": 0.3, "Shopping": 0.3, "Loisirs": 0.3, "Cadeaux": 0.3, "Autre": 0.2, "Maison": 0.15, "Courses": 0.1, "Carburant": 0.1, "Enfants": 0.1 };
+  var CATS_SOUPLES = { "Tabac": 0.2, "Restos & sorties": 0.3, "Shopping": 0.3, "Loisirs": 0.3, "Cadeaux": 0.3, "Autre": 0.2, "Maison": 0.15, "Courses": 0.1, "Carburant": 0.1, "Enfants": 0.1 };
   var RE_ABOS = /canal|netflix|spotify|deezer|disney\s*\+|prime video|amazon prime|uber\s*one|youtube|apple|abonnement|salle de sport|basic.?fit|playstation|xbox/i;
   function projetConseil() { var gs = S.goals || []; return gs.filter(function (g) { return /duba/i.test(g.nom || ""); })[0] || gs[0] || null; }
   function recuOuPrevu(p, x) { return x.recu && x.recuMontant != null ? Number(x.recuMontant) : revAmount(p, x); }
@@ -4909,7 +4923,7 @@ html { touch-action: manipulation; }
      Couleurs fixes par élément (jamais selon le rang), parts dans un ordre fixe, liste chiffrée sous chaque camembert
      avec l'écart au mois d'avant (au même jour pour le mois en cours). Toucher une part ou une ligne montre le détail. */
   var ANA_C1 = [["prel", "Prélèvements", "#2a78d6"], ["dep", "Dépenses du quotidien", "#eb6834"], ["epa", "Épargne", "#1baf7a"]];
-  var ANA_CATS = [["Courses", "#2a78d6"], ["Restos & sorties", "#eb6834"], ["Carburant", "#1baf7a"], ["Enfants", "#eda100"], ["Maison", "#e87ba4"], ["Shopping", "#008300"], ["Loisirs", "#6250d6"]];
+  var ANA_CATS = [["Courses", "#2a78d6"], ["Restos & sorties", "#eb6834"], ["Carburant", "#1baf7a"], ["Enfants", "#eda100"], ["Maison", "#e87ba4"], ["Shopping", "#008300"], ["Loisirs", "#6250d6"], ["Tabac", "#e34948"]];
   var ANA_AUTRES = "#A9ACB6";
   S.anaSel = {};
   function anaMois() { var t = todayISO(); return S.periods.filter(function (p) { return p.debut <= t; }).sort(byDebut).reverse(); }
@@ -4920,11 +4934,15 @@ html { touch-action: manipulation; }
     var rev = r2((p.revenus || []).reduce(function (t, x) { return t + recuOuPrevu(p, x); }, 0) + total(S.allInc.filter(function (x) { return x.periode === p.id; })));
     var v = { prel: r2(total(p.charges)), dep: totalB(daily), epa: r2(total(p.epargne)) }, cats = catsDe(daily), known = ANA_CATS.map(function (a) { return a[0]; });
     var parts1 = ANA_C1.map(function (a) { return { key: a[0], nom: a[1], m: v[a[0]], col: a[2] }; }).filter(function (x) { return x.m > 0; });
-    var parts2 = ANA_CATS.filter(function (a) { return cats[a[0]] > 0; }).map(function (a) { return { key: a[0], nom: a[0], m: cats[a[0]], col: a[1] }; });
-    var autres = Object.keys(cats).filter(function (k) { return known.indexOf(k) < 0 && cats[k] > 0; });
-    if (autres.length) parts2.push({ key: "Autres", nom: "Autres (" + autres.join(", ") + ")", m: r2(autres.reduce(function (t, k) { return t + cats[k]; }, 0)), col: ANA_AUTRES, sous: autres });
+    /* 8 parts au plus : 7 catégories (le tabac garde toujours la sienne) + « Autres » ; l'ordre et les couleurs restent fixes */
+    var garde = ANA_CATS.filter(function (a) { return cats[a[0]] > 0; });
+    while (garde.length > 7) { var petite = garde.filter(function (a) { return a[0] !== "Tabac"; }).sort(function (x, y) { return cats[x[0]] - cats[y[0]]; })[0]; garde.splice(garde.indexOf(petite), 1); }
+    var gNoms = garde.map(function (a) { return a[0]; });
+    var parts2 = garde.map(function (a) { return { key: a[0], nom: a[0], m: cats[a[0]], col: a[1] }; });
+    var autres = Object.keys(cats).filter(function (k) { return gNoms.indexOf(k) < 0 && cats[k] > 0; });
+    if (autres.length) parts2.push({ key: "Autres", nom: "Autres", m: r2(autres.reduce(function (t, k) { return t + cats[k]; }, 0)), col: ANA_AUTRES, sous: autres, parts: cats });
     var cmp1 = {}, cmp2 = {}; parts1.forEach(function (x) { cmp1[x.key] = x.m; }); ANA_C1.forEach(function (a) { if (!(a[0] in cmp1)) cmp1[a[0]] = 0; });
-    Object.keys(cats).forEach(function (k) { if (known.indexOf(k) >= 0) cmp2[k] = cats[k]; else cmp2.Autres = r2((cmp2.Autres || 0) + cats[k]); });
+    Object.keys(cats).forEach(function (k) { cmp2[k] = cats[k]; });
     return { p: p, rev: rev, v: v, cats: cats, daily: daily, parts1: parts1, parts2: parts2, cmp1: cmp1, cmp2: cmp2, envSpent: totalB(envE), carteSum: carteSum, hbSum: horsBudgetDe(exps),
       sorti: r2(v.prel + v.dep + v.epa), reste: r2(rev - v.prel - v.dep - v.epa), enCours: todayISO() <= p.fin };
   }
@@ -4939,7 +4957,7 @@ html { touch-action: manipulation; }
       var d = x.m / tot * 2 * Math.PI, path;
       if (d >= 2 * Math.PI - 1e-6) path = anaArc(96, 62, a, a + Math.PI) + anaArc(96, 62, a + Math.PI, a + 2 * Math.PI - 1e-4);
       else path = anaArc(96, 62, a, a + d);
-      h += '<path d="' + path + '" fill="' + x.col + '" class="ana-part' + (sel && sel !== x.key ? " dim" : "") + '"' + (mini ? "" : ' data-ana="' + id + "|" + esc(x.key) + '"') + "><title>" + esc(x.nom + " : " + eur.format(x.m) + " (" + Math.round(x.m / tot * 100) + " %)") + "</title></path>";
+      h += '<path d="' + path + '" fill="' + x.col + '" class="ana-part' + (sel && sel !== x.key && !(x.sous && x.sous.indexOf(sel) >= 0) ? " dim" : "") + '"' + (mini ? "" : ' data-ana="' + id + "|" + esc(x.key) + '"') + "><title>" + esc(x.nom + " : " + eur.format(x.m) + " (" + Math.round(x.m / tot * 100) + " %)") + "</title></path>";
       a += d;
     });
     var lab = parts.map(function (x) { return x.nom + " " + Math.round(x.m / tot * 100) + " %"; }).join(", ");
@@ -4951,28 +4969,39 @@ html { touch-action: manipulation; }
     var d = r2(m - pv); if (Math.abs(d) < 1) return '<span class="ana-e">=</span>';
     return '<span class="ana-e ' + (d > 0 ? "up" : "down") + '">' + (d > 0 ? "▲ +" : "▼ −") + esc(eur0.format(Math.abs(d))) + "</span>";
   }
-  function anaListe(id, parts, cmp, prevNom, sel) {
+  function anaListe(id, parts, cmp, prevNom, sel, det) {
     var tot = parts.reduce(function (t, x) { return t + x.m; }, 0);
     var rows = parts.slice().sort(function (x, y) { return y.m - x.m; }).map(function (x) {
-      var pv = cmp ? (cmp[x.key] || 0) : null;
+      var pv = cmp ? (x.sous ? r2(x.sous.reduce(function (t, k) { return t + (cmp[k] || 0); }, 0)) : (cmp[x.key] || 0)) : null;
       return '<li><button type="button" class="ana-row' + (sel === x.key ? " on" : "") + '" data-ana="' + id + "|" + esc(x.key) + '" aria-pressed="' + (sel === x.key) + '">' +
-        '<span class="ana-sw" style="background:' + x.col + '"></span><span class="ana-nom">' + esc(x.nom) + '</span><span class="ana-m">' + esc(eur0.format(x.m)) + '</span><span class="ana-pc">' + Math.round(x.m / tot * 100) + " %</span>" + anaEcart(x.m, pv) + "</button></li>";
+        '<span class="ana-sw" style="background:' + x.col + '"></span><span class="ana-nom">' + esc(x.nom) + '</span><span class="ana-m">' + esc(eur0.format(x.m)) + '</span><span class="ana-pc">' + Math.round(x.m / tot * 100) + " %</span>" + anaEcart(x.m, pv) + "</button></li>" + (sel === x.key && det ? '<li class="ana-detli">' + det + "</li>" : "") +
+        /* « Autres » : chaque catégorie regroupée garde sa ligne, qu'on peut toucher */
+        (x.sous && x.parts ? x.sous.slice().sort(function (k1, k2) { return x.parts[k2] - x.parts[k1]; }).map(function (k) {
+          var pk = cmp ? (cmp[k] || 0) : null;
+          return '<li><button type="button" class="ana-row sub' + (sel === k ? " on" : "") + '" data-ana="' + id + "|" + esc(k) + '" aria-pressed="' + (sel === k) + '"><span class="ana-sw"></span><span class="ana-nom">' + esc(k) + '</span><span class="ana-m">' + esc(eur0.format(x.parts[k])) + '</span><span class="ana-pc">' + Math.round(x.parts[k] / tot * 100) + " %</span>" + anaEcart(x.parts[k], pk) + "</button></li>" +
+            (sel === k && det ? '<li class="ana-detli">' + det + "</li>" : "");
+        }).join("") : "");
     }).join("");
     return '<ul class="ana-list">' + rows + "</ul>" + (cmp ? '<p class="ana-note">Écart avec ' + esc(prevNom) + ".</p>" : '<p class="ana-note">Pas de mois précédent pour comparer.</p>');
   }
+  /* Le détail d'une part : toutes ses lignes, avec le montant qui compte dans le camembert */
   function anaDetail(a, id, key) {
-    var items = [], fmt = function (x) { return x.date ? fmtShort.format(dateOf(x.date)) : ""; };
-    if (id === "c1" && key === "prel") items = (a.p.charges || []).filter(function (x) { return Number(x.montant) > 0; }).sort(function (x, y) { return y.montant - x.montant; }).map(function (x) { return [x.libelle, x.passe ? "passé" : "prévu", x.montant]; });
-    else if (id === "c1" && key === "epa") items = (a.p.epargne || []).filter(function (x) { return Number(x.montant) > 0; }).sort(function (x, y) { return y.montant - x.montant; }).map(function (x) { return [x.libelle, x.passe ? "passé" : "prévu", x.montant]; });
-    else if (id === "c1" && key === "dep") items = a.daily.slice().sort(function (x, y) { return y.montant - x.montant; }).map(function (x) { return [x.libelle || x.categorie, (x.categorie || "") + " · " + fmt(x), x.montant]; });
+    var items, plan = id === "c1" && (key === "prel" || key === "epa"), part = id === "c2" ? a.parts2.filter(function (x) { return x.key === key; })[0] : null;
+    var fmt = function (x) { return x.date ? fmtShort.format(dateOf(x.date)) : ""; };
+    if (plan) items = ((key === "prel" ? a.p.charges : a.p.epargne) || []).filter(function (x) { return Number(x.montant) > 0; }).sort(function (x, y) { return y.montant - x.montant; })
+      .map(function (x) { return { nom: x.libelle, sous: [x.passe ? "passé" : "prévu", x.compte ? courtCompte(x.compte) : ""].filter(Boolean).join(" · "), m: Number(x.montant) || 0, tot: null, id: null }; });
     else {
-      var part = a.parts2.filter(function (x) { return x.key === key; })[0], cs = part && part.sous ? part.sous : [key];
-      items = a.daily.filter(function (x) { return cs.indexOf(x.categorie || "Autre") >= 0; }).sort(function (x, y) { return String(y.date).localeCompare(String(x.date)); }).map(function (x) { return [x.libelle || x.categorie, (part && part.sous ? (x.categorie || "Autre") + " · " : "") + fmt(x), x.montant]; });
+      var cs = id === "c1" ? null : part && part.sous ? part.sous : [key];
+      items = a.daily.filter(function (x) { return !cs || cs.indexOf(x.categorie || "Autre") >= 0; }).sort(function (x, y) { return String(y.date).localeCompare(String(x.date)) || (Number(y.montant) || 0) - (Number(x.montant) || 0); })
+        .map(function (x) { return { nom: x.libelle || x.categorie, sous: [!cs || (part && part.sous) ? x.categorie || "Autre" : "", fmt(x), x.compte ? courtCompte(x.compte) : ""].filter(Boolean).join(" · "), m: partBudget(x), tot: Number(x.montant) || 0, id: x.id }; });
     }
     if (!items.length) return "";
-    var max = 15, h = '<ul class="ana-det">' + items.slice(0, max).map(function (x) { return "<li><span>" + esc(x[0]) + "<small>" + esc(x[1]) + "</small></span><b>" + esc(eur.format(Number(x[2]) || 0)) + "</b></li>"; }).join("") + "</ul>";
-    if (items.length > max) h += '<p class="ana-note">… et ' + (items.length - max) + " autres.</p>";
-    return h;
+    var tot = r2(items.reduce(function (t, x) { return t + x.m; }, 0)), n = items.length, ro = S.canWrite === false;
+    return '<div class="ana-detbox"><p class="ana-dethead"><b>' + n + (plan ? (n > 1 ? " lignes" : " ligne") : (n > 1 ? " dépenses" : " dépense")) + "</b> · " + esc(eur.format(tot)) + "</p>" +
+      '<ul class="ana-det">' + items.map(function (x) {
+        var inner = "<span>" + esc(x.nom) + "<small>" + esc(x.sous) + "</small></span><b>" + esc(eur.format(x.m)) + (x.tot != null && x.tot - x.m > 0.004 ? "<small>sur " + esc(eur.format(x.tot)) + "</small>" : "") + "</b>";
+        return "<li>" + (x.id && !ro ? '<button type="button" class="ana-detb" data-exp-edit="' + esc(x.id) + '" aria-label="Modifier ' + esc(x.nom) + '">' + inner + "</button>" : '<div class="ana-detb">' + inner + "</div>") + "</li>";
+      }).join("") + "</ul>" + (!plan && !ro ? '<p class="ana-note">Touche une dépense pour la modifier ou changer sa catégorie.</p>' : "") + "</div>";
   }
   function anaBarre(a) {
     var base = Math.max(a.rev, a.sorti) || 1, segs = ANA_C1.map(function (c) { return [c[1], a.v[c[0]], c[2]]; }).filter(function (x) { return x[1] > 0; });
@@ -5003,9 +5032,9 @@ html { touch-action: manipulation; }
     var s1 = S.anaSel.c1, s2 = S.anaSel.c2, h = "";
     h += '<div class="ana-card"><span class="label">' + (a.enCours ? "Jusqu'ici, ce mois-ci" : "Le mois en un coup d'œil") + "</span>" + anaBarre(a) + "</div>";
     h += '<div class="ana-card"><h3>Tout ce qui est sorti</h3>' + anaDonut("c1", a.parts1, eur0.format(a.sorti), "sortis", s1) +
-      anaListe("c1", a.parts1, b ? b.cmp1 : null, prevNom, s1) + (s1 ? anaDetail(a, "c1", s1) : "") + "</div>";
+      anaListe("c1", a.parts1, b ? b.cmp1 : null, prevNom, s1, s1 ? anaDetail(a, "c1", s1) : "") + "</div>";
     h += '<div class="ana-card"><h3>Dépenses du quotidien</h3><p class="ana-note">Sans les prélèvements ni l\'épargne.</p>' +
-      (a.parts2.length ? anaDonut("c2", a.parts2, eur0.format(a.v.dep), "dépensés", s2) + anaListe("c2", a.parts2, b ? b.cmp2 : null, prevNom, s2) + (s2 ? anaDetail(a, "c2", s2) : "") : '<p class="empty">Aucune dépense notée ce mois-ci.</p>') +
+      (a.parts2.length ? anaDonut("c2", a.parts2, eur0.format(a.v.dep), "dépensés", s2) + anaListe("c2", a.parts2, b ? b.cmp2 : null, prevNom, s2, s2 ? anaDetail(a, "c2", s2) : "") : '<p class="empty">Aucune dépense notée ce mois-ci.</p>') +
       (a.envSpent ? '<p class="ana-note">Plus ' + esc(eur.format(a.envSpent)) + " dépensés dans les enveloppes (Noël…), comptés à part.</p>" : "") +
       (a.carteSum ? '<p class="ana-note">Plus ' + esc(eur.format(a.carteSum)) + " payés en cartes cadeaux, comptés à part.</p>" : "") +
       (a.hbSum ? '<p class="ana-note">Plus ' + esc(eur.format(a.hbSum)) + " de dépenses sorties du budget (hors budget).</p>" : "") + "</div>";
@@ -5574,7 +5603,8 @@ html { touch-action: manipulation; }
   var IMP_CAT_MOTS = [
     [/leclerc|carrefour|auchan|intermarche|lidl|aldi|super ?u\b|hyper ?u\b|monoprix|franprix|casino|grand frais|picard|boulang|epicerie|supermarche|hypermarche|alimentation|petit commercant|marche/, "Courses"],
     [/total|esso|\bbp\b|shell|avia|carburant|station|essence|gazole|dyneff/, "Carburant"],
-    [/mcdo|mcdonald|quick|burger|kfc|pizz|restau|brasserie|\bbar\b|cafe|tabac|sortie|snack|kebab|sushi|uber ?eats|deliveroo|bowling|cinema|looping/, "Restos & sorties"],
+    [/tabac|cigarette|clope|civette/, "Tabac"],
+    [/mcdo|mcdonald|quick|burger|kfc|pizz|restau|brasserie|\bbar\b|cafe|sortie|snack|kebab|sushi|uber ?eats|deliveroo|bowling|cinema|looping/, "Restos & sorties"],
     [/pharmacie|medecin|docteur|dentiste|ortho|kine|sante|optic|laborato/, "Santé"],
     [/gemo|kiabi|zara|h ?& ?m|primark|decathlon|celio|jules|habillement|vetement|chaussure|amazon|fnac|darty|boulanger|shopping/, "Shopping"],
     [/ikea|leroy|castorama|brico|jardin|maison|ameublement|electromenager|action\b|gifi|but\b|conforama/, "Maison"],
@@ -6370,7 +6400,7 @@ html { touch-action: manipulation; }
     $("f-hbrow").hidden = !$("f-hb").checked;
     cagFormMaj();
   }
-  function formOptsVider() { $("f-hb").checked = false; $("f-hbm").value = ""; $("f-att").checked = false; cagFormVider(); formOptsMaj(); }
+  function formOptsVider() { delete $("f-cat").dataset.touched; $("f-hb").checked = false; $("f-hbm").value = ""; $("f-att").checked = false; cagFormVider(); formOptsMaj(); }
   $("f-hb").addEventListener("change", function () {
     if (this.checked && !$("f-hbm").value) { var m = parseAmount($("f-montant").value, false); if (!isNaN(m)) $("f-hbm").value = num2.format(m); }
     formOptsMaj();
@@ -6582,7 +6612,7 @@ html { touch-action: manipulation; }
   function ouvrirEdition(id) {
     var x = (S.allExp || []).filter(function (d) { return d.id === id; })[0];
     if (!x || S.canWrite === false) return;
-    S.editExp = { id: id, doc: x };
+    S.editExp = { id: id, doc: x, toutes: null };
     openSheet("dep");
     $("add-title").textContent = "Modifier la dépense";
     $("mode-seg").hidden = true;
@@ -6639,10 +6669,29 @@ html { touch-action: manipulation; }
       if (!att && x.attente) { upd.attente = false; upd.passeLe = nowISO(); }
     }
     var cagF = /^carte:/.test(v) ? null : cagDuFormulaire(montant, libelle); if (cagF && cagF.err) { msg.textContent = cagF.err; return; }
+    var pareils = upd.categorie !== x.categorie ? (S.allExp || []).filter(function (y) { return y.id !== E.id && !y.carte && y.categorie !== upd.categorie && memeLib(y.libelle, libelle); }) : [];
+    if (pareils.length && E.toutes == null) {
+      msg.innerHTML = '<span class="fm-q">' + esc("Ranger aussi " + (pareils.length > 1 ? "les " + pareils.length + " autres dépenses" : "l'autre dépense") + " « " + libelle + " » dans " + upd.categorie + " ?") + "</span>" +
+        ' <button type="button" class="link-btn" data-cat-toutes="1">Oui, toutes</button> <button type="button" class="link-btn" data-cat-toutes="0">Seulement celle-ci</button>';
+      return;
+    }
+    if (!E.toutes) pareils = [];
     if (cagF) upd.horsBudget = r2(Math.min(montant, cagF.montant + (Number(upd.horsBudget) || 0)));
     var c0 = x.cagnotte || null;
     var mod = "Dépense modifiée." + (cagF && !cagMeme(c0, cagF) ? " " + cagF.msg : !cagF && c0 ? (c0.lie ? " Elle n'est plus reliée à la cagnotte." : " Ses " + eur.format(Number(c0.montant) || 0) + " reviennent dans la cagnotte.") : "");
-    write(function () { return cagEnregistrer(c0, cagF, upd, function (u) { return S.db.doc("depenses/" + E.id).update(u); }); }, mod).then(function (ok) { if (ok) closeSheet(); });
+    if (pareils.length) mod += " " + pareils.length + (pareils.length > 1 ? " autres « " + libelle + " » rangées" : " autre « " + libelle + " » rangée") + " dans " + upd.categorie + ".";
+    var kLib = upd.categorie !== x.categorie ? impCleLib(libelle) : "";
+    write(function () {
+      return cagEnregistrer(c0, cagF, upd, function (u) { return S.db.doc("depenses/" + E.id).update(u); }).then(function () {
+        var seq = Promise.resolve();
+        pareils.forEach(function (y) { seq = seq.then(function () { return S.db.doc("depenses/" + y.id).update({ categorie: upd.categorie }); }); });
+        /* L'import retient la nouvelle catégorie pour ce nom */
+        if (kLib && S.imports && S.imports.libelles && S.imports.libelles[kLib] && S.imports.libelles[kLib] !== upd.categorie) {
+          var im = clone(S.imports); im.libelles[kLib] = upd.categorie; seq = seq.then(function () { return S.db.doc("config/imports").set(im); });
+        }
+        return seq;
+      });
+    }, mod).then(function (ok) { if (ok) closeSheet(); });
   }
   $("f-suppr").addEventListener("click", function () {
     var b = this, E = S.editExp; if (!E) return;
@@ -6924,8 +6973,10 @@ html { touch-action: manipulation; }
       x.fin ? "jusqu'en " + vcNomMois(x.fin) : ""].filter(Boolean).join(" · ");
   }
 
-  var VC_DEF = { courses: { cat: "Courses", lib: "Courses" }, essence: { cat: "Carburant", lib: "Essence" }, shopping: { cat: "Shopping", lib: "Shopping" }, restos: { cat: "Restos & sorties", lib: "Restos et sorties", cats: ["Restos & sorties", "Loisirs"] } };
-  var VC_RANG = ["courses", "essence", "shopping", "restos"];
+  var VC_DEF = { courses: { cat: "Courses", lib: "Courses" }, essence: { cat: "Carburant", lib: "Essence" }, shopping: { cat: "Shopping", lib: "Shopping" }, tabac: { cat: "Tabac", lib: "Tabac" }, restos: { cat: "Restos & sorties", lib: "Restos et sorties", cats: ["Restos & sorties", "Loisirs"] } };
+  var VC_RANG = ["courses", "essence", "tabac", "shopping", "restos"];
+  var VC_DU = { courses: "des courses", essence: "de l'essence", tabac: "du tabac", shopping: "du shopping", restos: "des restos et sorties" };
+  function vcDu(k) { return VC_DU[k] || "de " + vcNom(k).toLowerCase(); }
   var VC_ORDRE = ["restos", "shopping"];
   function vcCfg() { var c = S.conseiller; return c && c.actif ? c : null; }
   function vcActif(p) { var c = vcCfg(); return !!(c && p && p.id >= c.depuis); }
@@ -6935,7 +6986,9 @@ html { touch-action: manipulation; }
   /* Les budgets du conseiller dans la liste d'un mois (les autres budgets restent) */
   function vcBudgets(list, len, cfg) {
     var out = clone(list || []);
-    ["courses", "essence", "shopping", "restos"].forEach(function (k) {
+    if (!(Number(cfg.tabac) > 0)) out = out.filter(function (x) { return x.conseil !== "tabac"; });
+    ["courses", "essence", "tabac", "shopping", "restos"].forEach(function (k) {
+      if (k === "tabac" && !(Number(cfg.tabac) > 0)) return;
       var d = VC_DEF[k], b = out.filter(function (x) { return x.conseil === k; })[0] || out.filter(function (x) { return !x.conseil && x.categorie === d.cat; })[0];
       if (!b) { b = { categorie: d.cat }; out.push(b); }
       b.conseil = k; b.categorie = d.cat; b.libelle = d.lib; delete b.reprise; delete b.etiquette; delete b.note;
@@ -7030,14 +7083,14 @@ html { touch-action: manipulation; }
     var a = vcEtat(per), b = vcEtat(per, [doc]); if (!a || !b) return "";
     var ob = b.bs.filter(function (o) { return o.cats.indexOf(doc.categorie) >= 0; })[0]; if (!ob) return "";
     var oa = a.get(ob.k), plus = r2(ob.depasse - (oa ? oa.depasse : 0)); if (plus <= 0.004) return "";
-    return " " + vcNom(ob.k) + " dépassées de " + eur.format(ob.depasse) + " : " + ob.couvert.map(function (c) { var s = b.get(c.k); return "pris sur " + vcNom(c.k) + " (il y reste " + eur.format(s.reste) + ")"; }).join(", ") + ".";
+    return " Budget " + vcNom(ob.k).toLowerCase() + " dépassé de " + eur.format(ob.depasse) + " : " + ob.couvert.map(function (c) { var s = b.get(c.k); return "pris sur " + vcNom(c.k) + " (il y reste " + eur.format(s.reste) + ")"; }).join(", ") + ".";
   }
 
   /* Cartes des budgets, avec les vases communicants */
   function vcBudgetsHTML(p, st) {
     var ro = S.canWrite === false, c = calc(p), timeFrac = c.elapsed / c.len;
     var opts = function (self, sel) {
-      return ["restos", "shopping", "courses", "essence", "fin"].filter(function (k) { return k !== self && (k === "fin" || st.get(k)); })
+      return ["restos", "shopping", "courses", "essence", "tabac", "fin"].filter(function (k) { return k !== self && (k === "fin" || st.get(k)); })
         .map(function (k) { return '<option value="' + k + '"' + (k === sel ? " selected" : "") + ">" + esc(cap(vcNom(k))) + "</option>"; }).join("");
     };
     var h = st.bs.map(function (o) {
@@ -7049,7 +7102,7 @@ html { touch-action: manipulation; }
         lignes.push('+ ' + esc(eur.format(Number(v.montant) || 0)) + " pris sur " + (ro ? esc(vcNom(v.de)) : '<select class="vc-sel" data-vc-de="' + esc(v.id) + '" aria-label="Pris sur">' + opts(o.k, v.de) + "</select>"));
       });
       o.donne.forEach(function (v) { lignes.push("− " + esc(eur.format(Number(v.montant) || 0)) + " pour " + esc(vcNom(v.vers))); });
-      o.pour.forEach(function (x) { lignes.push("− " + esc(eur.format(x.m)) + " pour le dépassement " + (x.k === "essence" ? "de l'" : "des ") + esc(vcNom(x.k).toLowerCase())); });
+      o.pour.forEach(function (x) { lignes.push("− " + esc(eur.format(x.m)) + " pour le dépassement " + esc(vcDu(x.k))); });
       if (o.depasse > 0.004) lignes.push("<b>Dépassé de " + esc(eur.format(o.depasse)) + "</b> : " + o.couvert.map(function (x) { return "pris sur " + esc(vcNom(x.k)) + " (" + esc(eur.format(x.m)) + ")"; }).join(", ") + "." +
         (ro ? "" : ' <label class="vc-pris">D\'abord sur <select class="vc-sel" data-vc-pris="' + o.i + '" aria-label="Prendre le dépassement sur">' + opts(o.k, o.b.prisSur || (o.k === "restos" ? "shopping" : "restos")) + "</select></label>"));
       var meta = "Dépensé " + eur.format(o.spent) + " sur " + eur.format(budget);
@@ -7064,7 +7117,7 @@ html { touch-action: manipulation; }
     h += '<div class="envcard vc-card vc-fin' + (bas ? " bas" : "") + '"><div class="env-head"><span class="label">Il te reste en fin de mois</span><span class="env-left' + (f.reste < 0 ? " neg" : "") + '">' + esc(eur.format(f.reste)) + "</span></div>" +
       '<p class="env-meta">' + (bas ? "⚠ Moins que les " + esc(eur.format(Number(st.cfg.coussin) || 0)) + " à garder. " : "Au moins " + esc(eur.format(Number(st.cfg.coussin) || 0)) + " gardés. ") +
       "Ce que tu ne dépenses pas dans un budget reste aussi en fin de mois. La santé, les enfants et la maison se paient avec cet argent.</p>" +
-      (f.pour.length || f.recu.length || f.donne.length ? '<ul class="vc-l">' + f.pour.map(function (x) { return "<li>− " + esc(eur.format(x.m)) + " pour le dépassement " + (x.k === "essence" ? "de l'" : "des ") + esc(vcNom(x.k).toLowerCase()) + "</li>"; }).join("") +
+      (f.pour.length || f.recu.length || f.donne.length ? '<ul class="vc-l">' + f.pour.map(function (x) { return "<li>− " + esc(eur.format(x.m)) + " pour le dépassement " + esc(vcDu(x.k)) + "</li>"; }).join("") +
         f.donne.map(function (v) { return "<li>− " + esc(eur.format(Number(v.montant) || 0)) + " pour " + esc(vcNom(v.vers)) + "</li>"; }).join("") +
         f.recu.map(function (v) { return "<li>+ " + esc(eur.format(Number(v.montant) || 0)) + " rendus par " + esc(vcNom(v.de)) + "</li>"; }).join("") + "</ul>" : "") + "</div>";
     return h;
@@ -7079,7 +7132,7 @@ html { touch-action: manipulation; }
     } else if (t.dataset.vcPris != null) {
       var bud = clone(p.budgets || []), b = bud[Number(t.dataset.vcPris)]; if (!b) return;
       b.prisSur = t.value;
-      write(function () { return S.db.doc("periodes/" + p.id).update({ budgets: bud }); }, "Dépassement " + (vcCle(b) === "essence" ? "de l'" : "des ") + vcNom(vcCle(b)).toLowerCase() + " : d'abord pris sur " + vcNom(t.value) + ".");
+      write(function () { return S.db.doc("periodes/" + p.id).update({ budgets: bud }); }, "Dépassement " + vcDu(vcCle(b)) + " : d'abord pris sur " + vcNom(t.value) + ".");
     }
   });
   /* Changer le montant d'un budget du conseiller (fiche « Le mois ») : vases communicants */
@@ -7098,7 +7151,7 @@ html { touch-action: manipulation; }
     var cb = cur && (cur.budgets || []).filter(function (b) { return b.categorie === "Courses"; })[0];
     var sem = c.coursesSem || (cb && (Number(cb.parSemaine) || (cur && Math.round((Number(cb.montant) || 0) * 7 / (daysBetween(cur.debut, cur.fin) + 1))))) || 150;
     var suivant = cur ? nextFrom(cur).id : null;
-    return { compte: c.compte || (SUIVIS[0] && SUIVIS[0][0]), coursesSem: sem, shopping: c.shopping != null ? c.shopping : 100, essence: c.essence != null ? c.essence : 200,
+    return { compte: c.compte || (SUIVIS[0] && SUIVIS[0][0]), coursesSem: sem, shopping: c.shopping != null ? c.shopping : 100, essence: c.essence != null ? c.essence : 200, tabac: c.tabac != null ? c.tabac : tabacEstime(),
       plafond: c.plafond != null ? c.plafond : 300, coussin: c.coussin != null ? c.coussin : 100, depuis: c.depuis || suivant || (cur && cur.id) };
   }
   function renderConseiller() {
@@ -7109,10 +7162,10 @@ html { touch-action: manipulation; }
     var cfg = vcCfg(), ro = S.canWrite === false;
     if (cfg && !S.vcEdit) {
       var p = current(), st = p ? vcEtat(p) : null;
-      box.innerHTML = '<div class="envcard"><p class="env-meta">Courses ' + esc(eur0.format(cfg.coursesSem)) + " par semaine · Essence " + esc(eur0.format(cfg.essence)) + " · Shopping " + esc(eur0.format(cfg.shopping)) +
+      box.innerHTML = '<div class="envcard"><p class="env-meta">Courses ' + esc(eur0.format(cfg.coursesSem)) + " par semaine · Essence " + esc(eur0.format(cfg.essence)) + " · Shopping " + esc(eur0.format(cfg.shopping)) + (Number(cfg.tabac) > 0 ? " · Tabac " + esc(eur0.format(cfg.tabac)) : "") +
         " · Restos et sorties jusqu'à " + esc(eur0.format(cfg.plafond)) + " · " + esc(eur0.format(cfg.coussin)) + " gardés en fin de mois. Depuis " + esc(vcNomMois(cfg.depuis)) + ", sur " + esc(courtCompte(cfg.compte)) + ".</p>" +
         (st ? '<p class="env-meta"><b>' + esc(p.nom || p.id) + "</b> : restos et sorties " + esc(eur.format(st.get("restos") ? st.get("restos").eff : 0)) + ", il te reste " + esc(eur.format(st.fin.reste)) + " en fin de mois.</p>" : "") +
-        "<p class=\"env-meta\">Si un budget dépasse, la différence est prise d'abord sur les restos et sorties, puis sur le shopping, puis sur la fin de mois. Les courses et l'essence ne baissent jamais toutes seules.</p>" +
+        "<p class=\"env-meta\">Si un budget dépasse, la différence est prise d'abord sur les restos et sorties, puis sur le shopping, puis sur la fin de mois. Les courses, l'essence et le tabac ne baissent jamais tout seuls.</p>" +
         (ro ? "" : '<div class="acts"><button type="button" class="mini ghost" data-vc-edit="1">Modifier</button><button type="button" class="link-btn" data-vc-stop="1">Arrêter le conseiller</button></div>') + "</div>";
       return;
     }
@@ -7125,8 +7178,9 @@ html { touch-action: manipulation; }
       '<div class="row two"><label class="f"><span>Compte des dépenses</span><select name="compte">' + SUIVIS.map(function (c) { return '<option value="' + esc(c[0]) + '"' + (c[0] === d.compte ? " selected" : "") + ">" + esc(courtCompte(c[0])) + "</option>"; }).join("") + "</select></label>" +
       '<label class="f"><span>À partir de</span><select name="depuis">' + mois.map(function (m) { return '<option value="' + esc(m[0]) + '"' + (m[0] === d.depuis ? " selected" : "") + ">" + esc(m[1]) + "</option>"; }).join("") + "</select></label></div>" +
       '<div class="row two">' + num("coursesSem", d.coursesSem, "Courses (€ par semaine)") + num("essence", d.essence, "Essence (€ par mois)") + "</div>" +
-      '<div class="row two">' + num("shopping", d.shopping, "Shopping (€ par mois)") + num("plafond", d.plafond, "Restos et sorties : au plus (€)") + "</div>" +
-      num("coussin", d.coussin, "Gardé en fin de mois (€)") +
+      '<div class="row two">' + num("shopping", d.shopping, "Shopping (€ par mois)") + num("tabac", d.tabac, "Tabac (€ par mois)") + "</div>" +
+      '<div class="row two">' + num("plafond", d.plafond, "Restos et sorties : au plus (€)") + num("coussin", d.coussin, "Gardé en fin de mois (€)") + "</div>" +
+      '<p class="note">Tabac à 0 : pas de budget tabac, il se paie avec l\'argent de fin de mois.</p>' +
       '<p class="form-msg" role="alert"></p><div class="acts"><button type="submit" class="mini">' + (cfg ? "Enregistrer" : "Appliquer") + "</button>" + (cfg ? '<button type="button" class="mini ghost" data-vc-cancel="1">Annuler</button>' : "") + "</div></form>";
   }
   document.addEventListener("click", function (e) {
@@ -7147,7 +7201,7 @@ html { touch-action: manipulation; }
     e.preventDefault();
     var f = e.target, msg = f.querySelector(".form-msg"), v = function (n) { return String(f.querySelector('[name="' + n + '"]').value || "").trim(); };
     var cfg = { actif: true, compte: v("compte"), depuis: v("depuis"), majLe: nowISO() }, bad = null;
-    ["coursesSem", "essence", "shopping", "plafond", "coussin"].forEach(function (k) { var a = parseAmount(v(k) || "0", true); if (isNaN(a) || a < 0) bad = k; else cfg[k] = a; });
+    ["coursesSem", "essence", "shopping", "tabac", "plafond", "coussin"].forEach(function (k) { var a = parseAmount(v(k) || "0", true); if (isNaN(a) || a < 0) bad = k; else cfg[k] = a; });
     if (bad) { msg.textContent = "Montant invalide : écris par exemple 200"; return; }
     var cibles = S.periods.filter(function (q) { return q.id >= cfg.depuis; });
     S.vcEdit = false;
@@ -7155,7 +7209,7 @@ html { touch-action: manipulation; }
       var seq = S.db.doc("config/conseiller").set(cfg);
       cibles.forEach(function (q) { seq = seq.then(function () { return S.db.doc("periodes/" + q.id).update({ budgets: vcBudgets(q.budgets, daysBetween(q.debut, q.fin) + 1, cfg) }); }); });
       return seq;
-    }, "Conseiller en place à partir de " + vcNomMois(cfg.depuis) + " : courses " + eur0.format(cfg.coursesSem) + " par semaine, essence " + eur0.format(cfg.essence) + ", shopping " + eur0.format(cfg.shopping) + ", restos et sorties jusqu'à " + eur0.format(cfg.plafond) + ".");
+    }, "Conseiller en place à partir de " + vcNomMois(cfg.depuis) + " : courses " + eur0.format(cfg.coursesSem) + " par semaine, essence " + eur0.format(cfg.essence) + ", shopping " + eur0.format(cfg.shopping) + (cfg.tabac > 0 ? ", tabac " + eur0.format(cfg.tabac) : "") + ", restos et sorties jusqu'à " + eur0.format(cfg.plafond) + ".");
   });
 
   /* Fiche d'une ligne du plan : plus d'options */
@@ -7203,6 +7257,39 @@ html { touch-action: manipulation; }
     });
     return patchs;
   }
+
+  /* Tabac : les dépenses déjà notées dont le nom parle de tabac y passent une fois ; ensuite l'appli apprend */
+  var RE_TABAC = /tabac|cigarette|clope|civette/i;
+  function tabacEstime() {
+    var t = todayISO(), ps = S.periods.slice().sort(byDebut), d0 = ps.length ? ps[0].debut : t, debut = isoAdd(t, -60) > d0 ? isoAdd(t, -60) : d0, j = daysBetween(debut, t) + 1;
+    var tot = (S.allExp || []).filter(function (x) { return !x.carte && x.categorie === "Tabac" && String(x.date) >= debut && String(x.date) <= t; }).reduce(function (s2, x) { return s2 + (Number(x.montant) || 0); }, 0);
+    return tot > 0 && j > 0 ? Math.ceil(tot / j * 30.4 / 10) * 10 : 0;
+  }
+  function migrerTabac() {
+    if (S.tabacFait || !S.db || S.canWrite === false || !S.allExpOk || !S.meta || S.meta.tabac19) return;
+    S.tabacFait = true;
+    var l = (S.allExp || []).filter(function (x) { return !x.carte && x.categorie !== "Tabac" && RE_TABAC.test(x.libelle || ""); }), seq = Promise.resolve();
+    l.forEach(function (x) { seq = seq.then(function () { return S.db.doc("depenses/" + x.id).update({ categorie: "Tabac" }); }); });
+    seq.then(function () { return S.db.doc("local/meta").set(Object.assign({}, S.meta || {}, { tabac19: true })); })
+      .then(function () { if (l.length) toast(l.length + (l.length > 1 ? " dépenses rangées" : " dépense rangée") + " dans la nouvelle catégorie Tabac."); }, function () { S.tabacFait = false; });
+  }
+  /* Même nom que d'autres dépenses : la catégorie suit */
+  function memeLib(a, b) { var ka = impCleLib(a || ""), kb = impCleLib(b || ""); return ka ? ka === kb : impNorm(a || "").trim() === impNorm(b || "").trim() && !!impNorm(a || "").trim(); }
+  function catDuNom(lib) {
+    if (!lib || lib.length < 3) return null;
+    var l = (S.allExp || []).filter(function (x) { return !x.carte && x.categorie && memeLib(x.libelle, lib); }).sort(function (x, y) { return String(y.creeLe || y.date).localeCompare(String(x.creeLe || x.date)); });
+    if (l.length) return l[0].categorie;
+    return RE_TABAC.test(lib) ? "Tabac" : null;
+  }
+  $("f-cat").addEventListener("change", function () { this.dataset.touched = "1"; });
+  $("f-libelle").addEventListener("change", function () {
+    if (S.mode !== "dep" || S.editExp || $("f-cat").dataset.touched) return;
+    var c = catDuNom(this.value.trim()); if (c && CATS.indexOf(c) >= 0) $("f-cat").value = c;
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-cat-toutes]"); if (!b || !S.editExp) return;
+    e.preventDefault(); S.editExp.toutes = b.dataset.catToutes === "1"; enregistrerEdition();
+  });
 
   /* Prévision sur 3 mois, compte par compte */
   function moyennePaie() {
@@ -7284,7 +7371,7 @@ html { touch-action: manipulation; }
     if (xc) {
       var paies = xc.pr.mois.slice(1).filter(function (m) { return m.paie > 0; }).map(function (m) { return fmtM.format(dateOf(m.p.fin)) + " " + eur0.format(m.paie); });
       h += '<p class="note">Estimation : ' + (paies.length ? "ta paie prévue (" + esc(paies.join(", ")) + "), " : "") + "tous tes prélèvements, ton épargne et les virements prévus, et tes budgets du mois sur " + esc(courtCompte(xc.c[0])) +
-        " (courses, essence, shopping, restos et sorties). La santé, les enfants et la maison se paient avec ce qui reste." +
+        " (courses, essence, " + (Number(xc.pr.conseil.tabac) > 0 ? "tabac, " : "") + "shopping, restos et sorties). La santé, les enfants et la maison se paient avec ce qui reste." +
         (pv.length > 1 ? " Les autres comptes suivent leur rythme de dépenses." : "") + (ro ? "" : ' <button type="button" class="link-btn" data-vc-open="1">Régler le conseiller</button>') + "</p></div>";
     } else {
       var moy = pv[0].pr.moy;
@@ -7418,7 +7505,7 @@ html { touch-action: manipulation; }
       renderAll(); paRender(); renderBanner();
       if (S.tab === "reglages") renderReglages();
     }, onError);
-    db.doc("local/meta").onSnapshot(function (s) { S.meta = s.exists ? s.data() : {}; renderBanner(); if (S.loaded) { renderConseil(); renderSoldes(); } }, onError);
+    db.doc("local/meta").onSnapshot(function (s) { S.meta = s.exists ? s.data() : {}; migrerTabac(); renderBanner(); if (S.loaded) { renderConseil(); renderSoldes(); } }, onError);
     db.doc("config/imports").onSnapshot(function (s) { S.imports = s.exists ? s.data() : null; }, onError);
     try { var user = await c.use("user"); S.canWrite = user ? await user.can("data.write") : null; } catch (e) { S.canWrite = null; }
     db.collection("periodes").onSnapshot(function (snap) {
@@ -7451,7 +7538,7 @@ html { touch-action: manipulation; }
     paStart(db);
     function docsOf(snap) { return snap.docs.filter(function (d) { return d.exists; }).map(function (d) { return Object.assign({ id: d.id }, d.data()); }); }
     db.doc("config/soldes").onSnapshot(function (s) { S.soldes = s.exists ? s.data() : null; renderAll(); }, onError);
-    db.collection("depenses").onSnapshot(function (s) { S.allExp = docsOf(s); renderSoldes(); renderBilans(); renderCartes(); renderAttente(); rechercher(); if (S.loaded) { renderEvolution(); renderRegles(); } cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
+    db.collection("depenses").onSnapshot(function (s) { S.allExp = docsOf(s); S.allExpOk = true; migrerTabac(); renderSoldes(); renderBilans(); renderCartes(); renderAttente(); rechercher(); if (S.loaded) { renderEvolution(); renderRegles(); } cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
     db.collection("cartes").onSnapshot(function (s) { S.cartes = docsOf(s); renderCartes(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
     db.collection("credits").onSnapshot(function (s) { S.credits = docsOf(s); if (S.loaded) { renderCredits(); renderRegles(); renderSoldes(); renderTiles(); } }, onError);
     db.doc("config/regles").onSnapshot(function (s) { S.regles = s.exists ? s.data() : null; if (S.loaded) renderRegles(); }, onError);
