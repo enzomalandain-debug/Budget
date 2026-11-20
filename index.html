@@ -908,6 +908,22 @@ html { touch-action: manipulation; }
 #f-cagm[readonly] { color: var(--ink-2); }
 .tiles > .tile:last-child:nth-child(odd) { grid-column: 1 / -1; min-height: 0; }
 
+.vc-l { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.vc-l li { overflow-wrap: anywhere; }
+.vc-l b { color: var(--ink); }
+.vc-sel { height: 32px; max-width: 100%; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); padding: 0 6px; font-size: 13px; }
+.vc-pris { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.vc-fin .env-left { font-size: 22px; }
+.vc-fin.bas { border-color: var(--warn); }
+.vc-form .row.two { align-items: end; }
+.led-more { border-top: 1px dashed var(--line); padding-top: 8px; display: grid; gap: 10px; }
+.led-more > summary { cursor: pointer; font-weight: 700; color: var(--accent); font-size: 14px; min-height: 32px; display: flex; align-items: center; }
+.led-more[open] { display: grid; gap: 10px; }
+.prev-t tr.prev-sub th, .prev-t tr.prev-sub td { font-size: 13px; color: var(--ink-2); font-weight: 600; }
+.prev-t tr.prev-sub td.pos { color: var(--good); }
+.sec > *, .subpanel > *, #evo { min-width: 0; }
+.evo-chips { max-width: 100%; }
+
 </style>
 
 <div class="wrap">
@@ -984,6 +1000,10 @@ html { touch-action: manipulation; }
   </section>
   </div>
   <div class="subpanel" data-subpanel="mois" hidden>
+  <section class="sec" id="conseiller-sec" aria-labelledby="conseiller-title" hidden>
+    <div class="sec-head"><h2 id="conseiller-title">Ton conseiller</h2></div>
+    <div id="conseiller"></div>
+  </section>
   <section class="sec" id="conseil-sec" aria-labelledby="conseil-title">
     <div class="sec-head"><h2 id="conseil-title">Conseil du mois</h2></div>
     <div id="conseil"></div>
@@ -1104,7 +1124,7 @@ html { touch-action: manipulation; }
     <p class="note">Remet l'application à zéro sur ce téléphone. Fais une sauvegarde avant.</p>
     <button class="btn ghost" id="wipe-btn" type="button">Tout effacer</button>
     <div class="confirm" id="wipe-confirm" hidden>Effacer toutes les données de ce téléphone ?<button type="button" class="link-btn danger" id="wipe-yes">Tout effacer</button><button type="button" class="link-btn" id="wipe-no">Annuler</button></div>
-    <p class="note app-v">Paie &amp; Budget · version 1.7</p>
+    <p class="note app-v">Paie &amp; Budget · version 1.8</p>
   </section>
   </div>
 
@@ -1371,7 +1391,7 @@ html { touch-action: manipulation; }
   function revAmount(p, x) { var q = lienPaie(p.id, x); return q ? Number(q.netPaye) : (Number(x.montant) || 0); }
   function totalRev(p) { return (p.revenus || []).reduce(function (s, x) { return s + revAmount(p, x); }, 0); }
   function calc(p) {
-    var avail = totalRev(p) + total(S.incomes) - total(p.charges) - total(p.epargne);
+    var avail = totalRev(p) + total(S.incomes) - totalCharges(p) - totalEpargne(p);
     var spent = totalB(dailyExpenses()), t = todayISO(), len = daysBetween(p.debut, p.fin) + 1;
     var phase, daysLeft, elapsed;
     if (t < p.debut) { phase = "before"; daysLeft = len; elapsed = 0; }
@@ -1392,9 +1412,13 @@ html { touch-action: manipulation; }
       return b;
     });
     var nidC = end.getFullYear() + "-" + pad(end.getMonth() + 1);
-    var charges = clone(p.charges || []).filter(function (x) { return !x.ponctuel && !x.plan && !(x.echeance && x.echeance.n >= x.echeance.total) && !(typeof creditTermine === "function" && creditTermine(x, nidC)); })
-      .map(function (x) { if (x.echeance) x.echeance.n += 1; delete x.passe; delete x.passeLe; return x; });
-    var epargne = clone(p.epargne || []).map(function (x) { delete x.passe; delete x.passeLe; return x; });
+    var charges = clone(p.charges || []).filter(function (x) { return !x.ponctuel && !x.plan && !(x.echeance && x.echeance.n >= x.echeance.total) && !(typeof creditTermine === "function" && creditTermine(x, nidC)) && ligneActive(x, nidC); })
+      .map(function (x) { if (x.echeance) x.echeance.n += 1; delete x.passe; delete x.passeLe; return vcDes(x, nidC); });
+    var epargne = clone(p.epargne || []).filter(function (x) { return ligneActive(x, nidC); }).map(function (x) { delete x.passe; delete x.passeLe; return vcDes(x, nidC); });
+    if (vcCfg() && nidC >= vcCfg().depuis) budgets = vcBudgets(budgets, newLen, vcCfg());
+    /* Les échéances des paiements en plusieurs fois tombent aussi dans les mois pas encore créés (prévision) */
+    var debIso = isoOf(debut), finIso = isoOf(end);
+    (S.plans || []).forEach(function (x) { if (!x.premiere || !(Number(x.montantEcheance) > 0)) return; planDates(x).forEach(function (d, k) { if (d >= debIso && d <= finIso && !charges.some(function (c) { return c.plan === x.id && c.echeance && c.echeance.n === k + 1; })) charges.push({ libelle: x.libelle, montant: Number(x.montantEcheance), compte: x.compte, jour: "le " + dateOf(d).getDate(), echeance: { n: k + 1, total: Number(x.nombre) }, plan: x.id, note: "Paiement en plusieurs fois" }); }); });
     var virements = clone(p.virements || []).filter(function (x) { return !x.ponctuel; }).map(function (x) { delete x.fait; delete x.faitLe; return x; });
     var nid = end.getFullYear() + "-" + pad(end.getMonth() + 1);
     var revenus = clone(p.revenus || []).map(function (x) {
@@ -1449,6 +1473,7 @@ html { touch-action: manipulation; }
       (p.revenus || []).forEach(function (x) { if (x.compte === compte && x.recu && apres(x.recuLe, le)) mv(1, x.recuMontant != null ? x.recuMontant : x.montant, x.recuLe, x.libelle); });
       (p.virements || []).forEach(function (x) { if (x.fait && apres(x.faitLe, le) && (x.de === compte || x.vers === compte)) mv(x.vers === compte ? 1 : -1, x.montant, x.faitLe, "Virement " + x.de + " → " + x.vers); });
     });
+    S.periods.forEach(function (p) { rembCagnotte(p, compte).forEach(function (r) { var d = r.d ? isoOf(r.d) : ""; if (d && d > jourRel && d <= todayISO()) mv(1, r.m, d + "T06:00:00.000Z", r.lib); }); });
     (S.mouvements || []).forEach(function (x) { if (x.compte === compte && neuf(x.le, x.date)) mv(Number(x.sens) || -1, x.montant, x.le, x.libelle); });
     ops.sort(function (a, b) { return b.t.localeCompare(a.t); });
     return { montant: r2(v), base: Number(a.montant), le: le, n: n, ops: ops, attente: r2(att) };
@@ -1458,6 +1483,7 @@ html { touch-action: manipulation; }
     var p = periodFor(todayISO()); if (!p) return null;
     var out = 0, inn = 0;
     ["charges", "epargne"].forEach(function (ln) { (p[ln] || []).forEach(function (x) { if (x.compte === compte && !x.passe) out += Number(x.montant) || 0; }); });
+    rembCagnotte(p, compte).forEach(function (r) { if (r.d && isoOf(r.d) > todayISO()) inn += r.m; });
     (p.virements || []).forEach(function (x) { if (!x.fait) { if (x.de === compte) out += Number(x.montant) || 0; if (x.vers === compte) inn += Number(x.montant) || 0; } });
     return { p: p, out: r2(out), inn: r2(inn) };
   }
@@ -1478,6 +1504,7 @@ html { touch-action: manipulation; }
     function add(d, lib, m) { var k = !d ? p.fin : isoOf(d) < t ? t : isoOf(d) > p.fin ? p.fin : isoOf(d); (ev[k] = ev[k] || []).push({ lib: lib + (d ? "" : " (date inconnue)"), m: r2(m) }); }
     ["charges", "epargne"].forEach(function (ln) { (p[ln] || []).forEach(function (x) { if (x.compte === compte && !x.passe && (Number(x.montant) || 0) > 0) add(itemDate(p, x), x.libelle, -Number(x.montant)); }); });
     (p.virements || []).forEach(function (x) { if (!x.fait && (Number(x.montant) || 0) > 0) { if (x.de === compte) add(itemDate(p, x), "Virement vers " + x.vers, -Number(x.montant)); if (x.vers === compte) add(itemDate(p, x), "Virement de " + x.de, Number(x.montant)); } });
+    rembCagnotte(p, compte).forEach(function (r) { if (r.d && isoOf(r.d) > t) add(r.d, r.lib, r.m); });
     var pts = [], v = i.montant, min = null;
     for (var d = t, k = 0; d <= p.fin && k < 40; d = isoOf(new Date(dateOf(d).getFullYear(), dateOf(d).getMonth(), dateOf(d).getDate() + 1)), k++) {
       var e = ev[d] || [];
@@ -1701,7 +1728,7 @@ html { touch-action: manipulation; }
     var rev = r2(revDetail.reduce(function (t, x) { return t + (x.recu != null ? x.recu : x.prevu); }, 0) + total(incs));
     var charges = r2(total(p.charges)), epargne = r2(total(p.epargne)), spent = totalB(daily), reste = r2(rev - charges - epargne - spent);
     var cats = catsDe(daily);
-    var budgets = (p.budgets || []).map(function (b) { return { lib: b.libelle || b.categorie, cat: b.categorie, prevu: Number(b.montant) || 0, reel: cats[b.categorie] || 0 }; });
+    var budgets = (p.budgets || []).map(function (b) { return { lib: b.libelle || b.categorie, cat: b.categorie, prevu: vcPrevu(p, b), reel: vcCats(b).reduce(function (t2, k) { return t2 + (cats[k] || 0); }, 0) }; });
     var oublis = (p.charges || []).concat(p.epargne || []).filter(function (x) { return !x.passe && (Number(x.montant) || 0) > 0; });
     var vers = r2(total(S.versements.filter(function (v) { return !v.epargne && v.date >= p.debut && v.date <= p.fin; })));
     var epReel = r2(total((p.epargne || []).filter(function (x) { return x.passe; })) + vers);
@@ -1767,7 +1794,7 @@ html { touch-action: manipulation; }
     } else card.hidden = true;
   }
 
-  function renderAll() { if (typeof renderFirstMonth === "function") { renderFirstMonth(); renderBanner(); } var p = current(); renderHeader(p); renderHero(p); renderSoldes(); renderBilans(); renderConseil(); renderAnalyse(); renderPrets(); renderPlans(); renderCartes(); renderCredits(); renderEvolution(); renderRegles(); renderEnvelopes(); renderBudgets(p); renderPending(p); renderForm(p); renderList(p); renderGoals(); renderLedger(p); renderTiles(); }
+  function renderAll() { if (typeof renderFirstMonth === "function") { renderFirstMonth(); renderBanner(); } var p = current(); renderHeader(p); renderHero(p); renderSoldes(); renderBilans(); renderConseil(); renderAnalyse(); renderPrets(); renderPlans(); renderCartes(); renderCredits(); renderEvolution(); renderRegles(); renderEnvelopes(); renderBudgets(p); renderPending(p); renderForm(p); renderList(p); renderGoals(); renderLedger(p); renderConseiller(); renderTiles(); }
 
   /* Date approximative d'un prélèvement dans le mois, d'après son texte « jour » */
   function itemDate(p, x) {
@@ -1966,6 +1993,8 @@ html { touch-action: manipulation; }
 
   function renderBudgets(p) {
     var box = $("budgets"), list = p && !S.failed ? (p.budgets || []) : [];
+    var vst = !S.failed && list.length ? vcEtat(p) : null;
+    if (vst) { if (box.contains(document.activeElement) && document.activeElement.tagName === "SELECT") return; box.hidden = false; box.innerHTML = vcBudgetsHTML(p, vst); return; }
     box.hidden = list.length === 0;
     if (!list.length) { box.innerHTML = ""; return; }
     var c = calc(p), timeFrac = c.elapsed / c.len;
@@ -2118,12 +2147,14 @@ html { touch-action: manipulation; }
     var box = $("ledger"), next = $("next-btn");
     if (!p) { box.innerHTML = ""; next.hidden = true; return; }
     var ro = S.canWrite === false;
+    var vcSt = vcEtat(p);
     function row(listName, x, i) {
       var lp = listName === "revenus" ? lienPaie(p.id, x) : null;
       var tag = lp ? '<span class="pill ' + (lp.statut === "recue" ? "good" : "neutral") + ' sm">' + (lp.statut === "recue" ? "paie reçue" : lp.statut === "prevision" ? "prévision" : "estimation") + "</span>"
         : x.etiquette ? '<span class="pill warn sm">' + esc(x.etiquette) + "</span>" : "";
-      var sub = [x.jour, lp ? lp.detail : x.note].filter(Boolean).map(esc).join(" · ");
-      var amount = esc(eur.format(lp ? Number(lp.netPaye) : (Number(x.montant) || 0)));
+      var sub = [x.jour, lp ? lp.detail : x.note, listName === "charges" || listName === "epargne" ? vcLigneTxt(x) : ""].filter(Boolean).map(esc).join(" · ");
+      var vo = listName === "budgets" && vcSt && x.conseil ? vcSt.get(x.conseil) : null;
+      var amount = esc(eur.format(lp ? Number(lp.netPaye) : vo ? r2(vo.eff - vo.pris) : (Number(x.montant) || 0)));
       var amt = ro || lp ? '<span class="amt ro">' + amount + "</span>"
         : '<button type="button" class="amt" data-list="' + listName + '" data-idx="' + i + '" aria-label="Modifier le montant : ' + esc(x.libelle) + '">' + amount + "</button>";
       var ech = x.echeance && x.echeance.total ? " (" + x.echeance.n + "/" + x.echeance.total + ")" : "";
@@ -2167,10 +2198,11 @@ html { touch-action: manipulation; }
       "<div><dt>Revenus</dt><dd>" + esc(eur.format(totalRev(p))) + "</dd></div>" +
       (S.incomes.length ? "<div><dt>Revenus en plus</dt><dd>+ " + esc(eur.format(total(S.incomes))) + "</dd></div>" : "") +
       "<div><dt>Charges fixes</dt><dd>− " + esc(eur.format(total(p.charges))) + "</dd></div>" +
+      (partsCagnotte(p) > 0 ? "<div><dt>Remboursé par la cagnotte</dt><dd>+ " + esc(eur.format(partsCagnotte(p))) + "</dd></div>" : "") +
       "<div><dt>Épargne et réserves</dt><dd>− " + esc(eur.format(total(p.epargne))) + "</dd></div>" +
       '<div class="grand"><dt>Reste pour le mois</dt><dd>' + esc(eur.format(c.avail)) + "</dd></div></dl>";
     if ((p.budgets || []).length || !ro) {
-      html += '<div class="lgroup">' + head("Budgets du quotidien", total(p.budgets)) + '<ul class="lrows">' +
+      html += '<div class="lgroup">' + head("Budgets du quotidien", vcSt ? r2(vcSt.bs.reduce(function (t2, o) { return t2 + o.eff - o.pris; }, 0)) : total(p.budgets)) + '<ul class="lrows">' +
         (p.budgets || []).map(function (x, i) { return row("budgets", x, i); }).join("") + "</ul>" + ledAdd("budgets") +
         "<p class=\"lfoot\">Ces montants sont pris sur le reste pour le mois : ils ne s'ajoutent pas aux prélèvements.</p></div>";
     }
@@ -2225,7 +2257,8 @@ html { touch-action: manipulation; }
     S.editing = { list: listName, idx: idx, pid: p.id };
     var form = document.createElement("form");
     form.className = "editor";
-    form.innerHTML = '<input id="edit-amount" inputmode="decimal" autocomplete="off" aria-label="Nouveau montant" value="' + esc(num2.format(Number(item.montant) || 0)) + '">' +
+    var vst0 = listName === "budgets" && item.conseil ? vcEtat(p) : null, vo0 = vst0 ? vst0.get(item.conseil) : null;
+    form.innerHTML = '<input id="edit-amount" inputmode="decimal" autocomplete="off" aria-label="Nouveau montant" value="' + esc(num2.format(vo0 ? r2(vo0.eff - vo0.pris) : Number(item.montant) || 0)) + '">' +
       '<button type="submit" class="mini">OK</button><button type="button" class="mini ghost" data-cancel="1">Annuler</button>';
     btn.replaceWith(form);
     var input = form.querySelector("input"); input.focus(); input.select();
@@ -2237,6 +2270,7 @@ html { touch-action: manipulation; }
       if (!cur || cur.id !== S.editing.pid) { S.editing = null; renderAll(); return; }
       var list = clone(cur[listName] || []);
       if (!list[idx]) { S.editing = null; renderAll(); return; }
+      if (listName === "budgets" && list[idx].conseil && vcActif(cur)) { S.editing = null; if (!vcEditerBudget(cur, idx, v)) renderAll(); return; }
       list[idx].montant = v;
       if (listName === "budgets") { delete list[idx].parSemaine; list[idx].jour = "environ " + eur0.format(Math.round(v / (daysBetween(cur.debut, cur.fin) + 1) * 7)) + " par semaine"; }
       var patch = {}; patch[listName] = list;
@@ -4337,7 +4371,9 @@ html { touch-action: manipulation; }
     var p = current(), envBefore = env ? (Number(env.budget) || 0) - envSpent(env) : null;
     var before = !env && p && per.id === p.id ? calc(p).left : null, sTxt = soldeApres(doc.compte, -montant, doc.attente ? null : date);
     var extra = (doc.horsBudget ? (doc.horsBudget >= montant ? " Hors budget." : " Dont " + eur.format(doc.horsBudget) + " hors budget.") : "") + (doc.attente ? " En attente : elle se validera à l'import ou avec « C'est passé »." : "");
+    var vcMsg = vcMsgDepense(per, doc);
     if (cagF) extra = " " + cagF.msg + (doc.horsBudget > cagF.montant + 0.004 ? " Dont " + eur.format(r2(doc.horsBudget - cagF.montant)) + " d'autre hors budget." : "") + (doc.attente ? " En attente : elle se validera à l'import ou avec « C'est passé »." : "");
+    extra += vcMsg;
     write(function () { return cagEnregistrer(null, cagF, doc, function (x) { return S.db.collection("depenses").add(x); }); }).then(function (ok) {
       if (!ok) return;
       $("f-montant").value = ""; $("f-libelle").value = ""; formOptsVider(); closeSheet();
@@ -4418,7 +4454,7 @@ html { touch-action: manipulation; }
   })();
 
   /* ================= Version hors ligne : réglages, bienvenue, sauvegarde, premier mois, lignes du budget ================= */
-  var APP_VERSION = "1.7";
+  var APP_VERSION = "1.8";
   var ROULEMENT_TYPE = {"jours": ["1", "1", "2", "2", "2", "JNT", "R", "R", "JNT", "1", "1", "3", "3", "3", "JNT", "R", "JNT", "JN", "1", "2", "2", "3", "3", "JNT", "R", "JNT", "1", "1", "2", "2", "3", "3", "JNT", "JNT", "R"], "libelles": {"1": "1 · 6h–14h", "2": "2 · 14h–22h", "3": "3 · 22h–6h", "JN": "JN", "JNT": "JNT", "R": "R"}};
   var MODELE_VIERGE = {"decalage": 1, "rubriques": [{"code": "HS_NE", "libelle": "Heures sup. 25 % non exonérées", "unite": "h", "taux": 0}, {"code": "HS_EXO", "exo": true, "libelle": "Heures sup. 25 % exonérées", "unite": "h", "taux": 0}, {"code": "PAO", "libelle": "Heures de PAO", "unite": "h", "taux": 0}, {"code": "INCOMMODES", "libelle": "Heures incommodes 66 %", "unite": "h", "taux": 0}, {"code": "RAPPEL", "libelle": "Heures de rappel", "unite": "h", "taux": 0}, {"code": "APPEL", "libelle": "Heures d'appel", "unite": "h", "taux": 0}, {"code": "FERIES", "libelle": "Jours fériés payés 100 %", "unite": "h", "taux": 0}, {"code": "FERIES_233", "libelle": "Jours fériés payés 233 % (Noël, jour de l'an)", "unite": "h", "taux": 0}, {"code": "PENIBLES", "libelle": "Travaux pénibles 20 %", "unite": "h", "taux": 0}, {"code": "HABILLAGE", "libelle": "Habillage / déshabillage", "unite": "u", "taux": 0}, {"code": "REMPLACEMENT", "controle": false, "libelle": "Jours de remplacement", "unite": "jour", "taux": 0}, {"code": "QUART_HS", "derive": ["HS_NE", "HS_EXO"], "libelle": "Prime de quart sur heures sup.", "unite": "h", "taux": 0}, {"code": "RET_QUART", "derive": ["INCOMMODES"], "libelle": "Retenue quart", "unite": "h", "taux": 0}, {"code": "TF", "libelle": "Tickets flexibilité (8 h par TF)", "unite": "h", "taux": 0}], "fixes": [{"libelle": "Salaire de base", "montant": 0}, {"libelle": "Prime d'ancienneté", "montant": 0}, {"libelle": "Prime de transport P/I", "montant": 0}, {"libelle": "Prime de quart", "montant": 0}, {"libelle": "Prime mensuelle", "montant": 0}, {"imposable": false, "libelle": "Forfait prime de panier", "montant": 0}], "nonSoumis": [{"libelle": "Prime de transport NP/NI", "montant": 0}, {"libelle": "Prime panier non passible", "montant": 0}], "cotis": {"csgAjout": 0, "csgAssiette": 98.25, "csgDed": 6.8, "csgNonDed": 2.9, "deplafonnee": 0.4, "fixes": 0, "hsNetFiscal": 93.32, "pass": 4005, "plafonnee": 11.61, "reducHS": 10.66, "reintegration": 0, "t2": 8.45}, "tauxPAS": 0};
   var PROFIL = null;
@@ -4667,7 +4703,7 @@ html { touch-action: manipulation; }
   /* ---------- Lignes du budget : ajouter, renommer, supprimer ---------- */
   var LED_LISTS = { revenus: "un revenu", charges: "un prélèvement", epargne: "une épargne", budgets: "un budget du quotidien" };
   function ledFormHTML(list, x, idx) {
-    var isB = list === "budgets", m = idx >= 0 ? Number(x.montant) || 0 : null;
+    var isB = list === "budgets", vst = isB && x.conseil ? vcEtat(current()) : null, vo = vst ? vst.get(x.conseil) : null, m = idx >= 0 ? (vo ? r2(vo.eff - vo.pris) : Number(x.montant) || 0) : null;
     var h = '<li class="lrow ledrow"><form class="pform ledform" data-ledform="' + list + ":" + idx + '" novalidate>';
     if (isB) h += '<label class="f"><span>Catégorie</span><select name="cat">' + CATS.map(function (c) { return '<option value="' + esc(c) + '"' + (x.categorie === c ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select></label>";
     else h += '<label class="f"><span>Libellé</span><input name="lib" maxlength="60" autocomplete="off" value="' + esc(x.libelle || "") + '" placeholder="' + (list === "revenus" ? "ex. Salaire, CAF" : list === "epargne" ? "ex. Livret A" : "ex. Loyer, assurance auto") + '"></label>';
@@ -4675,6 +4711,7 @@ html { touch-action: manipulation; }
     if (!isB) h += '<label class="f"><span>Compte</span><select name="c">' + COMPTES.map(function (c) { return '<option value="' + esc(c[0]) + '"' + (x.compte === c[0] ? " selected" : "") + ">" + esc(courtCompte(c[0])) + "</option>"; }).join("") + "</select></label>";
     h += "</div>";
     if (!isB) h += '<label class="f"><span>Quand (facultatif)</span><input name="j" maxlength="30" autocomplete="off" value="' + esc(x.jour || "") + '" placeholder="ex. le 5, vers le 28"></label>';
+    h += vcOptionsHTML(list, x, current());
     if (list === "revenus") h += '<label class="chkline"><input type="checkbox" name="sal"' + (x.lien === "bulletin" ? " checked" : "") + "> C'est mon salaire : le montant vient de « Ma paie »</label>";
     h += '<p class="form-msg" role="alert"></p><div class="acts"><button type="submit" class="mini">' + (idx < 0 ? "Ajouter" : "Enregistrer") + '</button><button type="button" class="mini ghost" data-ledcancel="1">Annuler</button>' +
       (idx >= 0 ? '<button type="button" class="link-btn danger" data-leddel="' + list + ":" + idx + '">Supprimer</button>' : "") + "</div></form></li>";
@@ -4706,13 +4743,22 @@ html { touch-action: manipulation; }
     var val = function (n) { var el = f.querySelector('[name="' + n + '"]'); return el ? String(el.value || "").trim() : ""; };
     var m = parseAmount(val("m") || "0", true);
     if (isNaN(m)) { msg.textContent = "Montant invalide : écris par exemple 89,00"; return; }
+    if (list === "budgets" && idx >= 0 && x.conseil && vcActif(p)) { S.ledForm = null; if (!vcEditerBudget(p, idx, m)) renderLedger(p); return; }
+    var oldLib = x.libelle, oldC = x.compte, vErr = vcOptionsLire(f, list, x);
+    if (vErr) { msg.textContent = vErr; return; }
     if (list === "budgets") { x.categorie = val("cat"); x.libelle = x.libelle && idx >= 0 ? x.libelle : val("cat"); }
     else { if (!val("lib")) { msg.textContent = "Donne un nom à cette ligne."; return; } x.libelle = val("lib"); x.compte = val("c"); if (val("j")) x.jour = val("j"); else delete x.jour; }
     x.montant = m;
     if (list === "revenus") { var s = f.querySelector('[name="sal"]'); if (s && s.checked) x.lien = "bulletin"; else delete x.lien; }
+    vcDes(x, p.id);
     if (idx < 0) arr.push(x);
     var patch = {}; patch[list] = arr; S.ledForm = null;
-    write(function () { return S.db.doc("periodes/" + p.id).update(patch); }, (idx < 0 ? "Ajouté : " : "Modifié : ") + (x.libelle || x.categorie));
+    var autres = idx >= 0 && (list === "charges" || list === "epargne") ? vcPropager(p, list, x, oldLib, oldC) : [];
+    write(function () {
+      var seq = S.db.doc("periodes/" + p.id).update(patch);
+      autres.forEach(function (a) { seq = seq.then(function () { return S.db.doc("periodes/" + a[0]).update(a[1]); }); });
+      return seq;
+    }, (idx < 0 ? "Ajouté : " : "Modifié : ") + (x.libelle || x.categorie) + (autres.length ? ", aussi dans " + autres.length + (autres.length > 1 ? " mois déjà créés." : " mois déjà créé.") : ""));
   });
 
   /* ---------- Nouveau projet ---------- */
@@ -6839,6 +6885,325 @@ html { touch-action: manipulation; }
     }, (old ? "Crédit modifié" : "Crédit ajouté") + (fin ? " : dernière mensualité en " + nomMois(fin) : "") + (nMois ? ", retiré de " + nMois + (nMois > 1 ? " mois déjà créés." : " mois déjà créé.") : "."));
   });
 
+  /* ---------- 1.8 : le conseiller ----------
+     Lignes du plan : dernier mois, nouveau montant à partir d'un mois, part remboursée par la cagnotte.
+     Budgets du mois (courses, essence, shopping, restos et sorties) à la place du rythme de dépenses,
+     et vases communicants : un budget dépassé ou augmenté est repris sur un autre. */
+  function vcMois(id, k) { var y = +String(id).slice(0, 4), m = +String(id).slice(5, 7) + (k || 0); while (m > 12) { m -= 12; y++; } while (m < 1) { m += 12; y--; } return y + "-" + pad(m); }
+  function vcNomMois(id) { return fmtMonth.format(dateOf(id + "-01")); }
+  function ligneActive(x, pid) { return !(x && x.fin && pid > x.fin); }
+  function ligneMontant(x, pid) { return x.des && pid >= x.des && isFinite(Number(x.desMontant)) ? Number(x.desMontant) : Number(x.montant) || 0; }
+  /* Fin du crédit remboursé par la cagnotte (réglage de La Cagnotte), relue au plus toutes les 2 secondes */
+  function cagFinCredit() {
+    if (S.cagFinT && Date.now() - S.cagFinT < 2000) return S.cagFin;
+    var d = cagLire(), st = d && d.settings && d.settings.main;
+    S.cagFin = st && st.creditEndMonth ? String(st.creditEndMonth) : ""; S.cagJour = st && parseInt(st.creditDay, 10) || 1; S.cagFinT = Date.now();
+    return S.cagFin;
+  }
+  function partCagnotte(x, pid) {
+    var a = Number(x && x.cagnotte) || 0; if (a <= 0 || !ligneActive(x, pid)) return 0;
+    var f = cagFinCredit(); if (f && pid > f) return 0;
+    return r2(Math.min(a, ligneMontant(x, pid)));
+  }
+  function cagJourCredit() { cagFinCredit(); return S.cagJour || 1; }
+  /* La part remboursée arrive de la cagnotte le jour de son crédit (le 1er par défaut) */
+  function rembCagnotte(p, compte) {
+    var out = [];
+    (p.charges || []).forEach(function (x) { if (compte && x.compte !== compte) return; var m = partCagnotte(x, p.id); if (m > 0) out.push({ d: itemDate(p, { jour: "le " + cagJourCredit() }), m: m, lib: "Remboursé par la cagnotte (" + (x.libelle || "crédit") + ")" }); });
+    return out;
+  }
+  function chargeNette(x, pid) { return ligneActive(x, pid) ? r2(ligneMontant(x, pid) - partCagnotte(x, pid)) : 0; }
+  function totalCharges(p) { return r2((p.charges || []).reduce(function (s, x) { return s + chargeNette(x, p.id); }, 0)); }
+  function totalEpargne(p) { return r2((p.epargne || []).reduce(function (s, x) { return s + (ligneActive(x, p.id) ? ligneMontant(x, p.id) : 0); }, 0)); }
+  function partsCagnotte(p) { return r2((p.charges || []).reduce(function (s, x) { return s + partCagnotte(x, p.id); }, 0)); }
+  /* Mois suivant : une ligne s'arrête après son dernier mois, et prend son nouveau montant le mois venu */
+  function vcDes(x, nid) { if (x.des && nid >= x.des) { if (isFinite(Number(x.desMontant))) x.montant = Number(x.desMontant); delete x.des; delete x.desMontant; } return x; }
+  function vcLigneTxt(x) {
+    return [x.cagnotte ? "dont " + eur.format(Number(x.cagnotte)) + " remboursés par la cagnotte" : "",
+      x.des ? eur.format(Number(x.desMontant) || 0) + " à partir de " + vcNomMois(x.des) : "",
+      x.fin ? "jusqu'en " + vcNomMois(x.fin) : ""].filter(Boolean).join(" · ");
+  }
+
+  var VC_DEF = { courses: { cat: "Courses", lib: "Courses" }, essence: { cat: "Carburant", lib: "Essence" }, shopping: { cat: "Shopping", lib: "Shopping" }, restos: { cat: "Restos & sorties", lib: "Restos et sorties", cats: ["Restos & sorties", "Loisirs"] } };
+  var VC_RANG = ["courses", "essence", "shopping", "restos"];
+  var VC_ORDRE = ["restos", "shopping"];
+  function vcCfg() { var c = S.conseiller; return c && c.actif ? c : null; }
+  function vcActif(p) { var c = vcCfg(); return !!(c && p && p.id >= c.depuis); }
+  function vcCle(b) { return b.conseil || b.categorie; }
+  function vcNom(k) { return k === "fin" ? "la fin de mois" : VC_DEF[k] ? VC_DEF[k].lib : k; }
+  function vcCats(b) { return b.conseil && VC_DEF[b.conseil] && VC_DEF[b.conseil].cats ? VC_DEF[b.conseil].cats : [b.categorie]; }
+  /* Les budgets du conseiller dans la liste d'un mois (les autres budgets restent) */
+  function vcBudgets(list, len, cfg) {
+    var out = clone(list || []);
+    ["courses", "essence", "shopping", "restos"].forEach(function (k) {
+      var d = VC_DEF[k], b = out.filter(function (x) { return x.conseil === k; })[0] || out.filter(function (x) { return !x.conseil && x.categorie === d.cat; })[0];
+      if (!b) { b = { categorie: d.cat }; out.push(b); }
+      b.conseil = k; b.categorie = d.cat; b.libelle = d.lib; delete b.reprise; delete b.etiquette; delete b.note;
+      if (k === "courses") { b.parSemaine = Number(cfg.coursesSem) || 0; b.montant = r2(b.parSemaine * len / 7); b.jour = eur0.format(b.parSemaine) + " par semaine"; }
+      else { delete b.parSemaine; b.montant = k === "restos" ? 0 : Number(cfg[k]) || 0; b.jour = k === "restos" ? "calculé chaque mois" : "par mois"; }
+    });
+    return out;
+  }
+  function vcRevenu(p, x) { var m = revAmount(p, x); if (x.lien === "bulletin" && !lienPaie(p.id, x)) { var moy = moyennePaie(); if (moy) m = moy; } return m; }
+  /* Argent du mois sur le compte du quotidien, après prélèvements, épargne et virements prévus */
+  function vcDispo(p, compte) {
+    var v = 0;
+    (p.revenus || []).forEach(function (x) { if (x.compte === compte) v += vcRevenu(p, x); });
+    (p.virements || []).forEach(function (x) { var m = Number(x.montant) || 0; if (x.vers === compte) v += m; if (x.de === compte) v -= m; });
+    (p.charges || []).forEach(function (x) { if (x.compte === compte) v -= chargeNette(x, p.id); });
+    (p.epargne || []).forEach(function (x) { if (x.compte === compte && ligneActive(x, p.id)) v -= ligneMontant(x, p.id); });
+    return r2(v);
+  }
+  /* L'état des budgets d'un mois : base, virements entre budgets, dépensé, dépassements repris sur les autres */
+  function vcEtat(p, extra) {
+    var cfg = vcCfg(); if (!cfg || !p || p.id < cfg.depuis) return null;
+    var bs = (p.budgets || []).map(function (b, i) { return { b: b, i: i, k: vcCle(b), cats: vcCats(b), recu: [], donne: [], couvert: [], pour: [] }; });
+    bs.sort(function (a, b) { var ra = VC_RANG.indexOf(a.k), rb = VC_RANG.indexOf(b.k); return (ra < 0 ? 9 : ra) - (rb < 0 ? 9 : rb); });
+    var dispo = vcDispo(p, cfg.compte), autres = 0, aRestos = false;
+    bs.forEach(function (o) { if (o.k === "restos") aRestos = true; else { o.base = Number(o.b.montant) || 0; autres += o.base; } });
+    var R0 = r2(Math.max(0, Math.min(Number(cfg.plafond) || 0, dispo - (Number(cfg.coussin) || 0) - autres)));
+    bs.forEach(function (o) { if (o.k === "restos") o.base = R0; });
+    var fin = { k: "fin", base: r2(dispo - autres - (aRestos ? R0 : 0)), recu: [], donne: [], couvert: [], pour: [], spent: 0 };
+    var get = function (k) { return k === "fin" ? fin : bs.filter(function (o) { return o.k === k; })[0]; };
+    (p.vases || []).forEach(function (v) { var a = get(v.de), b = get(v.vers), m = Number(v.montant) || 0; if (!a || !b || a === b || m <= 0) return; a.donne.push(v); b.recu.push(v); });
+    var exps = (S.allExp || []).filter(function (x) { return x.periode === p.id && !x.carte && !isEnvExpense(x); }).concat(extra || []);
+    [fin].concat(bs).forEach(function (o) {
+      o.in = r2(o.recu.reduce(function (s, v) { return s + (Number(v.montant) || 0); }, 0));
+      o.out = r2(o.donne.reduce(function (s, v) { return s + (Number(v.montant) || 0); }, 0));
+      o.eff = r2(o.base + o.in - o.out); o.pris = 0;
+      if (o !== fin) o.spent = totalB(exps.filter(function (x) { return o.cats.indexOf(x.categorie) >= 0; }));
+    });
+    bs.forEach(function (o) {
+      o.depasse = r2(Math.max(0, o.spent - (o.eff - o.pris)));
+      var reste = o.depasse, vus = {};
+      if (reste <= 0.004) return;
+      (o.b.prisSur ? [o.b.prisSur] : []).concat(VC_ORDRE, ["fin"]).forEach(function (k) {
+        if (reste <= 0.004 || vus[k] || k === o.k) return; vus[k] = 1;
+        var s = get(k); if (!s) return;
+        var dsp = k === "fin" ? Infinity : Math.max(0, r2(s.eff - s.pris - s.spent)), m = r2(Math.min(reste, dsp));
+        if (m <= 0) return;
+        s.pris = r2(s.pris + m); reste = r2(reste - m);
+        o.couvert.push({ k: k, m: m }); s.pour.push({ k: o.k, m: m });
+      });
+    });
+    bs.forEach(function (o) { o.reste = r2(o.eff - o.pris - o.spent); });
+    fin.reste = r2(fin.eff - fin.pris);
+    return { bs: bs, fin: fin, dispo: dispo, R0: R0, cfg: cfg, get: get };
+  }
+  function vcPrevu(p, b) { var st = vcEtat(p), o = st && b.conseil ? st.get(b.conseil) : null; return o ? r2(o.eff - o.pris) : Number(b.montant) || 0; }
+  /* Augmenter (ou baisser) un budget : la différence est prise sur un autre, ou rendue */
+  function vcChanger(p, k, delta) {
+    var st = vcEtat(p); if (!st) return null;
+    var vases = clone(p.vases || []), o = st.get(k), rep = [];
+    if (!o) return null;
+    if (delta < 0) {
+      var rend = -delta;
+      for (var i = vases.length - 1; i >= 0 && rend > 0.004; i--) {
+        var v = vases[i]; if (v.vers !== k) continue;
+        var m = r2(Math.min(rend, Number(v.montant) || 0)); v.montant = r2((Number(v.montant) || 0) - m); rend = r2(rend - m);
+        rep.push({ k: v.de, m: -m });
+        if (v.montant <= 0.004) vases.splice(i, 1);
+      }
+      if (rend > 0.004) { vases.push({ id: "v" + Date.now().toString(36), de: k, vers: "fin", montant: r2(rend) }); rep.push({ k: "fin", m: -rend }); }
+      return { vases: vases, rep: rep };
+    }
+    var reste = r2(delta), vus = {};
+    (o.b && o.b.prisSur ? [o.b.prisSur] : []).concat(VC_ORDRE, ["fin"]).forEach(function (s) {
+      if (reste <= 0.004 || vus[s] || s === k) return; vus[s] = 1;
+      var src = st.get(s); if (!src) return;
+      var dsp = s === "fin" ? Infinity : Math.max(0, r2(src.eff - src.pris - src.spent)), m = r2(Math.min(reste, dsp));
+      if (m <= 0) return;
+      vases.push({ id: "v" + Date.now().toString(36) + Object.keys(vus).length, de: s, vers: k, montant: m }); rep.push({ k: s, m: m }); reste = r2(reste - m);
+    });
+    return { vases: vases, rep: rep };
+  }
+  function vcRepTxt(p, k, rep) {
+    var st = vcEtat(Object.assign({}, p, { vases: rep.vases })), parts = rep.rep.map(function (r) {
+      var s = st && st.get(r.k), rs = s ? (r.k === "fin" ? s.reste : s.reste) : null;
+      return (r.m > 0 ? eur.format(r.m) + " pris sur " : eur.format(-r.m) + " rendus à ") + vcNom(r.k) + (rs != null ? " (il y reste " + eur.format(rs) + ")" : "");
+    });
+    return vcNom(k) + " : " + parts.join(", ") + ".";
+  }
+  /* Message quand une nouvelle dépense fait dépasser un budget */
+  function vcMsgDepense(per, doc) {
+    if (!vcActif(per) || !doc) return "";
+    var a = vcEtat(per), b = vcEtat(per, [doc]); if (!a || !b) return "";
+    var ob = b.bs.filter(function (o) { return o.cats.indexOf(doc.categorie) >= 0; })[0]; if (!ob) return "";
+    var oa = a.get(ob.k), plus = r2(ob.depasse - (oa ? oa.depasse : 0)); if (plus <= 0.004) return "";
+    return " " + vcNom(ob.k) + " dépassées de " + eur.format(ob.depasse) + " : " + ob.couvert.map(function (c) { var s = b.get(c.k); return "pris sur " + vcNom(c.k) + " (il y reste " + eur.format(s.reste) + ")"; }).join(", ") + ".";
+  }
+
+  /* Cartes des budgets, avec les vases communicants */
+  function vcBudgetsHTML(p, st) {
+    var ro = S.canWrite === false, c = calc(p), timeFrac = c.elapsed / c.len;
+    var opts = function (self, sel) {
+      return ["restos", "shopping", "courses", "essence", "fin"].filter(function (k) { return k !== self && (k === "fin" || st.get(k)); })
+        .map(function (k) { return '<option value="' + k + '"' + (k === sel ? " selected" : "") + ">" + esc(cap(vcNom(k))) + "</option>"; }).join("");
+    };
+    var h = st.bs.map(function (o) {
+      var budget = r2(o.eff - o.pris), left = o.reste, frac = budget > 0 ? Math.max(0, Math.min(1, o.spent / budget)) : (o.spent > 0 ? 1 : 0);
+      var tone = o.depasse > 0.004 ? "warn" : (c.phase === "during" && frac > timeFrac + 0.1 ? "warn" : "ok");
+      var lignes = [];
+      if (o.k === "restos") lignes.push("Calculé pour ce mois : " + eur.format(o.base) + (o.base >= (Number(st.cfg.plafond) || 0) - 0.004 ? " (plafond)" : "") + ".");
+      o.recu.forEach(function (v) {
+        lignes.push('+ ' + esc(eur.format(Number(v.montant) || 0)) + " pris sur " + (ro ? esc(vcNom(v.de)) : '<select class="vc-sel" data-vc-de="' + esc(v.id) + '" aria-label="Pris sur">' + opts(o.k, v.de) + "</select>"));
+      });
+      o.donne.forEach(function (v) { lignes.push("− " + esc(eur.format(Number(v.montant) || 0)) + " pour " + esc(vcNom(v.vers))); });
+      o.pour.forEach(function (x) { lignes.push("− " + esc(eur.format(x.m)) + " pour le dépassement " + (x.k === "essence" ? "de l'" : "des ") + esc(vcNom(x.k).toLowerCase())); });
+      if (o.depasse > 0.004) lignes.push("<b>Dépassé de " + esc(eur.format(o.depasse)) + "</b> : " + o.couvert.map(function (x) { return "pris sur " + esc(vcNom(x.k)) + " (" + esc(eur.format(x.m)) + ")"; }).join(", ") + "." +
+        (ro ? "" : ' <label class="vc-pris">D\'abord sur <select class="vc-sel" data-vc-pris="' + o.i + '" aria-label="Prendre le dépassement sur">' + opts(o.k, o.b.prisSur || (o.k === "restos" ? "shopping" : "restos")) + "</select></label>"));
+      var meta = "Dépensé " + eur.format(o.spent) + " sur " + eur.format(budget);
+      if (left > 0 && c.daysLeft > 0 && c.phase !== "after") meta += " · environ " + eur0.format(Math.round(left / c.daysLeft * 7)) + " par semaine" + (c.phase === "during" ? " d'ici le " + fmtShort.format(dateOf(p.fin)) : "");
+      return '<div class="envcard vc-card"><div class="env-head"><span class="label">Budget ' + esc(vcNom(o.k).toLowerCase()) + "</span>" +
+        '<span class="env-left' + (left < 0 ? " neg" : "") + '">' + esc(eur.format(Math.max(0, left))) + " <small>restants</small></span></div>" +
+        '<div class="bar small"><span class="env-fill tone-' + tone + '" style="width:' + (frac * 100).toFixed(1) + '%"></span>' +
+        (c.phase === "during" ? '<span class="tick" style="left:' + (timeFrac * 100).toFixed(1) + '%"></span>' : "") + "</div>" +
+        '<p class="env-meta">' + esc(meta) + ".</p>" + (lignes.length ? '<ul class="vc-l">' + lignes.map(function (l) { return "<li>" + l + "</li>"; }).join("") + "</ul>" : "") + "</div>";
+    }).join("");
+    var f = st.fin, bas = f.reste < (Number(st.cfg.coussin) || 0) - 0.004;
+    h += '<div class="envcard vc-card vc-fin' + (bas ? " bas" : "") + '"><div class="env-head"><span class="label">Il te reste en fin de mois</span><span class="env-left' + (f.reste < 0 ? " neg" : "") + '">' + esc(eur.format(f.reste)) + "</span></div>" +
+      '<p class="env-meta">' + (bas ? "⚠ Moins que les " + esc(eur.format(Number(st.cfg.coussin) || 0)) + " à garder. " : "Au moins " + esc(eur.format(Number(st.cfg.coussin) || 0)) + " gardés. ") +
+      "Ce que tu ne dépenses pas dans un budget reste aussi en fin de mois. La santé, les enfants et la maison se paient avec cet argent.</p>" +
+      (f.pour.length || f.recu.length || f.donne.length ? '<ul class="vc-l">' + f.pour.map(function (x) { return "<li>− " + esc(eur.format(x.m)) + " pour le dépassement " + (x.k === "essence" ? "de l'" : "des ") + esc(vcNom(x.k).toLowerCase()) + "</li>"; }).join("") +
+        f.donne.map(function (v) { return "<li>− " + esc(eur.format(Number(v.montant) || 0)) + " pour " + esc(vcNom(v.vers)) + "</li>"; }).join("") +
+        f.recu.map(function (v) { return "<li>+ " + esc(eur.format(Number(v.montant) || 0)) + " rendus par " + esc(vcNom(v.de)) + "</li>"; }).join("") + "</ul>" : "") + "</div>";
+    return h;
+  }
+  document.addEventListener("change", function (e) {
+    var t = e.target; if (!t || !t.dataset || S.canWrite === false) return;
+    var p = current(); if (!p || !vcActif(p)) return;
+    if (t.dataset.vcDe) {
+      var vases = clone(p.vases || []), v = vases.filter(function (x) { return x.id === t.dataset.vcDe; })[0]; if (!v) return;
+      v.de = t.value;
+      write(function () { return S.db.doc("periodes/" + p.id).update({ vases: vases }); }, cap(vcNom(v.vers)) + " : " + eur.format(Number(v.montant) || 0) + " pris sur " + vcNom(t.value) + ".");
+    } else if (t.dataset.vcPris != null) {
+      var bud = clone(p.budgets || []), b = bud[Number(t.dataset.vcPris)]; if (!b) return;
+      b.prisSur = t.value;
+      write(function () { return S.db.doc("periodes/" + p.id).update({ budgets: bud }); }, "Dépassement " + (vcCle(b) === "essence" ? "de l'" : "des ") + vcNom(vcCle(b)).toLowerCase() + " : d'abord pris sur " + vcNom(t.value) + ".");
+    }
+  });
+  /* Changer le montant d'un budget du conseiller (fiche « Le mois ») : vases communicants */
+  function vcEditerBudget(p, idx, nouveau) {
+    var b = (p.budgets || [])[idx]; if (!b || !b.conseil || !vcActif(p)) return false;
+    var st = vcEtat(p), o = st && st.get(b.conseil); if (!o) return false;
+    var delta = r2(nouveau - o.eff); if (Math.abs(delta) < 0.005) { toast("Montant inchangé."); return true; }
+    var rep = vcChanger(p, b.conseil, delta); if (!rep) return false;
+    write(function () { return S.db.doc("periodes/" + p.id).update({ vases: rep.vases }); }, vcRepTxt(p, b.conseil, rep));
+    return true;
+  }
+
+  /* Réglage du conseiller (dans « Le mois ») */
+  function vcDefauts() {
+    var cur = periodFor(todayISO()) || current(), c = S.conseiller || {};
+    var cb = cur && (cur.budgets || []).filter(function (b) { return b.categorie === "Courses"; })[0];
+    var sem = c.coursesSem || (cb && (Number(cb.parSemaine) || (cur && Math.round((Number(cb.montant) || 0) * 7 / (daysBetween(cur.debut, cur.fin) + 1))))) || 150;
+    var suivant = cur ? nextFrom(cur).id : null;
+    return { compte: c.compte || (SUIVIS[0] && SUIVIS[0][0]), coursesSem: sem, shopping: c.shopping != null ? c.shopping : 100, essence: c.essence != null ? c.essence : 200,
+      plafond: c.plafond != null ? c.plafond : 300, coussin: c.coussin != null ? c.coussin : 100, depuis: c.depuis || suivant || (cur && cur.id) };
+  }
+  function renderConseiller() {
+    var box = $("conseiller"); if (!box) return;
+    if (S.failed || !S.loaded || !S.periods.length) { box.innerHTML = ""; $("conseiller-sec").hidden = true; return; }
+    if (box.contains(document.activeElement) && /^(INPUT|SELECT)$/.test(document.activeElement.tagName)) return;
+    $("conseiller-sec").hidden = false;
+    var cfg = vcCfg(), ro = S.canWrite === false;
+    if (cfg && !S.vcEdit) {
+      var p = current(), st = p ? vcEtat(p) : null;
+      box.innerHTML = '<div class="envcard"><p class="env-meta">Courses ' + esc(eur0.format(cfg.coursesSem)) + " par semaine · Essence " + esc(eur0.format(cfg.essence)) + " · Shopping " + esc(eur0.format(cfg.shopping)) +
+        " · Restos et sorties jusqu'à " + esc(eur0.format(cfg.plafond)) + " · " + esc(eur0.format(cfg.coussin)) + " gardés en fin de mois. Depuis " + esc(vcNomMois(cfg.depuis)) + ", sur " + esc(courtCompte(cfg.compte)) + ".</p>" +
+        (st ? '<p class="env-meta"><b>' + esc(p.nom || p.id) + "</b> : restos et sorties " + esc(eur.format(st.get("restos") ? st.get("restos").eff : 0)) + ", il te reste " + esc(eur.format(st.fin.reste)) + " en fin de mois.</p>" : "") +
+        "<p class=\"env-meta\">Si un budget dépasse, la différence est prise d'abord sur les restos et sorties, puis sur le shopping, puis sur la fin de mois. Les courses et l'essence ne baissent jamais toutes seules.</p>" +
+        (ro ? "" : '<div class="acts"><button type="button" class="mini ghost" data-vc-edit="1">Modifier</button><button type="button" class="link-btn" data-vc-stop="1">Arrêter le conseiller</button></div>') + "</div>";
+      return;
+    }
+    if (ro) { box.innerHTML = '<p class="note">Le conseiller n\'est pas en place.</p>'; return; }
+    var d = vcDefauts(), cur = periodFor(todayISO()) || current();
+    var mois = []; if (cur) { mois.push([cur.id, cur.nom || vcNomMois(cur.id)]); var n1 = nextFrom(cur); mois.push([n1.id, n1.nom]); mois.push([vcMois(n1.id, 1), cap(vcNomMois(vcMois(n1.id, 1)))]); }
+    var num = function (n, v, lab, ph) { return '<label class="f"><span>' + lab + '</span><input name="' + n + '" inputmode="decimal" autocomplete="off" value="' + esc(num2.format(Number(v) || 0)).replace(",00", "") + '"' + (ph ? ' placeholder="' + ph + '"' : "") + "></label>"; };
+    box.innerHTML = '<form class="pform envcard vc-form" id="vc-form" novalidate>' +
+      '<p class="env-meta">' + (cfg ? "Change tes budgets : ils s'appliquent à partir du mois choisi." : "La prévision prend ta paie prévue, tous tes prélèvements, ton épargne et ces budgets, au lieu de ton rythme de dépenses. Le budget restos et sorties se calcule avec ce qui reste, en gardant de l'argent pour la fin du mois.") + "</p>" +
+      '<div class="row two"><label class="f"><span>Compte des dépenses</span><select name="compte">' + SUIVIS.map(function (c) { return '<option value="' + esc(c[0]) + '"' + (c[0] === d.compte ? " selected" : "") + ">" + esc(courtCompte(c[0])) + "</option>"; }).join("") + "</select></label>" +
+      '<label class="f"><span>À partir de</span><select name="depuis">' + mois.map(function (m) { return '<option value="' + esc(m[0]) + '"' + (m[0] === d.depuis ? " selected" : "") + ">" + esc(m[1]) + "</option>"; }).join("") + "</select></label></div>" +
+      '<div class="row two">' + num("coursesSem", d.coursesSem, "Courses (€ par semaine)") + num("essence", d.essence, "Essence (€ par mois)") + "</div>" +
+      '<div class="row two">' + num("shopping", d.shopping, "Shopping (€ par mois)") + num("plafond", d.plafond, "Restos et sorties : au plus (€)") + "</div>" +
+      num("coussin", d.coussin, "Gardé en fin de mois (€)") +
+      '<p class="form-msg" role="alert"></p><div class="acts"><button type="submit" class="mini">' + (cfg ? "Enregistrer" : "Appliquer") + "</button>" + (cfg ? '<button type="button" class="mini ghost" data-vc-cancel="1">Annuler</button>' : "") + "</div></form>";
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-vc-edit], [data-vc-cancel], [data-vc-stop], [data-vc-open]"); if (!b || !S.db) return;
+    if (b.dataset.vcEdit) { S.vcEdit = true; renderConseiller(); return; }
+    if (b.dataset.vcCancel) { S.vcEdit = false; renderConseiller(); return; }
+    if (b.dataset.vcOpen) {
+      showTab("budget"); showSub("mois"); S.vcEdit = !!vcCfg(); renderConseiller();
+      setTimeout(function () { var s = $("conseiller-sec"); if (s) s.scrollIntoView({ block: "start" }); }, 30); return;
+    }
+    if (b.dataset.vcStop) {
+      if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "Confirmer : arrêter le conseiller"; return; }
+      write(function () { return S.db.doc("config/conseiller").set(Object.assign({}, S.conseiller, { actif: false })); }, "Conseiller arrêté : la prévision reprend ton rythme de dépenses.");
+    }
+  });
+  document.addEventListener("submit", function (e) {
+    if (!e.target || e.target.id !== "vc-form") return;
+    e.preventDefault();
+    var f = e.target, msg = f.querySelector(".form-msg"), v = function (n) { return String(f.querySelector('[name="' + n + '"]').value || "").trim(); };
+    var cfg = { actif: true, compte: v("compte"), depuis: v("depuis"), majLe: nowISO() }, bad = null;
+    ["coursesSem", "essence", "shopping", "plafond", "coussin"].forEach(function (k) { var a = parseAmount(v(k) || "0", true); if (isNaN(a) || a < 0) bad = k; else cfg[k] = a; });
+    if (bad) { msg.textContent = "Montant invalide : écris par exemple 200"; return; }
+    var cibles = S.periods.filter(function (q) { return q.id >= cfg.depuis; });
+    S.vcEdit = false;
+    write(function () {
+      var seq = S.db.doc("config/conseiller").set(cfg);
+      cibles.forEach(function (q) { seq = seq.then(function () { return S.db.doc("periodes/" + q.id).update({ budgets: vcBudgets(q.budgets, daysBetween(q.debut, q.fin) + 1, cfg) }); }); });
+      return seq;
+    }, "Conseiller en place à partir de " + vcNomMois(cfg.depuis) + " : courses " + eur0.format(cfg.coursesSem) + " par semaine, essence " + eur0.format(cfg.essence) + ", shopping " + eur0.format(cfg.shopping) + ", restos et sorties jusqu'à " + eur0.format(cfg.plafond) + ".");
+  });
+
+  /* Fiche d'une ligne du plan : plus d'options */
+  function vcOptionsHTML(list, x, p) {
+    if (list !== "charges" && list !== "epargne") return "";
+    var base = p ? p.id : vcMois(todayISO().slice(0, 7), 0), ids = []; for (var k = 0; k < 24; k++) ids.push(vcMois(base, k));
+    var sel = function (name, val, from, vide) { return '<select name="' + name + '"><option value="">' + vide + "</option>" + ids.slice(from).map(function (id) { return '<option value="' + id + '"' + (val === id ? " selected" : "") + ">" + esc(cap(vcNomMois(id))) + "</option>"; }).join("") + "</select>"; };
+    var cagOk = list === "charges" && (cagPrete() || x.cagnotte);
+    var ouvert = x.fin || x.des || x.cagnotte;
+    return '<details class="led-more"' + (ouvert ? " open" : "") + "><summary>Plus d'options</summary>" +
+      '<label class="f"><span>Dernier mois</span>' + sel("fin", x.fin || "", 0, "Pas de fin") + "</label>" +
+      '<div class="row two"><label class="f"><span>Nouveau montant à partir de</span>' + sel("des", x.des || "", 1, "Pas de changement") + "</label>" +
+      '<label class="f"><span>Nouveau montant (€)</span><input name="desm" inputmode="decimal" autocomplete="off" value="' + (x.des ? esc(num2.format(Number(x.desMontant) || 0)) : "") + '" placeholder="ex. 89,00"></label></div>' +
+      (cagOk ? '<label class="f"><span>Remboursé par la cagnotte (€ par mois)</span><input name="cag" inputmode="decimal" autocomplete="off" value="' + (x.cagnotte ? esc(num2.format(Number(x.cagnotte))) : "") + '" placeholder="0,00"></label>' +
+        '<p class="note">Cette part ne compte pas dans le budget' + (cagFinCredit() ? ", jusqu'en " + esc(vcNomMois(cagFinCredit())) + " (fin du crédit dans la cagnotte)" : "") + ".</p>" : "") +
+      "</details>";
+  }
+  /* Lit les options ; rend un message d'erreur ou null */
+  function vcOptionsLire(f, list, x) {
+    if (list !== "charges" && list !== "epargne") return null;
+    var val = function (n) { var el = f.querySelector('[name="' + n + '"]'); return el ? String(el.value || "").trim() : null; };
+    var fin = val("fin"), des = val("des"), desm = val("desm"), cg = val("cag");
+    if (fin === null) return null;
+    if (fin) x.fin = fin; else delete x.fin;
+    if (des) { var dm = parseAmount(desm || "", true); if (isNaN(dm) || desm === "") return "Indique le nouveau montant."; x.des = des; x.desMontant = dm; } else { delete x.des; delete x.desMontant; }
+    if (fin && des && des > fin) return "Le nouveau montant commence après le dernier mois.";
+    if (cg !== null) { var cv = cg ? parseAmount(cg, true) : 0; if (isNaN(cv) || cv < 0) return "Montant de la cagnotte invalide."; if (cv > 0) x.cagnotte = cv; else delete x.cagnotte; }
+    return null;
+  }
+  /* Reporte fin / nouveau montant / part de la cagnotte dans les mois déjà créés après celui-ci */
+  function vcPropager(p, list, x, oldLib, oldC) {
+    var patchs = [];
+    S.periods.forEach(function (q) {
+      if (q.id <= p.id) return;
+      var arr = clone(q[list] || []), j = -1;
+      arr.forEach(function (y, k) { if (j < 0 && y.libelle === oldLib && (y.compte || "") === (oldC || "")) j = k; });
+      if (j < 0) return;
+      var y = arr[j];
+      if (x.fin && q.id > x.fin) arr.splice(j, 1);
+      else {
+        ["fin", "des", "desMontant", "cagnotte"].forEach(function (k) { if (x[k] != null) y[k] = x[k]; else delete y[k]; });
+        vcDes(y, q.id);
+      }
+      var pt = {}; pt[list] = arr; patchs.push([q.id, pt]);
+    });
+    return patchs;
+  }
+
   /* Prévision sur 3 mois, compte par compte */
   function moyennePaie() {
     var bs = sortedBulletins().filter(function (b) { return isNum(b.netPaye) && Number(b.netPaye) > 0; }).slice(0, 6);
@@ -6858,7 +7223,7 @@ html { touch-action: manipulation; }
   }
   function prevision(compte) {
     var i = soldeInfo(compte), cur = periodFor(todayISO()); if (!i || !cur) return null;
-    var rate = rythmeQuotidien(compte), moy = moyennePaie(), t = todayISO();
+    var cfgC = vcCfg(), conseil = !!(cfgC && cfgC.compte === compte), rate = conseil ? 0 : rythmeQuotidien(compte), moy = moyennePaie(), t = todayISO();
     var seq = [cur].concat(S.periods.slice().sort(byDebut).filter(function (p) { return p.debut > cur.debut; }));
     while (seq.length < 4) seq.push(nextFrom(seq[seq.length - 1]));
     seq = seq.slice(0, 4);
@@ -6866,26 +7231,35 @@ html { touch-action: manipulation; }
     seq.forEach(function (p, k) {
       var ev = {}, lo = k === 0 ? t : p.debut;
       var add = function (d, m) { var key = !d ? p.fin : isoOf(d) < lo ? lo : isoOf(d) > p.fin ? p.fin : isoOf(d); ev[key] = (ev[key] || 0) + m; };
-      ["charges", "epargne"].forEach(function (ln) { (p[ln] || []).forEach(function (x) { if (x.compte === compte && !x.passe && (Number(x.montant) || 0) > 0 && !(k > 0 && creditTermine(x, p.id))) add(itemDate(p, x), -Number(x.montant)); }); });
+      ["charges", "epargne"].forEach(function (ln) { (p[ln] || []).forEach(function (x) { if (x.compte === compte && !x.passe && ligneActive(x, p.id) && ligneMontant(x, p.id) > 0 && !(k > 0 && creditTermine(x, p.id))) add(itemDate(p, x), -ligneMontant(x, p.id)); }); });
       (p.virements || []).forEach(function (x) { if (x.fait) return; var m = Number(x.montant) || 0; if (x.de === compte) add(itemDate(p, x), -m); if (x.vers === compte) add(itemDate(p, x), m); });
       (p.revenus || []).forEach(function (x) {
         if (x.recu || x.compte !== compte) return;
         var m = revAmount(p, x); if (x.lien === "bulletin" && !lienPaie(p.id, x) && moy) m = moy;
         if (m > 0) add(itemDate(p, x), m);
       });
+      rembCagnotte(p, compte).forEach(function (r) { if (r.d && (k > 0 || isoOf(r.d) > t)) add(r.d, r.m); });
+      var bj = 0, st = null, paie = r2((p.revenus || []).filter(function (x) { return x.compte === compte && x.lien === "bulletin"; }).reduce(function (s2, x) { return s2 + vcRevenu(p, x); }, 0));
+      if (conseil) {
+        st = vcEtat(p);
+        var tot = 0, jrs = daysBetween(lo, p.fin) + 1;
+        if (st) st.bs.forEach(function (o) { tot += Math.max(0, o.reste); });
+        else (p.budgets || []).forEach(function (b) { var sp = totalB((S.allExp || []).filter(function (x) { return x.periode === p.id && !x.carte && x.categorie === b.categorie; })); tot += Math.max(0, (Number(b.montant) || 0) - sp); });
+        bj = jrs > 0 ? tot / jrs : 0;
+      }
       var min = null;
       for (var d = lo, n = 0; d <= p.fin && n < 40; d = isoOf(new Date(dateOf(d).getFullYear(), dateOf(d).getMonth(), dateOf(d).getDate() + 1)), n++) {
-        v += (ev[d] || 0) - rate;
+        v += (ev[d] || 0) - rate - bj;
         if (!min || v < min.v) min = { d: d, v: r2(v) };
       }
-      out.push({ p: p, fin: r2(v), min: min });
+      out.push({ p: p, fin: r2(v), min: min, paie: paie, reste: st ? st.fin.reste : null, restos: st && st.get("restos") ? r2(st.get("restos").eff - st.get("restos").pris) : null });
     });
-    return { mois: out, parMois: r2(rate * 30.4), moy: moy, dec: decouvertDe(compte) };
+    return { mois: out, parMois: r2(rate * 30.4), moy: moy, dec: decouvertDe(compte), conseil: conseil ? cfgC : null };
   }
   function previsionHTML() {
     var cpts = SUIVIS.filter(function (c) { return soldeInfo(c[0]); }); if (!cpts.length) return "";
     var pv = cpts.map(function (c) { return { c: c, pr: prevision(c[0]) }; }).filter(function (x) { return x.pr; }); if (!pv.length) return "";
-    var mois = pv[0].pr.mois.slice(1), fmtM = new Intl.DateTimeFormat("fr-FR", { month: "short" }), alertes = [];
+    var mois = pv[0].pr.mois.slice(1), fmtM = new Intl.DateTimeFormat("fr-FR", { month: "short" }), alertes = [], ro = S.canWrite === false;
     var h = '<div class="prev"><div class="prev-head"><h3>Prévision sur 3 mois</h3><span class="note">solde en fin de mois</span></div><div class="prev-scroll"><table class="prev-t"><thead><tr><th></th>' +
       mois.map(function (m) { return "<th>fin " + esc(fmtM.format(dateOf(m.p.fin))) + "</th>"; }).join("") + "</tr></thead><tbody>";
     pv.forEach(function (x) {
@@ -6895,12 +7269,29 @@ html { touch-action: manipulation; }
         if (m.min && m.min.v < 0 && !dit) { dit = true; alertes.push(courtCompte(x.c[0]) + " passerait sous 0 dès le " + fmtShort.format(dateOf(m.min.d)) + " (≈ " + eur0.format(Math.round(m.min.v)) + ")" + (x.pr.dec != null && m.min.v < -x.pr.dec ? ", au-delà du découvert autorisé" : "")); }
         return '<td class="' + (m.fin < 0 ? "neg" : "") + '">' + esc(eur0.format(Math.round(m.fin))) + (bas ? '<span class="prev-bas">↓ ' + esc(eur0.format(Math.round(m.min.v))) + "</span>" : "") + "</td>";
       }).join("") + "</tr>";
+      if (x.pr.conseil) {
+        var cs = Number(x.pr.conseil.coussin) || 0;
+        h += '<tr class="prev-sub"><th>Il te reste</th>' + x.pr.mois.slice(1).map(function (m) {
+          if (m.reste != null && m.reste < cs - 0.004) alertes.push("Fin " + fmtMonth.format(dateOf(m.p.fin)).split(" ")[0] + ", il ne te resterait que " + eur0.format(Math.round(m.reste)) + " sur " + courtCompte(x.c[0]) + ", moins que les " + eur0.format(cs) + " à garder");
+          return '<td class="' + (m.reste != null && m.reste < cs - 0.004 ? "neg" : "pos") + '">' + (m.reste == null ? "—" : esc(eur0.format(Math.round(m.reste)))) + "</td>";
+        }).join("") + "</tr>" +
+          '<tr class="prev-sub"><th>Restos, sorties</th>' + x.pr.mois.slice(1).map(function (m) { return "<td>" + (m.restos == null ? "—" : esc(eur0.format(Math.round(m.restos)))) + "</td>"; }).join("") + "</tr>";
+      }
     });
     h += "</tbody></table></div>";
     if (alertes.length) h += alertes.slice(0, 3).map(function (a) { return '<p class="imp-ctrl warn"><span aria-hidden="true">⚠</span> ' + esc(a) + ".</p>"; }).join("");
-    var moy = pv[0].pr.moy;
-    h += '<p class="note">Estimation : ' + (moy ? "ta paie moyenne (" + esc(eur.format(moy)) + ") pour les mois sans feuille d'heures, " : "") + "tous les prélèvements et virements prévus, et tes dépenses du quotidien au rythme des derniers mois, sans les grosses dépenses ponctuelles (" +
-      pv.map(function (x) { return esc(courtCompte(x.c[0])) + " ≈ " + esc(eur0.format(x.pr.parMois)) + "/mois"; }).join(", ") + ").</p></div>";
+    var xc = pv.filter(function (x) { return x.pr.conseil; })[0];
+    if (xc) {
+      var paies = xc.pr.mois.slice(1).filter(function (m) { return m.paie > 0; }).map(function (m) { return fmtM.format(dateOf(m.p.fin)) + " " + eur0.format(m.paie); });
+      h += '<p class="note">Estimation : ' + (paies.length ? "ta paie prévue (" + esc(paies.join(", ")) + "), " : "") + "tous tes prélèvements, ton épargne et les virements prévus, et tes budgets du mois sur " + esc(courtCompte(xc.c[0])) +
+        " (courses, essence, shopping, restos et sorties). La santé, les enfants et la maison se paient avec ce qui reste." +
+        (pv.length > 1 ? " Les autres comptes suivent leur rythme de dépenses." : "") + (ro ? "" : ' <button type="button" class="link-btn" data-vc-open="1">Régler le conseiller</button>') + "</p></div>";
+    } else {
+      var moy = pv[0].pr.moy;
+      h += '<p class="note">Estimation : ' + (moy ? "ta paie prévue (ou ta paie moyenne, " + esc(eur.format(moy)) + ", sans prévision), " : "") + "tous les prélèvements et virements prévus, et tes dépenses du quotidien au rythme des derniers mois, sans les grosses dépenses ponctuelles (" +
+        pv.map(function (x) { return esc(courtCompte(x.c[0])) + " ≈ " + esc(eur0.format(x.pr.parMois)) + "/mois"; }).join(", ") + ").</p>" +
+        (ro ? "" : '<p class="note"><b>Mets en place ton conseiller</b> : des budgets pour les courses, l\'essence, le shopping, les restos et les sorties à la place du rythme, et de l\'argent gardé en fin de mois. <button type="button" class="link-btn" data-vc-open="1">Mettre en place</button></p>') + "</div>";
+    }
     return h;
   }
 
@@ -7064,6 +7455,7 @@ html { touch-action: manipulation; }
     db.collection("cartes").onSnapshot(function (s) { S.cartes = docsOf(s); renderCartes(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
     db.collection("credits").onSnapshot(function (s) { S.credits = docsOf(s); if (S.loaded) { renderCredits(); renderRegles(); renderSoldes(); renderTiles(); } }, onError);
     db.doc("config/regles").onSnapshot(function (s) { S.regles = s.exists ? s.data() : null; if (S.loaded) renderRegles(); }, onError);
+    db.doc("config/conseiller").onSnapshot(function (s) { S.conseiller = s.exists ? s.data() : null; if (S.loaded) renderAll(); }, onError);
     db.collection("rentrees").onSnapshot(function (s) { S.allInc = docsOf(s); renderSoldes(); renderBilans(); }, onError);
     db.collection("virements").onSnapshot(function (s) { S.virs = docsOf(s); renderAll(); }, onError);
     db.collection("prets").onSnapshot(function (s) { S.prets = docsOf(s); S.mouvements = mouvementsPrets(); renderAll(); }, onError);

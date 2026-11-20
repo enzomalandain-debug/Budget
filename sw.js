@@ -1,6 +1,6 @@
 /* Paie & Budget : fonctionne sans réseau.
    L'application est gardée sur le téléphone ; à chaque connexion, la dernière version est récupérée. */
-const VERSION = "paie-budget-1.7";
+const VERSION = "paie-budget-1.8";
 const APP = ["./", "./index.html", "./cagnotte.html", "./manifest.webmanifest", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(APP)).then(() => self.skipWaiting()));
