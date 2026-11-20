@@ -838,6 +838,76 @@ html { touch-action: manipulation; }
 .imp-row .imp-mi { border-color: var(--line); font-size: 16px; }
 .imp-row .imp-mi.dout { border-color: var(--bad); }
 
+/* 1.5 : recherche, crédits, prévisions, évolution, règles */
+.rech { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; margin-bottom: 10px; }
+.rech input { height: 46px; border: 1px solid var(--line); border-radius: 14px; background: var(--field); padding: 0 14px; font: inherit; font-size: 16px; color: var(--ink); min-width: 0; }
+.rech select { height: 46px; border: 1px solid var(--line); border-radius: 14px; background: var(--field); padding: 0 10px; font: inherit; font-size: 16px; color: var(--ink); }
+.rech-res { margin-bottom: 12px; }
+.rech-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 4px 0 6px; }
+.rech-row { grid-template-columns: minmax(0, 1fr) auto; }
+#credits { display: grid; gap: 12px; }
+.taux { display: grid; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px; }
+.taux-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.taux-top b { font-size: 26px; font-variant-numeric: tabular-nums; }
+.taux-top b.good, .regle-v b.ok { color: var(--good); }
+.taux-top b.warn { color: var(--warn); }
+.taux-top b.bad, .regle-v b.ko { color: var(--bad); }
+.taux-bar, .regle-bar { position: relative; height: 10px; background: var(--surface-2); border-radius: 999px; }
+.taux-bar span, .regle-bar span { display: block; height: 100%; border-radius: 999px; background: var(--good); }
+.taux-bar span.warn { background: var(--warn); }
+.taux-bar span.bad, .regle-bar span.ko { background: var(--bad); }
+.taux-bar i, .regle-bar i { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 1px; }
+.taux-axe { position: relative; height: 16px; font-size: 12px; color: var(--ink-2); }
+.taux-axe span { position: absolute; top: 0; }
+.taux-axe span:first-child { left: 0; }
+.taux-axe span:nth-child(2) { transform: translateX(-50%); }
+.taux-axe span:last-child { right: 0; }
+.sug { display: grid; gap: 10px; background: var(--warn-soft); border-radius: 16px; padding: 12px 14px; }
+.sug p { margin: 0; font-size: 14px; line-height: 1.45; }
+.prev { display: grid; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px; margin-top: 12px; min-width: 0; }
+.prev-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.prev-head h3 { margin: 0; font-size: 16px; }
+.prev-scroll { overflow-x: auto; }
+.prev-t { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 15px; }
+.prev-t th, .prev-t td { padding: 7px 4px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: top; }
+.prev-t thead th { font-size: 12px; color: var(--ink-2); font-weight: 600; }
+.prev-t tbody th { text-align: left; font-weight: 600; }
+.prev-t td.neg { color: var(--bad); font-weight: 700; }
+.prev-bas { display: block; font-size: 11px; color: var(--bad); font-weight: 600; }
+.evo-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+.evo-chips .chip { flex: 0 0 auto; height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.evo-chips .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.evo-svg { width: 100%; height: auto; display: block; }
+.evo-base { stroke: var(--line); stroke-width: 1; }
+.evo-v { font-size: 11px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.evo-m { font-size: 11px; fill: var(--ink-2); }
+.evo-t { margin: 14px 0 0; font-size: 15px; }
+#regles { display: grid; gap: 12px; }
+.regle { display: grid; gap: 6px; }
+.regle-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.regle-top > span:first-child { min-width: 0; }
+.regle-v { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.regle-v b { font-size: 17px; }
+.regle-m { font-size: 13px; }
+.regle6 { font-size: 14px; font-weight: 600; padding: 10px 12px; border-radius: 12px; background: var(--warn-soft); color: var(--warn); }
+.regle6.ok { background: var(--good-soft); color: var(--good); }
+.regle-reg summary { cursor: pointer; font-weight: 600; color: var(--accent); padding: 4px 0; }
+.regle-pcts { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; margin-top: 8px; }
+.regle-l { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+.regle-l li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 14px; }
+.regle-l select { height: 38px; border: 1px solid var(--line); border-radius: 10px; background: var(--field); font: inherit; font-size: 16px; max-width: 170px; }
+
+.imp-main > * { max-width: 100%; }
+.imp-main .imp-sel { width: 100%; min-width: 0; }
+.imp-lib-in { box-sizing: border-box; }
+
+.f-cag { display: grid; gap: 8px; padding: 10px 12px 12px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.f-cag .note { font-size: 13px; margin: 0; }
+.f-cag .note .link-btn { padding: 2px 0; font-size: 13px; }
+.f-cagb { display: block; margin-top: 4px; font-weight: 700; color: var(--ink); }
+#f-cagm[readonly] { color: var(--ink-2); }
+.tiles > .tile:last-child:nth-child(odd) { grid-column: 1 / -1; min-height: 0; }
+
 </style>
 
 <div class="wrap">
@@ -897,6 +967,8 @@ html { touch-action: manipulation; }
   <div class="subpanel" data-subpanel="depenses">
   <section class="sec" aria-labelledby="list-title">
     <div class="sec-head"><h2 id="list-title">Dépenses et revenus du mois</h2><span class="count" id="list-count"></span></div>
+    <div class="rech"><input type="search" id="rech" placeholder="Chercher : Voltigeur, Shopping, 13…" autocomplete="off" enterkeyhint="search" aria-label="Chercher dans toutes les dépenses"><select id="rech-per" aria-label="Période de recherche"><option value="mois">Ce mois</option><option value="3">3 mois</option><option value="tout" selected>Tout</option></select></div>
+    <div class="rech-res" id="rech-res" hidden></div>
     <div class="attente" id="attente" hidden></div>
     <div class="cats" id="cats" hidden></div>
     <ul class="list" id="list"></ul>
@@ -919,6 +991,14 @@ html { touch-action: manipulation; }
   <section class="sec" id="ana-sec" aria-labelledby="ana-title">
     <div class="sec-head"><h2 id="ana-title">Où va ton argent</h2><select id="ana-select" aria-label="Choisir le mois"></select></div>
     <div id="ana"></div>
+  </section>
+  <section class="sec" id="evo-sec" aria-labelledby="evo-title">
+    <div class="sec-head"><h2 id="evo-title">Sur 6 mois</h2></div>
+    <div id="evo"></div>
+  </section>
+  <section class="sec" id="regles-sec" aria-labelledby="regles-title">
+    <div class="sec-head"><h2 id="regles-title">Tes règles de répartition</h2></div>
+    <div id="regles"></div>
   </section>
   <section class="sec" aria-labelledby="ledger-title">
     <div class="sec-head"><h2 id="ledger-title">Le budget du mois</h2></div>
@@ -988,6 +1068,14 @@ html { touch-action: manipulation; }
   </section>
   </div>
 
+  <div class="tab" id="tab-credits" data-tab="credits" hidden>
+  <div class="scr-top"><button type="button" class="back" data-goto="accueil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Accueil</button></div>
+  <section class="sec" id="credits-sec" aria-labelledby="credits-title">
+    <div class="sec-head"><h2 id="credits-title">Crédits</h2><span class="count" id="credits-count"></span></div>
+    <div id="credits"></div>
+  </section>
+  </div>
+
   <div class="tab" id="tab-reglages" data-tab="reglages" hidden>
   <div class="scr-top"><button type="button" class="back" data-goto="accueil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Accueil</button></div>
   <section class="sec" aria-labelledby="reg-title">
@@ -997,7 +1085,7 @@ html { touch-action: manipulation; }
   <section class="sec" id="save-sec" aria-labelledby="save2-title">
     <div class="sec-head"><h2 id="save2-title">Sauvegarde</h2></div>
     <p class="note">Un fichier avec tout : budget, dépenses, soldes, prêts, feuilles d'heures, bulletins et réglages. Garde-le dans Fichiers ou iCloud Drive. Il contient tes données personnelles : ne le partage pas et ne le mets jamais sur GitHub.</p>
-    <button class="btn" id="save-btn" type="button">Enregistrer une sauvegarde</button>
+    <button class="btn" id="save-btn" type="button">Sauvegarder (Fichiers, iCloud…)</button>
     <button class="btn ghost" id="copy-btn" type="button">Copier la sauvegarde</button>
     <textarea id="save-text" class="bk-text" rows="4" readonly hidden aria-label="Texte de la sauvegarde"></textarea>
     <p class="note" id="save-note"></p>
@@ -1016,7 +1104,7 @@ html { touch-action: manipulation; }
     <p class="note">Remet l'application à zéro sur ce téléphone. Fais une sauvegarde avant.</p>
     <button class="btn ghost" id="wipe-btn" type="button">Tout effacer</button>
     <div class="confirm" id="wipe-confirm" hidden>Effacer toutes les données de ce téléphone ?<button type="button" class="link-btn danger" id="wipe-yes">Tout effacer</button><button type="button" class="link-btn" id="wipe-no">Annuler</button></div>
-    <p class="note app-v">Paie &amp; Budget · version 1.4</p>
+    <p class="note app-v">Paie &amp; Budget · version 1.7</p>
   </section>
   </div>
 
@@ -1054,7 +1142,13 @@ html { touch-action: manipulation; }
         <select id="f-carte-reste" aria-label="Payer le reste avec"></select>
       </div>
       <div class="f-opts" id="f-opts">
-        <label class="chkline"><input type="checkbox" id="f-hb"> Hors budget (cagnotte, remboursé…)</label>
+        <label class="chkline" id="f-cagline" hidden><input type="checkbox" id="f-cag"> Payée par la cagnotte</label>
+        <div class="f-cag" id="f-cagrow" hidden>
+          <label class="f"><span>Dépense de la cagnotte</span><select id="f-cagexp"></select></label>
+          <label class="f"><span>Payé par la cagnotte (€)</span><input id="f-cagm" inputmode="decimal" autocomplete="off"></label>
+          <p class="note" id="f-cagtxt" aria-live="polite"></p>
+        </div>
+        <label class="chkline"><input type="checkbox" id="f-hb"> <span id="f-hblab">Hors budget (remboursé, part d'un ami…)</span></label>
         <label class="f" id="f-hbrow" hidden><span>Montant hors budget (€) · le reste compte dans le budget</span><input id="f-hbm" inputmode="decimal" autocomplete="off"></label>
         <label class="chkline"><input type="checkbox" id="f-att"> Pas encore passée à la banque</label>
       </div>
@@ -1073,8 +1167,8 @@ html { touch-action: manipulation; }
 <div class="sheet" id="imp-sheet" hidden>
   <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="imp-title">
     <div class="sheet-grip" aria-hidden="true"></div>
-    <div class="sheet-head"><h2 id="imp-title">Importer une capture</h2><button type="button" class="sheet-close" id="imp-close" aria-label="Fermer">×</button></div>
-    <input type="file" id="imp-file" accept="image/*" multiple hidden>
+    <div class="sheet-head"><h2 id="imp-title">Importer une capture ou un relevé</h2><button type="button" class="sheet-close" id="imp-close" aria-label="Fermer">×</button></div>
+    <input type="file" id="imp-file" accept="image/*,application/pdf,.pdf" multiple hidden>
     <div class="imp-body" id="imp-body"></div>
   </div>
 </div>
@@ -1297,7 +1391,8 @@ html { touch-action: manipulation; }
       if (Number(b.parSemaine) > 0) b.montant = r2(Number(b.parSemaine) * newLen / 7);
       return b;
     });
-    var charges = clone(p.charges || []).filter(function (x) { return !x.ponctuel && !x.plan && !(x.echeance && x.echeance.n >= x.echeance.total); })
+    var nidC = end.getFullYear() + "-" + pad(end.getMonth() + 1);
+    var charges = clone(p.charges || []).filter(function (x) { return !x.ponctuel && !x.plan && !(x.echeance && x.echeance.n >= x.echeance.total) && !(typeof creditTermine === "function" && creditTermine(x, nidC)); })
       .map(function (x) { if (x.echeance) x.echeance.n += 1; delete x.passe; delete x.passeLe; return x; });
     var epargne = clone(p.epargne || []).map(function (x) { delete x.passe; delete x.passeLe; return x; });
     var virements = clone(p.virements || []).filter(function (x) { return !x.ponctuel; }).map(function (x) { delete x.fait; delete x.faitLe; return x; });
@@ -1460,7 +1555,7 @@ html { touch-action: manipulation; }
           : '<p class="note">Rien n\'a été noté depuis le relevé du ' + esc(fmtHeure.format(new Date(i.le))) + " : un écart vient d'une opération pas encore notée.</p>") : "") +
         '<div class="acts"><button type="submit" class="mini">' + (i ? "Recaler" : "Enregistrer") + "</button>" + (i ? '<button type="button" class="mini ghost" data-recal-cancel="1">Annuler</button>' : "") + "</div></form>";
       return '<section class="soldecard" aria-label="' + esc(c[1]) + '">' + h + "</section>";
-    }).join("");
+    }).join("") + previsionHTML();
   }
 
   /* ---------- Rendu ---------- */
@@ -1672,7 +1767,7 @@ html { touch-action: manipulation; }
     } else card.hidden = true;
   }
 
-  function renderAll() { if (typeof renderFirstMonth === "function") { renderFirstMonth(); renderBanner(); } var p = current(); renderHeader(p); renderHero(p); renderSoldes(); renderBilans(); renderConseil(); renderAnalyse(); renderPrets(); renderPlans(); renderCartes(); renderEnvelopes(); renderBudgets(p); renderPending(p); renderForm(p); renderList(p); renderGoals(); renderLedger(p); renderTiles(); }
+  function renderAll() { if (typeof renderFirstMonth === "function") { renderFirstMonth(); renderBanner(); } var p = current(); renderHeader(p); renderHero(p); renderSoldes(); renderBilans(); renderConseil(); renderAnalyse(); renderPrets(); renderPlans(); renderCartes(); renderCredits(); renderEvolution(); renderRegles(); renderEnvelopes(); renderBudgets(p); renderPending(p); renderForm(p); renderList(p); renderGoals(); renderLedger(p); renderTiles(); }
 
   /* Date approximative d'un prélèvement dans le mois, d'après son texte « jour » */
   function itemDate(p, x) {
@@ -1999,7 +2094,7 @@ html { touch-action: manipulation; }
         (x._col === "depenses" && !ro ? '<button type="button" class="emain ebtn" data-exp-edit="' + esc(x.id) + '" aria-label="Modifier ' + esc(x.libelle || "la dépense") + '">' : '<div class="emain">') +
         '<span class="ename">' + esc(x.libelle || (isInc ? "Revenu" : "Dépense")) +
         (x.attente ? ' <span class="pill sm warn">En attente</span>' : "") +
-        (x._col === "depenses" && !x.carte && Number(x.horsBudget) > 0 ? ' <span class="pill sm neutral">' + (Number(x.horsBudget) >= (Number(x.montant) || 0) ? "Hors budget" : esc(eur.format(Number(x.horsBudget))) + " hors budget") + "</span>" : "") +
+        cagPastilles(x) +
         '</span><span class="emeta" style="display:block">' + meta + "</span>" + (x._col === "depenses" && !ro ? "</button>" : "</div>") +
         '<div class="eamt' + (isInc ? " plus" : isVir ? " vir" : "") + '">' + (isInc ? "+ " : isVir ? "⇄ " : "") + esc(eur.format(Number(x.montant) || 0)) + "</div>" +
         (ro ? "<span></span>" : '<button type="button" class="icon-btn" data-del="' + esc(path) + '" aria-label="Supprimer ' + esc(x.libelle || what) + '">×</button>') +
@@ -3206,10 +3301,17 @@ html { touch-action: manipulation; }
     const gs = S.goals || [];
     const gSaved = r2(gs.reduce((a, g) => a + total(S.versements.filter(x => x.objectif === g.id)), 0));
     T.push(gs.length ? { k: "Projets", go: "projets", v: big(e0(gSaved)), s: "de côté · " + pl(gs.length, "projet", "projets") } : { k: "Projets", go: "projets", v: small("Aucun"), s: "projet pour l'instant" });
+    /* La Cagnotte : solde du livret, comme sur son accueil */
+    const cg = cagChiffres(cagLire());
+    T.push(cg ? { k: "La Cagnotte", go: "cagnotte", v: big(eur.format(cg.livret)), s0: "sur le livret", s: "pot voyages " + eur.format(cg.pot) } : { k: "La Cagnotte", go: "cagnotte", v: small("Commencer"), s: "créer ou importer" });
     /* Cartes cadeaux */
     const cAct = cartesActives(), cExp = cartesExpirent();
     T.push(cAct.length ? { k: "Cartes cadeaux", go: "cartes", v: big(eur.format(r2(cAct.reduce((a, c) => a + carteSolde(c), 0)))), alert: !!cExp, s: cExp ? "⚠ " + cExp : pl(cAct.length, "carte", "cartes") + " à utiliser" }
       : { k: "Cartes cadeaux", go: "cartes", v: small("Aucune"), s: "ajoute tes cartes" });
+    /* Crédits */
+    const tx = tauxEndettement(), nCr = (S.credits || []).filter(creditActif).length;
+    T.push(nCr && tx && tx.taux != null ? { k: "Crédits", go: "credits", v: big(tx.taux.toFixed(1).replace(".", ",") + " %"), alert: tx.taux > 35, s: eur0.format(tx.mens) + " par mois · " + pl(nCr, "crédit", "crédits") }
+      : { k: "Crédits", go: "credits", v: small(creditsSuggeres().length ? "À compléter" : "Aucun"), s: "taux d'endettement" });
     /* Prêts */
     const reste = l => r2(l.reduce((a, x) => a + Math.max(0, pretReste(x)), 0));
     const tOn = reste(S.prets.filter(jePrete)), tJe = reste(S.prets.filter(x => !jePrete(x)));
@@ -4229,11 +4331,14 @@ html { touch-action: manipulation; }
     var doc = { periode: per.id, date: date, libelle: libelle.slice(0, 60), categorie: $("f-cat").value, montant: montant, compte: $("f-compte").value, creeLe: new Date().toISOString() };
     if ($("f-hb").checked) { var hbv = parseAmount($("f-hbm").value || "", false); doc.horsBudget = isNaN(hbv) || hbv >= montant ? montant : r2(hbv); }
     if ($("f-att").checked) doc.attente = true;
+    var cagF = cagDuFormulaire(montant, libelle); if (cagF && cagF.err) { msg.textContent = cagF.err; return; }
+    if (cagF) doc.horsBudget = r2(Math.min(montant, cagF.montant + (Number(doc.horsBudget) || 0)));
     var env = doc.horsBudget ? null : S.envs.filter(function (e) { return inEnv(e, doc); })[0];
     var p = current(), envBefore = env ? (Number(env.budget) || 0) - envSpent(env) : null;
     var before = !env && p && per.id === p.id ? calc(p).left : null, sTxt = soldeApres(doc.compte, -montant, doc.attente ? null : date);
     var extra = (doc.horsBudget ? (doc.horsBudget >= montant ? " Hors budget." : " Dont " + eur.format(doc.horsBudget) + " hors budget.") : "") + (doc.attente ? " En attente : elle se validera à l'import ou avec « C'est passé »." : "");
-    write(function () { return S.db.collection("depenses").add(doc); }).then(function (ok) {
+    if (cagF) extra = " " + cagF.msg + (doc.horsBudget > cagF.montant + 0.004 ? " Dont " + eur.format(r2(doc.horsBudget - cagF.montant)) + " d'autre hors budget." : "") + (doc.attente ? " En attente : elle se validera à l'import ou avec « C'est passé »." : "");
+    write(function () { return cagEnregistrer(null, cagF, doc, function (x) { return S.db.collection("depenses").add(x); }); }).then(function (ok) {
       if (!ok) return;
       $("f-montant").value = ""; $("f-libelle").value = ""; formOptsVider(); closeSheet();
       if (env) toast("Ajouté à l'enveloppe " + (env.nom || env.categorie) + " : il reste " + eur.format(envBefore - montant) + "." + extra + sTxt);
@@ -4253,7 +4358,7 @@ html { touch-action: manipulation; }
   /* ---------- Écrans ----------
      L'accueil (tuiles) mène à chaque écran ; « ‹ Accueil » ramène. L'écran Budget a trois vues : Dépenses, À passer, Le mois.
      Les anciens liens #depenses et #apasser ouvrent le Budget sur la bonne vue. */
-  var TABS = ["accueil", "budget", "paie", "projets", "prets", "plans", "cartes", "reglages", "bienvenue"], SUBS = ["depenses", "apasser", "mois"];
+  var TABS = ["accueil", "budget", "paie", "projets", "prets", "plans", "cartes", "credits", "reglages", "bienvenue"], SUBS = ["depenses", "apasser", "mois"];
   var ALIAS = { depenses: ["budget", "depenses"], apasser: ["budget", "apasser"] };
   S.tab = "accueil"; S.sub = "depenses";
   try { var savedSub = localStorage.getItem("budget-vue"); if (SUBS.indexOf(savedSub) >= 0) S.sub = savedSub; } catch (e) {}
@@ -4265,6 +4370,7 @@ html { touch-action: manipulation; }
     try { localStorage.setItem("budget-vue", v); } catch (e) {}
   }
   function showTab(t, opts) {
+    if (t === "cagnotte") { location.href = "cagnotte.html"; return; }
     if (ALIAS[t]) { showSub(ALIAS[t][1]); t = ALIAS[t][0]; }
     if (TABS.indexOf(t) < 0) t = "accueil";
     if (t === "reglages") { S.reg = null; S.regForce = true; if (typeof renderReglages === "function") renderReglages(); }
@@ -4312,7 +4418,7 @@ html { touch-action: manipulation; }
   })();
 
   /* ================= Version hors ligne : réglages, bienvenue, sauvegarde, premier mois, lignes du budget ================= */
-  var APP_VERSION = "1.4";
+  var APP_VERSION = "1.7";
   var ROULEMENT_TYPE = {"jours": ["1", "1", "2", "2", "2", "JNT", "R", "R", "JNT", "1", "1", "3", "3", "3", "JNT", "R", "JNT", "JN", "1", "2", "2", "3", "3", "JNT", "R", "JNT", "1", "1", "2", "2", "3", "3", "JNT", "JNT", "R"], "libelles": {"1": "1 · 6h–14h", "2": "2 · 14h–22h", "3": "3 · 22h–6h", "JN": "JN", "JNT": "JNT", "R": "R"}};
   var MODELE_VIERGE = {"decalage": 1, "rubriques": [{"code": "HS_NE", "libelle": "Heures sup. 25 % non exonérées", "unite": "h", "taux": 0}, {"code": "HS_EXO", "exo": true, "libelle": "Heures sup. 25 % exonérées", "unite": "h", "taux": 0}, {"code": "PAO", "libelle": "Heures de PAO", "unite": "h", "taux": 0}, {"code": "INCOMMODES", "libelle": "Heures incommodes 66 %", "unite": "h", "taux": 0}, {"code": "RAPPEL", "libelle": "Heures de rappel", "unite": "h", "taux": 0}, {"code": "APPEL", "libelle": "Heures d'appel", "unite": "h", "taux": 0}, {"code": "FERIES", "libelle": "Jours fériés payés 100 %", "unite": "h", "taux": 0}, {"code": "FERIES_233", "libelle": "Jours fériés payés 233 % (Noël, jour de l'an)", "unite": "h", "taux": 0}, {"code": "PENIBLES", "libelle": "Travaux pénibles 20 %", "unite": "h", "taux": 0}, {"code": "HABILLAGE", "libelle": "Habillage / déshabillage", "unite": "u", "taux": 0}, {"code": "REMPLACEMENT", "controle": false, "libelle": "Jours de remplacement", "unite": "jour", "taux": 0}, {"code": "QUART_HS", "derive": ["HS_NE", "HS_EXO"], "libelle": "Prime de quart sur heures sup.", "unite": "h", "taux": 0}, {"code": "RET_QUART", "derive": ["INCOMMODES"], "libelle": "Retenue quart", "unite": "h", "taux": 0}, {"code": "TF", "libelle": "Tickets flexibilité (8 h par TF)", "unite": "h", "taux": 0}], "fixes": [{"libelle": "Salaire de base", "montant": 0}, {"libelle": "Prime d'ancienneté", "montant": 0}, {"libelle": "Prime de transport P/I", "montant": 0}, {"libelle": "Prime de quart", "montant": 0}, {"libelle": "Prime mensuelle", "montant": 0}, {"imposable": false, "libelle": "Forfait prime de panier", "montant": 0}], "nonSoumis": [{"libelle": "Prime de transport NP/NI", "montant": 0}, {"libelle": "Prime panier non passible", "montant": 0}], "cotis": {"csgAjout": 0, "csgAssiette": 98.25, "csgDed": 6.8, "csgNonDed": 2.9, "deplafonnee": 0.4, "fixes": 0, "hsNetFiscal": 93.32, "pass": 4005, "plafonnee": 11.61, "reducHS": 10.66, "reintegration": 0, "t2": 8.45}, "tauxPAS": 0};
   var PROFIL = null;
@@ -4455,9 +4561,10 @@ html { touch-action: manipulation; }
       if (seg[0] === "config") out.config[seg[1]] = all[p];
       else (out.collections[seg[0]] = out.collections[seg[0]] || {})[seg[1]] = all[p];
     });
+    var cg = cagLire(); if (cagPrete(cg)) out.cagnotte = cagNettoyer(cg);
     return out;
   }
-  function marquerSauvegarde() { return S.db.doc("local/meta").set(Object.assign({}, S.meta || {}, { derniereSauvegarde: nowISO() })); }
+  function marquerSauvegarde() { if (cagPrete()) cagMeta({ lastBackup: nowISO() }); return S.db.doc("local/meta").set(Object.assign({}, S.meta || {}, { derniereSauvegarde: nowISO() })); }
   function nomFichier() { return "paie-budget-" + todayISO() + ".json"; }
   $("save-btn").addEventListener("click", async function () {
     var note = $("save-note"), text = JSON.stringify(sauvegardeObjet(), null, 1);
@@ -4465,7 +4572,8 @@ html { touch-action: manipulation; }
     try {
       if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({ files: [file], title: nomFichier() });
-        note.textContent = "Sauvegarde prête. Choisis « Enregistrer dans Fichiers » pour la garder.";
+        note.textContent = "Sauvegarde prête. Choisis « Enregistrer dans Fichiers » (iCloud Drive) pour la garder.";
+        toast(note.textContent);
       } else {
         var url = URL.createObjectURL(new Blob([text], { type: "application/json" })), a = document.createElement("a");
         a.href = url; a.download = nomFichier(); document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
@@ -4487,11 +4595,12 @@ html { touch-action: manipulation; }
   }
   function lireSauvegarde(text) {
     var o; try { o = JSON.parse(String(text || "").trim()); } catch (e) { return { err: "Ce texte n'est pas une sauvegarde : il faut tout le contenu du fichier, du premier { au dernier }." }; }
+    if (o && o.app === "la-cagnotte" && o.data && cagPrete(o.data)) return { cagnotteSeule: cagNettoyer(o.data), le: o.exportedAt || "", n: 0, docs: {} };
     if (!o || typeof o !== "object" || !o.collections || typeof o.collections !== "object") return { err: "Ce fichier n'est pas une sauvegarde de cette application." };
     var docs = {}, n = 0;
     Object.keys(o.collections).forEach(function (c) { var col = o.collections[c] || {}; if (!/^[\w-]+$/.test(c)) return; Object.keys(col).forEach(function (id) { if (col[id] && typeof col[id] === "object") { docs[c + "/" + id] = col[id]; n++; } }); });
     Object.keys(o.config || {}).forEach(function (k) { if (/^[\w-]+$/.test(k) && o.config[k] && typeof o.config[k] === "object") docs["config/" + k] = o.config[k]; });
-    return { docs: docs, n: n, le: o.sauvegardeLe || "" };
+    return { docs: docs, n: n, le: o.sauvegardeLe || "", cagnotte: o.cagnotte && cagPrete(o.cagnotte) ? cagNettoyer(o.cagnotte) : null };
   }
   async function texteRestauration() {
     var f = $("restore-file").files && $("restore-file").files[0];
@@ -4505,18 +4614,25 @@ html { touch-action: manipulation; }
     S.restore = r;
     note.textContent = "";
     $("restore-confirm").hidden = false;
-    $("restore-what").textContent = r.n + " éléments" + (r.le ? ", sauvegarde du " + fmtHeure.format(new Date(r.le)) : "") + ". Tout ce qu'il y a dans l'application sera remplacé.";
+    var cn = function (k) { return Object.keys((r.cagnotteSeule || {})[k] || {}).length; };
+    $("restore-what").textContent = r.cagnotteSeule
+      ? "Sauvegarde de La Cagnotte" + (r.le ? " du " + fmtHeure.format(new Date(r.le)) : "") + " : " + cn("people") + " cotisants, " + cn("payments") + " versements, " + cn("projects") + " projets, " + cn("expenses") + " dépenses. " + (cagPrete() ? "La cagnotte de ce téléphone sera remplacée. " : "") + "Le budget ne change pas."
+      : r.n + " éléments" + (r.le ? ", sauvegarde du " + fmtHeure.format(new Date(r.le)) : "") + ". Tout ce qu'il y a dans l'application sera remplacé" + (r.cagnotte ? ", cagnotte comprise." : ".");
   });
   $("restore-no").addEventListener("click", function () { S.restore = null; $("restore-confirm").hidden = true; });
   $("restore-yes").addEventListener("click", function () {
     var r = S.restore; if (!r) return;
     $("restore-yes").disabled = true;
-    window.__localdb.remplacerTout(r.docs).then(function () { return S.db.doc("local/meta").set({ derniereSauvegarde: nowISO(), restaureLe: nowISO() }); })
+    if (r.cagnotteSeule) {
+      try { cagEcrire(r.cagnotteSeule); cagMeta({ lastBackup: r.le || null }); } catch (e) { $("restore-yes").disabled = false; $("restore-note").textContent = "L'import de la cagnotte a échoué : le téléphone manque peut-être de place."; return; }
+      location.href = "cagnotte.html"; return;
+    }
+    window.__localdb.remplacerTout(r.docs).then(function () { if (r.cagnotte) { cagEcrire(r.cagnotte); cagMeta({ lastBackup: r.le || null }); } return S.db.doc("local/meta").set({ derniereSauvegarde: nowISO(), restaureLe: nowISO() }); })
       .then(function () { location.reload(); }, function () { $("restore-yes").disabled = false; $("restore-note").textContent = "La restauration a échoué : le téléphone manque peut-être de place."; });
   });
   $("wipe-btn").addEventListener("click", function () { $("wipe-confirm").hidden = false; });
   $("wipe-no").addEventListener("click", function () { $("wipe-confirm").hidden = true; });
-  $("wipe-yes").addEventListener("click", function () { window.__localdb.effacerTout().then(function () { location.reload(); }); });
+  $("wipe-yes").addEventListener("click", function () { window.__localdb.effacerTout().then(function () { try { localStorage.removeItem("la-cagnotte-donnees"); localStorage.removeItem("la-cagnotte-meta"); } catch (e) {} location.reload(); }); });
   function renderBanner() {
     var el = $("bk-banner"); if (!el) return;
     if (S.failed || !window.__localdb || window.__localdb.estVide() || !S.profilExiste) { el.hidden = true; return; }
@@ -4524,7 +4640,7 @@ html { touch-action: manipulation; }
     if (last && jours < 7) { el.hidden = true; return; }
     el.hidden = false;
     el.innerHTML = '<span>' + (last ? "Dernière sauvegarde il y a " + jours + " jours." : "Pas encore de sauvegarde.") + " Si le téléphone est perdu ou l'application supprimée, tout part avec.</span>" +
-      '<button type="button" class="mini" data-goto="reglages" data-scroll="save-sec">Sauvegarder</button>';
+      '<button type="button" class="mini" data-save-now="1">Sauvegarder</button>';
   }
 
   /* ---------- Premier mois du budget ---------- */
@@ -5189,6 +5305,128 @@ html { touch-action: manipulation; }
     return res;
   }
 
+  /* ---------- Import d'un relevé PDF (Crédit Mutuel, Société Générale…) ---------- */
+  var PDF_MONTANT = /^[+\-−]?\s?\d{1,3}(?:[.\s  ]\d{3})*,\d{2}$/;
+  function pdfNombre(s) { return Number(String(s).replace(/[+\-−\s  .]/g, "").replace(",", ".")); }
+  function pdfIso(d) { var m = String(d).match(/^(\d{2})\/(\d{2})\/(\d{4})$/); return m ? m[3] + "-" + m[2] + "-" + m[1] : null; }
+  function pdfNom(s) { return String(s || "").replace(/^(?:M|MR|MME|MLE|MLLE|MONSIEUR|MADAME)\.?\s+(?:(?:OU|ET)\s+(?:M|MR|MME|MLE)\.?\s+)?/i, "").trim(); }
+  function pdfLibelle(first, conts) {
+    var f = String(first || "").replace(/\s+/g, " ").trim(), cs = conts.map(function (l) { return String(l).replace(/\s+/g, " ").trim(); });
+    var champ = function (re) { for (var i = 0; i < cs.length; i++) { var m = cs[i].match(re); if (m) return m[1].trim(); } return ""; };
+    var de = champ(/^DE\s*:\s*(.+)$/i), pour = champ(/^POUR\s*:\s*(.+)$/i), motif = champ(/^MOTIF\s*:\s*(.+)$/i);
+    if (/\/PAYPAL$/i.test(motif) || /^\d{6,}/.test(motif)) motif = "";
+    var lib;
+    if (/^PAIEMENT\s+(?:PSC|CB)\b/i.test(f) && cs[0]) lib = cs[0].replace(/\s*CARTE\s+X?\d{4}.*$/i, "").split(" ").filter(function (t) { return !(/\d/.test(t) && t.length >= 3); }).join(" ");
+    else if (/^CARTE\s+X?\d{4}\s+\d{2}\/\d{2}\s+/i.test(f)) lib = f.replace(/^CARTE\s+X?\d{4}\s+\d{2}\/\d{2}\s+/i, "");
+    else if (/^(?:PRLV|PRELEVEMENT)/i.test(f)) lib = de || f.replace(/^(?:PRLV\s+SEPA|PRELEVEMENT\s+EUROPEEN)\s*/i, "").replace(/^\d{6,}\s*/, "");
+    else if (/\bVIR/i.test(f) && pour) lib = "Virement à " + pdfNom(pour) + (motif ? " · " + motif : "");
+    else if (/\bVIR/i.test(f) && de) lib = "Virement reçu de " + pdfNom(de) + (motif ? " · " + motif : "");
+    else lib = f.replace(/^\d{6}\s+/, "").replace(/\s+\d{9,}\S*$/, "");
+    lib = impBeau(lib || f).replace(/^Virement Reçu De /, "Virement reçu de ").replace(/^Virement À /, "Virement à ");
+    var brut = [f].concat(cs.filter(function (l) { return !/^(REF|ID|MANDAT|DATE|CHEZ)\s*:?/i.test(l); })).join(" ");
+    return { libelle: lib || "Opération", brut: brut };
+  }
+  /* pages = [{w, h, items: [{s, x, y, w}]}] (coordonnées pdf.js, y vers le haut) ; ref = date du jour.
+     Un relevé peut contenir plusieurs comptes (compte courant + livret) : une lecture par compte. */
+  function pdfLire(pages, ref) {
+    var secs = [], sec = null, cols = null, op = null;
+    var nouvelle = function (titre, numero) { sec = { titre: titre, solde: null, ops: [], alertes: [], soldes: [], pdf: { numero: numero, debut: null, fin: null, dateFin: null } }; secs.push(sec); op = null; };
+    pages.forEach(function (pg) {
+      var W = pg.w || 595, lignes = [];
+      pg.items.filter(function (it) { return it.x >= 25; }).sort(function (a, b) { return b.y - a.y || a.x - b.x; }).forEach(function (it) {
+        var L = lignes.length ? lignes[lignes.length - 1] : null;
+        if (L && Math.abs(L.y - it.y) <= 2.5) L.t.push(it); else lignes.push({ y: it.y, t: [it] });
+      });
+      lignes.forEach(function (L) { L.t.sort(function (a, b) { return a.x - b.x; }); L.txt = L.t.map(function (t) { return t.s; }).join(" ").replace(/\s+/g, " ").trim(); });
+      var colsPage = null, prevY = null;
+      op = null;
+      lignes.forEach(function (L) {
+        var txt = L.txt;
+        var mt = txt.match(/^((?:C\/C|COMPTE|LIVRET|CPT|LDD|LEP|PEL|CEL)\b.*?)(?:\s+N°|\s+-\s*$|\s+-\s+en euros|\s+en euros|$)/i);
+        if (mt && /N°|en euros|COMPTE DE|C\/C|LIVRET/i.test(txt) && !/TITULAIRE|RELEVE|RELEVÉ|TOTAL/i.test(txt)) {
+          var mn = txt.match(/N°\s*([\d ]{8,})/i), num = mn ? mn[1].replace(/\s/g, "") : "";
+          var titre = mt[1].replace(/\s*-\s*$/, "").trim();
+          if (!sec || (num && sec.pdf.numero && num !== sec.pdf.numero) || (!sec.pdf.numero && !num && sec.titre !== titre && sec.ops.length)) nouvelle(titre, num);
+          else if (!sec.pdf.numero && num) sec.pdf.numero = num;
+          return;
+        }
+        if (sec && !sec.pdf.numero) { var mn2 = txt.match(/^n°\s*([\d ]{10,})$/i); if (mn2) sec.pdf.numero = mn2[1].replace(/\s/g, ""); }
+        var deb = L.t.filter(function (t) { return /^d[ée]bit/i.test(t.s); })[0], cre = L.t.filter(function (t) { return /^cr[ée]dit/i.test(t.s); })[0];
+        if (deb && cre && /date/i.test(txt)) { colsPage = cols = { d: deb.x + deb.w, c: cre.x + cre.w }; op = null; if (!sec) nouvelle("Relevé", ""); return; }
+        if ((!colsPage && !cols) || !sec) return;
+        var C = colsPage || cols;
+        var montants = L.t.filter(function (t) { return t.x > 0.55 * W && PDF_MONTANT.test(t.s.trim()); });
+        var credit = function (t) { var r = t.x + t.w; return Math.abs(r - C.c) < Math.abs(r - C.d); };
+        if (/\bSOLDE\b/i.test(txt) && montants.length) {
+          var a = montants[montants.length - 1], v = pdfNombre(a.s), signeTxt = /[−-]\s*\d/.test(txt.replace(/\d{2}\/\d{2}\/\d{4}/g, "")) || /D[EÉ]BITEUR/i.test(txt);
+          if (signeTxt || (!/\+/.test(txt) && !/CR[EÉ]DITEUR/i.test(txt) && !credit(a))) v = -v;
+          var md = txt.match(/(\d{2}\/\d{2}\/\d{4})/);
+          sec.soldes.push({ v: Math.round(v * 100) / 100, date: md ? pdfIso(md[1]) : null, inter: /\*\*\*/.test(txt) });
+          op = null; return;
+        }
+        if (/TOTAUX|TOTAL DES/i.test(txt)) { op = null; return; }
+        var t0 = L.t[0];
+        if (t0 && /^\d{2}\/\d{2}\/\d{4}$/.test(t0.s.trim()) && t0.x < 0.25 * W) {
+          if (!montants.length) { op = null; return; }
+          var reste = L.t.slice(1).filter(function (t) { return montants.indexOf(t) < 0; });
+          if (reste[0] && /^\d{2}\/\d{2}\/\d{4}$/.test(reste[0].s.trim())) reste = reste.slice(1);
+          var am = montants[montants.length - 1], val = Math.round(pdfNombre(am.s) * 100) / 100;
+          op = { date: pdfIso(t0.s.trim()), first: reste.map(function (t) { return t.s; }).join(" "), conts: [], montant: credit(am) ? val : -val, libX: reste[0] ? reste[0].x : t0.x + 60, y: L.y };
+          sec.ops.push(op); prevY = L.y; return;
+        }
+        if (op && !montants.length && L.t[0].x >= op.libX - 12 && L.t[0].x <= op.libX + 60 && prevY - L.y <= 15 && !/^UN\.\d|^Page \d|suite >>>/i.test(txt)) { op.conts.push(txt); prevY = L.y; return; }
+        op = null;
+      });
+    });
+    return secs.filter(function (r) { return r.ops.length || r.soldes.length; }).map(function (res) {
+      var sl = res.soldes.filter(function (s) { return !s.inter; });
+      if (sl.length) { res.pdf.debut = sl.length > 1 ? sl[0].v : null; var der = sl[sl.length - 1]; res.pdf.fin = der.v; res.pdf.dateFin = der.date; res.solde = { v: der.v, corr: false, conf: 100 }; }
+      res.ops = res.ops.map(function (o) {
+        var l = pdfLibelle(o.first, o.conts), date = o.date;
+        var mc = String(o.first).match(/^PAIEMENT\s+(?:PSC|CB)\s+(\d{2})(\d{2})\b/i) || String(o.first).match(/^CARTE\s+X?\d{4}\s+(\d{2})\/(\d{2})\b/i);
+        if (mc && date) { var y = +date.slice(0, 4), cand = y + "-" + mc[2] + "-" + mc[1]; if (cand > date) cand = (y - 1) + "-" + mc[2] + "-" + mc[1]; if (/^\d{4}-\d{2}-\d{2}$/.test(cand)) date = cand; }
+        return { date: date || ref, sansDate: !date, brut: l.brut, libelle: l.libelle, cat: "", montant: o.montant, signeSrc: "explicite", corr: false, conf: 100, douteux: false, y: o.y };
+      });
+      if (res.pdf.debut != null && res.pdf.fin != null) {
+        var somme = res.ops.reduce(function (t, o) { return t + o.montant; }, 0);
+        res.pdf.ecart = Math.round((res.pdf.fin - res.pdf.debut - somme) * 100) / 100;
+      }
+      delete res.soldes;
+      if (!res.solde) res.alertes.push("Solde introuvable dans le relevé.");
+      return res;
+    });
+  }
+  var IMP_PDFJS = "https://cdn.jsdelivr.net/npm/pdfjs-dist@6.2.108/legacy/build/";
+  var impPdfP = null;
+  function impChargerPdf() {
+    if (impPdfP) return impPdfP;
+    var base = window.__impPdfBase || IMP_PDFJS;
+    impPdfP = import(base + "pdf.min.mjs").then(function (lib) { lib.GlobalWorkerOptions.workerSrc = base + "pdf.worker.min.mjs"; return lib; });
+    impPdfP.catch(function () { impPdfP = null; });
+    return impPdfP;
+  }
+  function impEstPdf(f) { return /pdf/i.test(f.type || "") || /\.pdf$/i.test(f.name || ""); }
+  function impLirePdf(file, ref) {
+    return impChargerPdf().then(function (lib) {
+      return file.arrayBuffer().then(function (buf) { return lib.getDocument({ data: new Uint8Array(buf), isEvalSupported: false }).promise; });
+    }).then(function (doc) {
+      var pages = [], k = 0;
+      function suivante() {
+        if (k >= doc.numPages) return Promise.resolve();
+        k++;
+        return doc.getPage(k).then(function (pg) {
+          var vp = pg.getViewport({ scale: 1 });
+          return pg.getTextContent().then(function (tc) {
+            pages.push({ w: vp.width, h: vp.height, items: tc.items.filter(function (it) { return it.str && it.str.trim(); }).map(function (it) { return { s: it.str, x: it.transform[4], y: it.transform[5], w: it.width }; }) });
+          });
+        }).then(suivante);
+      }
+      return suivante().then(function () { return pdfLire(pages, ref); });
+    });
+  }
+  /* Le solde d'un relevé vaut à la fin de son dernier jour */
+  function pdfLe(dateFin) { if (!dateFin) return null; var d = dateOf(dateFin); return new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1).toISOString(); }
+
   /* Moteur de lecture : Tesseract.js, chargé à la première utilisation puis gardé hors ligne */
   var IMP_TESS = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";
   var IMP_WL = "0123456789,.+-€ ";
@@ -5340,7 +5578,10 @@ html { touch-action: manipulation; }
   }
   function impInterne(o, compte, autresTitres) {
     if (/virements? internes?|virement interne|transfert/i.test(impNorm(o.cat))) return true;
-    var t = impNorm(o.brut);
+    var t = impNorm(o.brut), chiffres = String(o.brut).replace(/\s/g, ""), connus = {};
+    var nums = S.imports && S.imports.numeros; if (nums) Object.keys(nums).forEach(function (nu) { connus[nu] = nums[nu]; });
+    (S.imp ? S.imp.groupes : []).forEach(function (h) { if (h.numero) connus[h.numero] = h.compte || "?"; });
+    if (Object.keys(connus).some(function (nu) { return nu.length >= 8 && connus[nu] !== compte && chiffres.indexOf(nu) >= 0; })) return true;
     if (!/\bvir|virement|transfert/.test(t)) return false;
     var noms = [];
     ((PROFIL && PROFIL.comptes) || []).forEach(function (c) { if (c.id !== compte) [c.id, c.court, c.nom].forEach(function (n) { impMotsCles(n).forEach(function (w) { if (!/^(compte|commun|perso|mon)$/.test(w)) noms.push(w); }); }); });
@@ -5350,7 +5591,7 @@ html { touch-action: manipulation; }
     return (autresTitres || []).some(function (ti) { var a = impMotsCles(ti); return a.length && a.every(function (w) { return mots.indexOf(w) >= 0; }); });
   }
   function impApparie(g, compte, pools, autresTitres) {
-    var pris = {}, p0 = periodFor(todayISO()), lignes = [];
+    var pris = {}, prisPret = {}, p0 = periodFor(todayISO()), lignes = [];
     g.ops.forEach(function (o, idx) {
       var a = Math.round(Math.abs(o.montant) * 100) / 100, sens = o.montant < 0 ? -1 : 1, txt = o.brut + " " + o.cat;
       var L = { idx: idx, o: o, montant: a, sens: sens, libelle: o.libelle, statut: "", coche: false, detail: "", avec: null };
@@ -5407,6 +5648,13 @@ html { touch-action: manipulation; }
         }
         lignes.push(L); return;
       }
+      /* 2 bis. Remboursement d'un prêt */
+      var pret = impPret(o, sens, a, prisPret);
+      if (pret) {
+        L.statut = "rembourse"; L.pret = pret.id; L.coche = true; L.detail = impDetailPret(pret, a, prisPret[pret.id] || 0);
+        prisPret[pret.id] = (prisPret[pret.id] || 0) + a;
+        lignes.push(L); return;
+      }
       /* 3. Virement entre tes comptes */
       if (impInterne(o, compte, autresTitres)) { L.statut = "interne"; L.detail = "Virement entre tes comptes : pas une dépense"; lignes.push(L); return; }
       /* 4. Nouveau (avec le nom que tu lui avais donné la dernière fois) */
@@ -5427,6 +5675,19 @@ html { touch-action: manipulation; }
     });
     return lignes;
   }
+  function impPretsOuverts(sens) { return (S.prets || []).filter(function (x) { return (sens > 0 ? jePrete(x) : !jePrete(x)) && pretReste(x) > 0.004; }); }
+  function impPret(o, sens, a, prisPret) {
+    var best = null, bs = 0;
+    impPretsOuverts(sens).forEach(function (x) {
+      if (a > pretReste(x) - (prisPret[x.id] || 0) + 0.005) return;
+      var sim = impSim(x.personne, o.brut); if (sim > bs) { bs = sim; best = x; }
+    });
+    return best;
+  }
+  function impDetailPret(x, a, deja) {
+    var r = r2(pretReste(x) - (deja || 0) - a);
+    return (jePrete(x) ? "Remboursement de " : "Remboursement à ") + x.personne + (r > 0.004 ? " : il restera " + eur.format(r) : x.recurrent ? " : à jour" : " : soldé");
+  }
   function impTitresAutres(g) {
     var t = [];
     (S.imp ? S.imp.groupes : []).forEach(function (h) { if (h !== g && h.titre) t.push(h.titre); });
@@ -5436,7 +5697,8 @@ html { touch-action: manipulation; }
   }
   function impComptesListe() { return COMPTES.map(function (c) { return c[0]; }).filter(function (id) { return id !== "Liquide"; }); }
   function impDeviner(g, pools) {
-    var mem = S.imports && S.imports.titres, ids = impComptesListe();
+    var mem = S.imports && S.imports.titres, ids = impComptesListe(), nums = S.imports && S.imports.numeros;
+    if (g.numero && nums && nums[g.numero] && ids.indexOf(nums[g.numero]) >= 0) return { compte: nums[g.numero], devine: false };
     if (g.cle && mem && mem[g.cle] && ids.indexOf(mem[g.cle]) >= 0) return { compte: mem[g.cle], devine: false };
     var sc = ids.map(function (id) {
       var n = impApparie(g, id, pools, []).filter(function (L) { return L.avec && L.avec.compte === id && L.statut !== "interne"; }).length;
@@ -5458,6 +5720,10 @@ html { touch-action: manipulation; }
   }
   function impControle(g) {
     if (!g.compte || g.compte === "__ignorer") return null;
+    if (g.pdf) {
+      var i0 = g.compte[0] !== "_" ? soldeInfo(g.compte) : null, leP = pdfLe(g.pdf.dateFin);
+      return { pdf: true, ecart: g.pdf.ecart, debut: g.pdf.debut, fin: g.pdf.fin, dateFin: g.pdf.dateFin, recaler: !!leP && impSoldeVal(g) != null && (!i0 || String(i0.le) < leP), n: g.ops.length };
+    }
     var bank = impSoldeVal(g);
     if (bank == null) return { manque: true };
     var i = g.compte === "__nouveau" ? null : soldeInfo(g.compte);
@@ -5467,6 +5733,7 @@ html { touch-action: manipulation; }
       var a = L.montant;
       if (L.statut === "nouveau") return L.o.date >= jour ? -a : 0;
       if (L.statut === "rentree") return L.o.date >= jour ? a : 0;
+      if (L.statut === "rembourse") return L.o.date >= jour ? L.sens * a : 0;
       if (L.statut === "prevu" || L.statut === "epargne") return -a;
       if (L.statut === "revenu") return a;
       if (L.statut === "virprevu") return L.sens * a;
@@ -5487,7 +5754,7 @@ html { touch-action: manipulation; }
       if (piste || L.bloque) return;
       var e = effet(L); if (!e) return;
       if (L.coche && Math.abs(e + ec) < 0.005) piste = { L: L, faire: "decocher" };
-      else if (!L.coche && ["nouveau", "rentree", "prevu", "epargne", "revenu", "virprevu"].indexOf(L.statut) >= 0 && Math.abs(e - ec) < 0.005) piste = { L: L, faire: "cocher" };
+      else if (!L.coche && ["nouveau", "rentree", "prevu", "epargne", "revenu", "virprevu", "rembourse"].indexOf(L.statut) >= 0 && Math.abs(e - ec) < 0.005) piste = { L: L, faire: "cocher" };
     });
     return { base: i.montant, pred: pred, bank: bank, ecart: ec, le: i.le, piste: piste, attRest: r2(attRest) };
   }
@@ -5496,7 +5763,7 @@ html { touch-action: manipulation; }
   function impBarre() {
     if (S.canWrite === false) return "";
     var u = S.meta && S.meta.dernierImport;
-    return '<div class="imp-bar"><button type="button" class="mini" data-imp-ouvrir="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Importer une capture</button>' +
+    return '<div class="imp-bar"><button type="button" class="mini" data-imp-ouvrir="1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Importer capture ou PDF</button>' +
       (u ? '<button type="button" class="link-btn" data-imp-annuler="1">' + (S.impConfirmeAnnul ? "Confirmer l'annulation" : "Annuler le dernier import") + "</button>" : "") + "</div>";
   }
   function impOuvrir() {
@@ -5510,10 +5777,10 @@ html { touch-action: manipulation; }
     S.imp = null; impProg = null;
   }
   function impLibStatut(L) {
-    return { note: ["Déjà noté", "neutral"], coche: ["Déjà coché", "neutral"], interne: ["Entre tes comptes", "neutral"], prevu: ["À cocher", "good"], epargne: ["À cocher", "good"], virprevu: ["À cocher", "good"], revenu: ["Reçu", "good"], attente: ["Passée", "good"], nouveau: ["Nouvelle dépense", "warn"], rentree: ["Rentrée", "warn"] }[L.statut] || ["", "neutral"];
+    return { note: ["Déjà noté", "neutral"], coche: ["Déjà coché", "neutral"], interne: ["Entre tes comptes", "neutral"], prevu: ["À cocher", "good"], epargne: ["À cocher", "good"], virprevu: ["À cocher", "good"], revenu: ["Reçu", "good"], attente: ["Passée", "good"], rembourse: ["Remboursement", "good"], nouveau: ["Nouvelle dépense", "warn"], rentree: ["Rentrée", "warn"] }[L.statut] || ["", "neutral"];
   }
   function impLigneHTML(gi, L, li) {
-    var st = impLibStatut(L), act = ["prevu", "epargne", "virprevu", "revenu", "nouveau", "rentree", "attente"].indexOf(L.statut) >= 0, id = gi + ":" + li;
+    var st = impLibStatut(L), act = ["prevu", "epargne", "virprevu", "revenu", "nouveau", "rentree", "attente", "rembourse"].indexOf(L.statut) >= 0, id = gi + ":" + li;
     var nomEd = (L.statut === "nouveau" || L.statut === "rentree") && !L.bloque, mEd = act && L.statut !== "attente" && !L.bloque;
     var m = (L.sens < 0 ? "−" : "+") + eur.format(L.montant);
     var h = '<li class="imp-row' + (act ? "" : " fait") + '">';
@@ -5523,6 +5790,10 @@ html { touch-action: manipulation; }
     if (L.detail) h += '<span class="imp-det">' + esc(L.detail) + "</span>";
     if (L.statut === "nouveau" && !L.bloque) h += '<select class="imp-sel" data-imp-cat="' + id + '" aria-label="Catégorie">' + CATS.map(function (c) { return '<option' + (c === L.cat ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>";
     if (L.statut === "rentree" && !L.bloque) h += '<select class="imp-sel" data-imp-type="' + id + '" aria-label="Type de rentrée">' + INC_TYPES.map(function (c) { return '<option' + (c === L.type ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>";
+    if ((L.statut === "rentree" || L.statut === "rembourse") && !L.bloque) {
+      var po = impPretsOuverts(L.sens);
+      if (po.length) h += '<select class="imp-sel" data-imp-pret="' + id + '" aria-label="Remboursement d\'un prêt"><option value="">Pas un remboursement</option>' + po.map(function (x) { return '<option value="' + esc(x.id) + '"' + (L.pret === x.id ? " selected" : "") + ">" + esc((jePrete(x) ? "Remboursement de " : "Remboursement à ") + x.personne + " (reste " + eur.format(pretReste(x)) + ")") + "</option>"; }).join("") + "</select>";
+    }
     if (L.statut === "nouveau" && !L.bloque) h += '<label class="imp-hb"><input type="checkbox" data-imp-hb="' + id + '"' + (L.hb > 0 ? " checked" : "") + "> Hors budget</label>" +
       (L.hb > 0 ? '<label class="imp-hbm"><span>dont hors budget</span><input class="imp-mi" data-imp-hbm="' + id + '" inputmode="decimal" autocomplete="off" value="' + esc(num2.format(L.hb)) + '" aria-label="Montant hors budget"></label>' : "");
     h += "</div>";
@@ -5532,7 +5803,8 @@ html { touch-action: manipulation; }
   }
   function impGroupeHTML(g, gi) {
     var ids = impComptesListe(), h = '<section class="imp-grp" aria-label="Capture ' + esc(g.titre || "") + '">';
-    h += '<div class="imp-gh"><span class="label">Écran de ta banque</span><b class="imp-titre">' + esc(g.titre || "Titre illisible") + "</b>" + (g.nb > 1 ? '<span class="note">' + g.nb + " captures</span>" : "") + "</div>";
+    h += '<div class="imp-gh"><span class="label">' + (g.pdf ? "Relevé PDF" : "Écran de ta banque") + '</span><b class="imp-titre">' + esc(g.titre || "Titre illisible") + "</b>" +
+      (g.pdf ? '<span class="note">' + (g.pdf.dateFin ? "au " + esc(fmtShort.format(dateOf(g.pdf.dateFin))) + " " + g.pdf.dateFin.slice(0, 4) : "") + (g.numero ? " · n° …" + esc(g.numero.slice(-4)) : "") + " · " + g.ops.length + " opérations</span>" : g.nb > 1 ? '<span class="note">' + g.nb + " captures</span>" : "") + "</div>";
     h += '<label class="f"><span>Compte dans l\'appli</span><select data-imp-compte="' + gi + '">' +
       (g.compte ? "" : '<option value="" selected>Choisis le compte…</option>') +
       ids.map(function (id) { return '<option value="' + esc(id) + '"' + (g.compte === id ? " selected" : "") + ">" + esc((COMPTES.filter(function (c) { return c[0] === id; })[0] || [id, id])[1]) + "</option>"; }).join("") +
@@ -5542,17 +5814,23 @@ html { touch-action: manipulation; }
       '<label class="imp-suivi"><input type="checkbox" data-imp-suivi="' + gi + '"' + (g.suivi !== false ? " checked" : "") + "> Suivre son solde et ses dépenses dans le budget</label>";
     if (!g.compte || g.compte === "__ignorer") return h + "</section>";
     var bank = impSoldeVal(g);
-    h += '<div class="imp-solde"><span>Solde affiché par ta banque</span>' + (g.solde != null && g.soldeSaisi == null ? "<b>" + esc(eur.format(g.solde)) + '</b><button type="button" class="link-btn" data-imp-soldeedit="' + gi + '">Corriger</button>'
+    h += '<div class="imp-solde"><span>' + (g.pdf ? "Solde à la fin du relevé" : "Solde affiché par ta banque") + '</span>' + (g.solde != null && g.soldeSaisi == null ? "<b>" + esc(eur.format(g.solde)) + '</b><button type="button" class="link-btn" data-imp-soldeedit="' + gi + '">Corriger</button>'
       : '<input class="imp-mi" data-imp-solde="' + gi + '" inputmode="decimal" placeholder="ex. 548,06" value="' + esc(g.soldeSaisi != null ? g.soldeSaisi : g.solde != null ? String(g.solde).replace(".", ",") : "") + '" aria-label="Solde affiché par ta banque">') + "</div>";
     var act = [], deja = [];
-    g.lignes.forEach(function (L, li) { (["note", "coche", "interne"].indexOf(L.statut) >= 0 ? deja : act).push(impLigneHTML(gi, L, li)); });
-    if (g.lignes.length && g.lignes.every(function (L) { return L.bloque || ["note", "coche", "interne"].indexOf(L.statut) >= 0; }) && g.lignes.some(function (L) { return L.bloque; })) h += '<p class="imp-ctrl">Aucun mois de budget ne couvre ces dates : prépare d\'abord ton mois dans Budget pour importer les opérations. Le solde, lui, sera bien recalé.</p>';
+    var bloq = [];
+    g.lignes.forEach(function (L, li) { (L.bloque ? bloq : ["note", "coche", "interne"].indexOf(L.statut) >= 0 ? deja : act).push(impLigneHTML(gi, L, li)); });
+    if (!g.pdf && g.lignes.length && g.lignes.every(function (L) { return L.bloque || ["note", "coche", "interne"].indexOf(L.statut) >= 0; }) && g.lignes.some(function (L) { return L.bloque; })) h += '<p class="imp-ctrl">Aucun mois de budget ne couvre ces dates : prépare d\'abord ton mois dans Budget pour importer les opérations. Le solde, lui, sera bien recalé.</p>';
     if (act.length) h += '<ul class="imp-list">' + act.join("") + "</ul>";
-    else if (g.lignes.length) h += '<p class="note">Rien de nouveau sur cette capture.</p>';
-    else h += '<p class="note">Aucune opération lue sur cette capture.</p>';
+    else if (g.lignes.length) h += '<p class="note">Rien de nouveau ' + (g.pdf ? "dans ce relevé" : "sur cette capture") + ".</p>";
+    else h += '<p class="note">Aucune opération lue ' + (g.pdf ? "dans ce relevé" : "sur cette capture") + ".</p>";
     if (deja.length) h += '<details class="imp-deja"><summary>Déjà dans l\'appli · ' + deja.length + '</summary><ul class="imp-list">' + deja.join("") + "</ul></details>";
+    if (bloq.length) h += '<details class="imp-deja"><summary>Avant le début de ton budget · ' + bloq.length + '</summary><ul class="imp-list">' + bloq.join("") + "</ul></details>";
     var c = impControle(g);
-    if (c) {
+    if (c && c.pdf) {
+      if (c.ecart != null && Math.abs(c.ecart) < 0.005) h += '<p class="imp-ctrl ok"><span aria-hidden="true">✓</span> Relevé lu en entier : ' + esc(eur.format(c.debut)) + " au départ, plus les " + c.n + " opérations, donne bien " + esc(eur.format(c.fin)) + " au " + esc(fmtShort.format(dateOf(c.dateFin))).replace(/\.$/, "") + ".</p>";
+      else if (c.ecart != null) h += '<p class="imp-ctrl warn"><span aria-hidden="true">⚠</span> Écart de ' + esc(signe(c.ecart)) + " avec le solde du relevé : une opération a peut-être été mal lue.</p>";
+      h += '<p class="note">' + (c.recaler ? "Le solde de l'appli sera recalé sur celui du relevé (" + esc(eur.format(c.fin)) + " au " + esc(fmtShort.format(dateOf(c.dateFin))).replace(/\.$/, "") + ")." : "Ton solde dans l'appli est plus récent que ce relevé : il n'est pas modifié.") + "</p>";
+    } else if (c) {
       if (c.manque) h += '<p class="imp-ctrl warn">Solde introuvable sur la capture : indique-le pour recaler le compte.</p>';
       else if (c.premier) h += '<p class="imp-ctrl">Premier solde pour ce compte : ' + esc(eur.format(c.bank)) + ". L'appli le tiendra à jour à partir d'ici.</p>";
       else if (Math.abs(c.ecart) < 0.005) h += '<p class="imp-ctrl ok"><span aria-hidden="true">✓</span> Contrôle : ' + (c.attRest
@@ -5574,9 +5852,9 @@ html { touch-action: manipulation; }
       if (g.compte === "__ignorer") return;
       g.lignes.forEach(function (L) {
         if (!L.coche || L.bloque) return;
-        if (L.statut === "nouveau") r.dep++; else if (L.statut === "rentree") r.ren++; else if (L.statut === "attente") r.att = (r.att || 0) + 1; else r.coche++;
+        if (L.statut === "nouveau") r.dep++; else if (L.statut === "rentree") r.ren++; else if (L.statut === "attente") r.att = (r.att || 0) + 1; else if (L.statut === "rembourse") r.remb = (r.remb || 0) + 1; else r.coche++;
       });
-      if (impSoldeVal(g) != null) r.soldes++;
+      if (impSoldeVal(g) != null && (!g.pdf || (impControle(g) || {}).recaler)) r.soldes++;
     });
     return r;
   }
@@ -5585,7 +5863,8 @@ html { touch-action: manipulation; }
     var I = S.imp, h = "";
     if (I.etape === "choix") {
       h = '<p class="note">Fais une capture de l\'écran des opérations de ta banque, avec le solde en haut, puis choisis-la ici. Tu peux en prendre plusieurs d\'un coup, même de comptes différents.</p>' +
-        '<button type="button" class="btn" data-imp-choisir="1">Choisir des captures</button>' +
+        '<button type="button" class="btn" data-imp-choisir="1">Choisir des captures ou un relevé PDF</button>' +
+        '<p class="note">Un relevé PDF de ta banque marche aussi : tout le mois d\'un coup, sans faire défiler. Dans le choix, prends « Choisir des fichiers ».</p>' +
         (I.msg ? '<p class="imp-ctrl warn" role="alert">' + esc(I.msg) + "</p>" : "") +
         '<p class="note">La lecture se fait sur ton téléphone : rien n\'est envoyé. La première fois, il faut internet pour télécharger le module de lecture, ensuite il marche hors ligne.</p>' +
         '<details class="imp-coller"' + (I.collerOuvert ? " open" : "") + '><summary>Coller du texte à la place</summary><p class="note">Dans Photos, ouvre la capture, touche l\'icône Texte en direct puis « Tout copier », et colle ici.</p><textarea id="imp-texte" rows="6" placeholder="Solde : + 548,06 €&#10;13 novembre&#10;Gemo Montivilliers - 9,99 €"></textarea><button type="button" class="mini" data-imp-coller="1">Lire le texte</button></details>';
@@ -5598,6 +5877,7 @@ html { touch-action: manipulation; }
       var r = impResume(), parts = [];
       if (r.dep) parts.push(r.dep + (r.dep > 1 ? " dépenses à ajouter" : " dépense à ajouter"));
       if (r.coche) parts.push(r.coche + (r.coche > 1 ? " éléments prévus à cocher" : " élément prévu à cocher"));
+      if (r.remb) parts.push(r.remb + (r.remb > 1 ? " remboursements" : " remboursement"));
       if (r.att) parts.push(r.att + (r.att > 1 ? " dépenses en attente passées" : " dépense en attente passée"));
       if (r.ren) parts.push(r.ren + (r.ren > 1 ? " rentrées à ajouter" : " rentrée à ajouter"));
       if (r.soldes) parts.push(r.soldes + (r.soldes > 1 ? " soldes recalés" : " solde recalé"));
@@ -5611,17 +5891,18 @@ html { touch-action: manipulation; }
     var groupes = [], parCle = {};
     lectures.forEach(function (res, i) {
       var cle = res.titre ? impNorm(res.titre).replace(/[^a-z0-9/ ]/g, "").trim() : "";
-      var g = cle && parCle[cle];
+      var k2 = res.pdf ? "pdf|" + cle + "|" + (res.pdf.numero || i) : cle, g = k2 && parCle[k2];
       if (!g) {
-        g = { cle: cle, titre: res.titre, solde: res.solde ? res.solde.v : null, ops: [], alertes: [], nb: 0, vus: {} };
-        groupes.push(g); if (cle) parCle[cle] = g;
+        g = { cle: cle, titre: res.titre, solde: res.solde ? res.solde.v : null, ops: [], alertes: [], nb: 0, vus: {}, pdf: res.pdf || null, numero: res.pdf ? res.pdf.numero : "" };
+        groupes.push(g); if (k2) parCle[k2] = g;
       }
       g.nb++;
       if (g.solde == null && res.solde) g.solde = res.solde.v;
       res.alertes.forEach(function (a) { if (g.alertes.indexOf(a) < 0) g.alertes.push(a); });
       res.ops.forEach(function (o) {
         var k = o.date + "|" + o.montant.toFixed(2) + "|" + impNorm(o.libelle).slice(0, 18);
-        if (g.vus[k]) return; g.vus[k] = 1; g.ops.push(o);
+        if (!res.pdf) { if (g.vus[k]) return; g.vus[k] = 1; }
+        g.ops.push(o);
       });
     });
     var pools = impPools();
@@ -5640,22 +5921,27 @@ html { touch-action: manipulation; }
       if (m.status === "recognizing text") maj((phase === "verif" ? "Vérification des montants" : "Lecture de la capture " + (k + 1) + " sur " + n) + "…", (k + (phase === "verif" ? 0.9 : Math.min(0.85, m.progress * 0.85))) / n);
       else if (/load|initializ/.test(m.status)) maj("Préparation du module de lecture (la 1re fois, il faut internet)…", null);
     };
-    impChargerMoteur().then(function (moteur) {
-      function suivant() {
-        if (k >= n) return Promise.resolve();
-        phase = "lecture"; maj("Lecture de la capture " + (k + 1) + " sur " + n + "…", k / n);
-        return impLireImage(files[k], moteur, ref, function (ph) { phase = ph; }).then(function (res) { lectures.push(res); k++; return suivant(); });
+    var moteurP = null, quoi = "";
+    function suivant() {
+      if (k >= n) return Promise.resolve();
+      var f = files[k];
+      if (impEstPdf(f)) {
+        quoi = "pdf"; maj("Lecture du relevé PDF" + (n > 1 ? " (" + (k + 1) + " sur " + n + ")" : "") + "…", k / n);
+        return impLirePdf(f, ref).then(function (secs) { secs.forEach(function (r) { lectures.push(r); }); k++; return suivant(); });
       }
-      return suivant();
-    }).then(function () {
+      quoi = "image"; phase = "lecture"; maj("Lecture de la capture " + (k + 1) + " sur " + n + "…", k / n);
+      return (moteurP || (moteurP = impChargerMoteur())).then(function (moteur) { return impLireImage(f, moteur, ref, function (ph) { phase = ph; }); })
+        .then(function (res) { lectures.push(res); k++; return suivant(); });
+    }
+    suivant().then(function () {
       if (!S.imp) return;
       impProg = null;
-      if (!lectures.some(function (r) { return r.ops.length || r.solde; })) { I.etape = "choix"; I.msg = "Je n'ai rien pu lire sur ces captures. Prends l'écran des opérations, avec le solde en haut."; impRender(); return; }
+      if (!lectures.some(function (r) { return r.ops.length || r.solde; })) { I.etape = "choix"; I.msg = quoi === "pdf" ? "Je n'ai trouvé aucune opération dans ce PDF. Il faut le relevé de compte envoyé par ta banque." : "Je n'ai rien pu lire sur ces captures. Prends l'écran des opérations, avec le solde en haut."; impRender(); return; }
       I.groupes = impConstruireGroupes(lectures); I.etape = "revue"; I.msg = ""; impRender();
     }).catch(function () {
       if (!S.imp) return;
       impProg = null; I.etape = "choix"; I.collerOuvert = true;
-      I.msg = lectures.length ? "La lecture s'est arrêtée en route. Réessaie avec moins de captures à la fois." : "Le module de lecture n'a pas pu se charger : il faut internet la première fois. En attendant, tu peux coller le texte de ta capture ci-dessous.";
+      I.msg = quoi === "pdf" ? "Ce PDF n'a pas pu être lu. La première fois, il faut internet pour télécharger le lecteur de PDF ; vérifie aussi que c'est bien un relevé de compte." : lectures.length ? "La lecture s'est arrêtée en route. Réessaie avec moins de captures à la fois." : "Le module de lecture n'a pas pu se charger : il faut internet la première fois. En attendant, tu peux coller le texte de ta capture ci-dessous.";
       impRender();
     });
   }
@@ -5668,7 +5954,7 @@ html { touch-action: manipulation; }
     for (var gi = 0; gi < gs.length; gi++) if (gs[gi].compte === "__nouveau" && !String(gs[gi].nouveauNom || "").trim()) { I.msg = "Donne un nom au nouveau compte."; impRender(); return; }
     var all = window.__localdb ? window.__localdb.tout() : {}, t0 = Date.now();
     var tsOps = new Date(t0 - 4000).toISOString(), tsRel = new Date(t0).toISOString();
-    var undo = { le: tsRel, crees: [], avant: {} }, ecr = [], maj = [], perMod = {}, cotes = [], bilan = { dep: 0, ren: 0, coche: 0, soldes: 0 };
+    var undo = { le: tsRel, crees: [], avant: {} }, ecr = [], maj = [], rembs = {}, perMod = {}, cotes = [], bilan = { dep: 0, ren: 0, coche: 0, soldes: 0 };
     function garde(path) { if (!(path in undo.avant)) undo.avant[path] = all[path] ? clone(all[path]) : null; }
     function per(pid) { if (!perMod[pid]) { garde("periodes/" + pid); perMod[pid] = clone(all["periodes/" + pid] || {}); } return perMod[pid]; }
     var profil = clone(PROFIL || PROFIL_VIDE), profilChange = false;
@@ -5694,6 +5980,17 @@ html { touch-action: manipulation; }
           ecr.push(["depenses/" + id, doc]); undo.crees.push("depenses/" + id); bilan.dep++;
           var kl = impCleLib(o.brut); if (kl) imports.libelles[kl] = doc.categorie;
           if (kl && o.renomme) { imports.noms = imports.noms || {}; imports.noms[kl] = doc.libelle; }
+        } else if (L.statut === "rembourse" && L.pret) {
+          var px = (S.prets || []).filter(function (y) { return y.id === L.pret; })[0]; if (!px) return;
+          garde("prets/" + px.id);
+          var rnew = { montant: a, date: o.date, compte: acc, le: tsOps }, rper = periodFor(o.date) || current();
+          if (px.budget) {
+            rnew.rentree = "rb-" + t0.toString(36) + Math.random().toString(36).slice(2, 6);
+            ecr.push(["rentrees/" + rnew.rentree, { libelle: px.personne + " · " + String(px.motif || "remboursement").replace(/\s*\(.*$/, ""), montant: a, date: o.date, compte: acc, type: "Remboursement", periode: rper ? rper.id : "", creeLe: tsOps, pret: px.id }]);
+            undo.crees.push("rentrees/" + rnew.rentree);
+          }
+          rembs[px.id] = (rembs[px.id] || clone(px.remboursements || [])).concat([rnew]);
+          bilan.remb = (bilan.remb || 0) + 1;
         } else if (L.statut === "attente" && L.avec && L.avec.x && L.avec.x.id) {
           garde("depenses/" + L.avec.x.id); maj.push(["depenses/" + L.avec.x.id, { attente: false, passeLe: tsOps }]); bilan.coche++;
         } else if (L.statut === "rentree" && p) {
@@ -5719,13 +6016,16 @@ html { touch-action: manipulation; }
           bilan.coche++;
         }
       });
-      var bank = impSoldeVal(g);
-      if (bank != null) {
-        soldes.comptes[acc] = { montant: bank, le: tsRel };
-        soldes.historique = soldes.historique.concat([{ compte: acc, le: tsRel, banque: bank, calcul: ctrl && !ctrl.premier && !ctrl.manque ? ctrl.pred : null, ecart: ctrl && !ctrl.premier && !ctrl.manque ? ctrl.ecart : null, source: "Capture" + (g.titre ? " : " + g.titre : "") }]).slice(-30);
+      var bank = impSoldeVal(g), leS = tsRel, okS = true;
+      if (g.pdf) { leS = pdfLe(g.pdf.dateFin); var exist = soldes.comptes[acc]; okS = !!leS && (!exist || !exist.le || String(exist.le) < leS); }
+      if (bank != null && okS) {
+        var ctrlOk = ctrl && !ctrl.pdf && !ctrl.premier && !ctrl.manque;
+        soldes.comptes[acc] = { montant: bank, le: leS };
+        soldes.historique = soldes.historique.concat([{ compte: acc, le: leS, banque: bank, calcul: ctrlOk ? ctrl.pred : null, ecart: ctrlOk ? ctrl.ecart : null, source: (g.pdf ? "Relevé PDF" : "Capture") + (g.titre ? " : " + g.titre : "") }]).slice(-30);
         bilan.soldes++;
       }
       if (g.cle) imports.titres[g.cle] = acc;
+      if (g.numero) { imports.numeros = imports.numeros || {}; imports.numeros[g.numero] = acc; }
     });
     ["config/soldes", "config/imports"].forEach(garde);
     if (profilChange) garde("config/profil");
@@ -5740,6 +6040,7 @@ html { touch-action: manipulation; }
       if (profilChange) etape(function () { return S.db.doc("config/profil").set(profil); });
       ecr.forEach(function (e) { etape(function () { return S.db.doc(e[0]).set(e[1]); }); });
       maj.forEach(function (e) { etape(function () { return S.db.doc(e[0]).update(e[1]); }); });
+      Object.keys(rembs).forEach(function (id) { etape(function () { return S.db.doc("prets/" + id).update({ remboursements: rembs[id] }); }); });
       Object.keys(perMod).forEach(function (pid) { etape(function () { return S.db.doc("periodes/" + pid).set(perMod[pid]); }); });
       cotes.forEach(function (c) {
         if (c.x.partage && c.x.partage.personne) etape(function () { syncPartage(c.x, c.p); });
@@ -5749,7 +6050,7 @@ html { touch-action: manipulation; }
       etape(function () { return S.db.doc("config/soldes").set(soldes); });
       etape(function () { return S.db.doc("local/meta").set(meta); });
       return seq;
-    }, "Import fait : " + [bilan.dep ? bilan.dep + (bilan.dep > 1 ? " dépenses ajoutées" : " dépense ajoutée") : "", bilan.coche ? bilan.coche + (bilan.coche > 1 ? " éléments cochés" : " élément coché") : "", bilan.ren ? bilan.ren + (bilan.ren > 1 ? " rentrées ajoutées" : " rentrée ajoutée") : "", bilan.soldes ? (bilan.soldes > 1 ? bilan.soldes + " soldes recalés" : "solde recalé") : ""].filter(Boolean).join(", ") + ".").then(function (ok) {
+    }, "Import fait : " + [bilan.dep ? bilan.dep + (bilan.dep > 1 ? " dépenses ajoutées" : " dépense ajoutée") : "", bilan.coche ? bilan.coche + (bilan.coche > 1 ? " éléments cochés" : " élément coché") : "", bilan.ren ? bilan.ren + (bilan.ren > 1 ? " rentrées ajoutées" : " rentrée ajoutée") : "", bilan.remb ? bilan.remb + (bilan.remb > 1 ? " remboursements notés" : " remboursement noté") : "", bilan.soldes ? (bilan.soldes > 1 ? bilan.soldes + " soldes recalés" : "solde recalé") : ""].filter(Boolean).join(", ").replace(/^$/, "rien à changer, tout était déjà noté") + ".").then(function (ok) {
       if (ok) { impFermer(); S.compteSel = gs.length && gs[0].compte !== "__nouveau" ? gs[0].compte : S.compteSel; renderSoldes(); }
     });
   }
@@ -5793,6 +6094,13 @@ html { touch-action: manipulation; }
     if (t.dataset.impCat != null && (x = impLigneDe(t.dataset.impCat))) { x.L.cat = t.value; return; }
     if (t.dataset.impType != null && (x = impLigneDe(t.dataset.impType))) { x.L.type = t.value; return; }
     if (t.dataset.impM != null && (x = impLigneDe(t.dataset.impM))) { var v = parseAmount(t.value, false); if (!isNaN(v)) { x.L.montant = v; x.L.o.douteux = false; if (x.L.hb > v) x.L.hb = v; } impRender(); return; }
+    if (t.dataset.impPret != null && (x = impLigneDe(t.dataset.impPret))) {
+      var L2 = x.L;
+      if (t.value) { var pp = (S.prets || []).filter(function (y) { return y.id === t.value; })[0]; L2.statut = "rembourse"; L2.pret = t.value; L2.coche = true; L2.detail = pp ? impDetailPret(pp, L2.montant, 0) : ""; }
+      else if (L2.sens > 0) { L2.statut = "rentree"; L2.pret = null; L2.coche = false; L2.type = L2.type || impTypeRentree(L2.o); L2.detail = "Pas compté dans le budget, sauf si tu coches"; }
+      else { L2.statut = "nouveau"; L2.pret = null; L2.coche = false; L2.cat = L2.cat || impCategorie(L2.o); L2.detail = ""; }
+      impRender(); return;
+    }
     if (t.dataset.impHb != null && (x = impLigneDe(t.dataset.impHb))) { x.L.hb = t.checked ? x.L.montant : 0; impRender(); return; }
     if (t.dataset.impHbm != null && (x = impLigneDe(t.dataset.impHbm))) { var hv = parseAmount(t.value, false); x.L.hb = isNaN(hv) ? x.L.montant : Math.min(r2(hv), x.L.montant); impRender(); return; }
     if (t.dataset.impSolde != null) { S.imp.groupes[+t.dataset.impSolde].soldeSaisi = t.value; impRender(); return; }
@@ -6014,13 +6322,215 @@ html { touch-action: manipulation; }
     var box = $("f-opts"); if (!box) return;
     box.hidden = S.mode !== "dep" || !!carteChoisie();
     $("f-hbrow").hidden = !$("f-hb").checked;
+    cagFormMaj();
   }
-  function formOptsVider() { $("f-hb").checked = false; $("f-hbm").value = ""; $("f-att").checked = false; formOptsMaj(); }
+  function formOptsVider() { $("f-hb").checked = false; $("f-hbm").value = ""; $("f-att").checked = false; cagFormVider(); formOptsMaj(); }
   $("f-hb").addEventListener("change", function () {
     if (this.checked && !$("f-hbm").value) { var m = parseAmount($("f-montant").value, false); if (!isNaN(m)) $("f-hbm").value = num2.format(m); }
     formOptsMaj();
   });
   $("f-compte").addEventListener("change", formOptsMaj);
+
+  /* ---------- 1.7 : La Cagnotte dans l'application ----------
+     La Cagnotte s'ouvre en plein écran (cagnotte.html, même application, même téléphone). Ses données restent
+     sous la clé « la-cagnotte-donnees » : la tuile les lit, et une dépense « payée par la cagnotte » y note son paiement. */
+  var CAG_COLS = ["people", "payments", "expenses", "projects", "extras", "moves", "allocs", "settings"];
+  function cagLire() { try { var d = JSON.parse(localStorage.getItem("la-cagnotte-donnees") || "null"); return d && typeof d === "object" ? d : null; } catch (e) { return null; } }
+  function cagPrete(d) { if (d === undefined) d = cagLire(); return !!(d && d.settings && d.settings.main); }
+  function cagEcrire(d) { localStorage.setItem("la-cagnotte-donnees", JSON.stringify(d)); }
+  function cagNettoyer(d) { var c = {}; CAG_COLS.forEach(function (k) { if (d && d[k] && typeof d[k] === "object" && !Array.isArray(d[k])) c[k] = d[k]; }); return c; }
+  function cagMeta(m) { try { var o = JSON.parse(localStorage.getItem("la-cagnotte-meta") || "{}") || {}; localStorage.setItem("la-cagnotte-meta", JSON.stringify(Object.assign(o, m))); } catch (e) {} }
+  function cagEntrees(o) { return o && typeof o === "object" ? Object.keys(o).map(function (k) { return Object.assign({}, o[k], { id: k }); }) : []; }
+  function cagNouvelId(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+  function cagJour(iso) { var d = new Date(iso); return isNaN(d) ? todayISO() : isoOf(d); }
+  function cagPaye(e) { return r2((e.payments || []).reduce(function (s, x) { return s + (+x.amount || 0); }, 0)); }
+  function cagMoisPlus(m) { var y = +m.slice(0, 4), k = +m.slice(5, 7) + 1; if (k > 12) { k = 1; y++; } return y + "-" + pad(k); }
+
+  /* Même calcul que l'accueil de La Cagnotte : solde du livret (recalé sur la banque) et pot des voyages */
+  function cagChiffres(d) {
+    if (!cagPrete(d)) return null;
+    var st = d.settings.main, t = todayISO(), at = st.anchorAt || "", j0 = at ? cagJour(at) : "", n = function (v) { return +v || 0; };
+    var neuf = function (x) { if (!at) return true; var dd = x.date || ""; return dd > j0 || (dd === j0 && (x.recordedAt || "") > at); };
+    var vIn = 0, vOut = 0, nIn = 0, nOut = 0;
+    cagEntrees(d.payments).forEach(function (p) { vIn += n(p.ski); if (neuf(p)) nIn += n(p.amount); });
+    cagEntrees(d.extras).forEach(function (x) { if (x.target !== "credit") vIn += n(x.amount); if (neuf(x)) nIn += n(x.amount); });
+    cagEntrees(d.expenses).forEach(function (e) { (e.payments || []).forEach(function (x) { if (x.by) return; vOut += n(x.amount); if (neuf(x)) nOut += n(x.amount); }); });
+    cagEntrees(d.projects).forEach(function (pr) {
+      (pr.settles || []).forEach(function (s) { var a = n(s.amount); if (s.to === "pot" && s.from !== "pot") { vIn += a; if (neuf(s)) nIn += a; } else if (s.from === "pot" && s.to !== "pot") { vOut += a; if (neuf(s)) nOut += a; } });
+    });
+    cagEntrees(d.moves).forEach(function (x) { var a = n(x.amount); if (x.dir === "transfer") { vIn += a; return; } var sg = x.dir === "in" ? 1 : -1; if (neuf(x)) { if (sg > 0) nIn += a; else nOut += a; } if (x.target === "voyages") vIn += sg * a; });
+    var prel = 0;
+    if (j0 && t > j0) {
+      var jr = Math.min(Math.max(parseInt(st.creditDay, 10) || 1, 1), 28), m = j0.slice(0, 7);
+      for (var i = 0; i < 240; i++) { var dj = m + "-" + pad(jr); if (dj > t) break; if (dj > j0 && (!st.creditEndMonth || m <= st.creditEndMonth)) prel++; m = cagMoisPlus(m); }
+    }
+    return { livret: r2(n(st.anchorBalance) + nIn - nOut - n(st.creditMonthly) * prel), pot: r2(vIn - vOut) };
+  }
+
+  /* Liste des dépenses de la cagnotte, par projet, pour la fiche « + Dépense » */
+  function cagProjets(d) { return cagEntrees(d.projects).sort(function (a, b) { return String(a.month || "9999-99").localeCompare(String(b.month || "9999-99")) || ((+a.order || 0) - (+b.order || 0)); }); }
+  function cagProjetDe(d, e, ps) { if (e.project && d.projects && d.projects[e.project]) return e.project; return ps[0] ? ps[0].id : null; }
+  function cagNorm(s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  function cagDeviner(d, lib) {
+    var k = cagNorm(lib), best = "", bl = 0; if (k.length < 3) return "";
+    cagEntrees(d.expenses).forEach(function (e) { var l = cagNorm(e.label); if (l.length >= 3 && l.length > bl && (k.indexOf(l) >= 0 || l.indexOf(k) >= 0)) { best = "e:" + e.id; bl = l.length; } });
+    return best;
+  }
+  function cagOptions(d, sel, lib) {
+    var ps = cagProjets(d), es = cagEntrees(d.expenses).sort(function (a, b) { return ((+a.order || 0) - (+b.order || 0)) || String(a.label).localeCompare(String(b.label), "fr"); });
+    var h = '<option value="">Choisis la dépense…</option>';
+    ps.forEach(function (pr) {
+      h += '<optgroup label="' + esc(pr.name || "Projet") + '">' + es.filter(function (e) { return cagProjetDe(d, e, ps) === pr.id; }).map(function (e) {
+        var info = e.rest ? "le reste du pot" : e.closed ? "soldée" : e.planned == null ? "à estimer" : "reste " + eur.format(Math.max(0, r2(+e.planned - cagPaye(e))));
+        return '<option value="e:' + esc(e.id) + '"' + (sel === "e:" + e.id ? " selected" : "") + ">" + esc((e.label || "Dépense") + " · " + info) + "</option>";
+      }).join("") + '<option value="n:' + esc(pr.id) + '"' + (sel === "n:" + pr.id ? " selected" : "") + ">+ Nouvelle dépense" + (lib ? " « " + esc(lib.slice(0, 30)) + " »" : "") + "</option></optgroup>";
+    });
+    return h;
+  }
+  /* Un paiement déjà noté dans la cagnotte (même dépense, montant pas plus grand, à 15 jours près) : on relie au lieu d'ajouter */
+  function cagLiable(d, eid, montant, date, sauf) {
+    var e = d.expenses && d.expenses[eid]; if (!e || isNaN(montant)) return null;
+    var pris = {}; (S.allExp || []).forEach(function (x) { if (x.id !== sauf && x.cagnotte && x.cagnotte.pay) pris[x.cagnotte.pay] = 1; });
+    var c = (e.payments || []).filter(function (p) { var a = +p.amount || 0; return p.id && !p.by && !pris[p.id] && p.src !== "paie-budget" && a > 0 && a <= montant + 0.004 && (!p.date || Math.abs(daysBetween(p.date, date)) <= 15); });
+    c.sort(function (a, b) { return Math.abs(daysBetween(a.date || date, date)) - Math.abs(daysBetween(b.date || date, date)); });
+    return c[0] || null;
+  }
+  function cagPayDate(d, eid, pid) { var e = d.expenses && d.expenses[eid], p = e && (e.payments || []).filter(function (x) { return x.id === pid; })[0]; return p ? p.date : ""; }
+
+  /* Fiche « + Dépense » : case « Payée par la cagnotte » */
+  var CF = null;
+  function cagFormVider() { CF = { sel: "", neuf: false, mTouche: false, hbTouche: false, h0: 0, lien: null }; if ($("f-cag")) { $("f-cag").checked = false; $("f-cagm").value = ""; } }
+  function cagFormOuvrir(x) {
+    var c = x && x.cagnotte;
+    cagFormVider();
+    $("f-cag").checked = !!c;
+    if (c) {
+      CF.sel = "e:" + c.exp; CF.mTouche = true;
+      $("f-cagm").value = num2.format(Number(c.montant) || 0);
+      var h = r2((Number(x.horsBudget) || 0) - (Number(c.montant) || 0));
+      $("f-hb").checked = h > 0.004; $("f-hbm").value = h > 0.004 ? num2.format(h) : "";
+    } else CF.h0 = x && Number(x.horsBudget) > 0 ? Number(x.horsBudget) : 0;
+  }
+  function cagFormMaj() {
+    var line = $("f-cagline"); if (!line || !CF) return;
+    var d = cagLire(), ok = cagPrete(d), E = S.editExp, c0 = E && E.doc ? E.doc.cagnotte : null;
+    line.hidden = !ok && !c0;
+    var on = !line.hidden && $("f-cag").checked;
+    $("f-cagrow").hidden = !on;
+    $("f-hblab").textContent = on ? "Autre partie hors budget (part d'un ami, remboursement…)" : "Hors budget (remboursé, part d'un ami…)";
+    var montant = parseAmount($("f-montant").value, false), date = $("f-date").value || todayISO(), lib = $("f-libelle").value.trim(), txt = $("f-cagtxt"), mi = $("f-cagm"), A = 0;
+    CF.lien = null;
+    if (on && ok) {
+      $("f-cagexp").innerHTML = cagOptions(d, CF.sel, lib);
+      if (CF.sel.indexOf("e:") === 0 && !CF.neuf) {
+        var eid = CF.sel.slice(2);
+        if (c0 && c0.exp === eid) { if (c0.lie) CF.lien = { id: c0.pay, amount: c0.montant, date: cagPayDate(d, eid, c0.pay) }; }
+        else CF.lien = cagLiable(d, eid, montant, date, E && E.id);
+      }
+      if (CF.lien) { mi.value = num2.format(+CF.lien.amount || 0); mi.readOnly = true; }
+      else { mi.readOnly = false; if (!CF.mTouche) mi.value = isNaN(montant) ? "" : num2.format(montant); }
+      A = parseAmount(mi.value || "", false); if (isNaN(A)) A = 0;
+    }
+    /* Dépense déjà « hors budget » avant d'être reliée : la part de la cagnotte en faisait partie */
+    if (CF.h0 > 0 && !CF.hbTouche) { var h = r2(Math.max(0, CF.h0 - (on ? A : 0))); $("f-hb").checked = h > 0.004; $("f-hbm").value = h > 0.004 ? num2.format(h) : ""; $("f-hbrow").hidden = !$("f-hb").checked; }
+    if (!on) return;
+    if (!ok) { txt.textContent = "La cagnotte n'est plus sur ce téléphone : décoche la case pour enregistrer."; return; }
+    var H = $("f-hb").checked ? parseAmount($("f-hbm").value || "", false) : 0; if (isNaN(H)) H = 0;
+    var v = CF.sel, t;
+    if (!v) t = "Choisis la dépense de la cagnotte qui paie.";
+    else if (CF.lien) t = "Déjà noté dans la cagnotte : " + eur.format(+CF.lien.amount || 0) + (CF.lien.date ? " le " + fmtShort.format(dateOf(CF.lien.date)).replace(/\.$/, "") : "") + ". Les deux sont reliés, rien n'est ajouté à la cagnotte.";
+    else if (v.indexOf("n:") === 0) t = "Une dépense « " + (lib || "sans nom") + " » de " + eur.format(A) + " sera ajoutée à " + ((d.projects[v.slice(2)] || {}).name || "la cagnotte") + ", déjà payée par la cagnotte.";
+    else t = eur.format(A) + " seront notés comme paiement de « " + ((d.expenses[v.slice(2)] || {}).label || "la dépense") + " » et sortiront du livret.";
+    txt.innerHTML = esc(t) + (CF.lien ? ' <button type="button" class="link-btn" id="f-cagneuf">C\'est un autre paiement</button>' : "") +
+      (v && !isNaN(montant) ? '<span class="f-cagb">Dans ton budget : ' + esc(eur.format(r2(Math.max(0, montant - Math.min(montant, A + H))))) + "</span>" : "");
+  }
+  function cagDuFormulaire(montant, libelle) {
+    var line = $("f-cagline");
+    if (!line || line.hidden || !$("f-cag").checked || carteChoisie() || !CF) return null;
+    var d = cagLire(); if (!cagPrete(d)) return { err: "La cagnotte n'est plus sur ce téléphone : décoche « Payée par la cagnotte »." };
+    var v = CF.sel; if (!v) return { err: "Choisis la dépense de la cagnotte qui paie." };
+    var a = CF.lien ? +CF.lien.amount : parseAmount($("f-cagm").value || "", false);
+    if (isNaN(a) || a <= 0) return { err: "Indique combien la cagnotte paie." };
+    if (a > montant + 0.004) return { err: "La cagnotte ne peut pas payer plus que la dépense (" + eur.format(montant) + ")." };
+    var r = { exp: v.indexOf("e:") === 0 ? v.slice(2) : "", projet: v.indexOf("n:") === 0 ? v.slice(2) : "", montant: r2(a), lien: CF.lien };
+    if (r.exp && !(d.expenses && d.expenses[r.exp])) return { err: "Cette dépense n'existe plus dans la cagnotte : choisis-en une autre." };
+    if (r.projet && !(d.projects && d.projects[r.projet])) return { err: "Ce projet n'existe plus dans la cagnotte : choisis-en un autre." };
+    var nom = r.exp ? (d.expenses[r.exp].label || "la dépense") : (d.projects[r.projet].name || "la cagnotte");
+    r.msg = r.lien ? "Reliée au paiement de " + eur.format(r.montant) + " déjà noté dans la cagnotte (" + nom + ")." : r.exp ? "Payée par la cagnotte : " + eur.format(r.montant) + " pour « " + nom + " »." : "Payée par la cagnotte : ajoutée à " + nom + ".";
+    return r;
+  }
+  function cagMeme(c0, f) { return !!(c0 && f && !f.projet && f.exp === c0.exp && (c0.lie ? f.lien && f.lien.id === c0.pay : !f.lien) && Math.abs(f.montant - (Number(c0.montant) || 0)) < 0.005); }
+
+  /* Écrit dans la cagnotte : défait l'ancien lien (si son paiement venait d'ici), puis note le nouveau. Rend le lien à garder sur la dépense. */
+  function cagAppliquer(avant, apres, lib, date) {
+    var d = cagLire();
+    if (!cagPrete(d)) { if (apres) throw { message: "La cagnotte n'est plus sur ce téléphone." }; return null; }
+    var X = d.expenses = d.expenses || {}, at = nowISO(), note = "Paie & Budget · " + String(lib || "dépense").slice(0, 60);
+    var paie = function (id, a, old) { return { id: id, amount: r2(a), date: date || todayISO(), note: note, recordedAt: old && old.recordedAt || at, src: "paie-budget" }; };
+    var solde = function (e) { return !e.rest && e.planned != null && cagPaye(e) >= (+e.planned || 0) - 0.004; };
+    var garde = !!(avant && apres && !apres.projet && apres.exp === avant.exp && (avant.lie ? apres.lien && apres.lien.id === avant.pay : !apres.lien));
+    if (avant && !avant.lie && !garde && X[avant.exp]) {
+      var e0 = X[avant.exp]; e0.payments = (e0.payments || []).filter(function (p) { return p.id !== avant.pay; });
+      if (avant.cree && !e0.payments.length) delete X[avant.exp];
+      else if (avant.ferme && e0.closed && !solde(e0)) e0.closed = false;
+    }
+    var res = null;
+    if (garde && avant.lie) res = { montant: r2(+avant.montant || 0), exp: avant.exp, pay: avant.pay, lie: true };
+    else if (garde) {
+      var e1 = X[avant.exp]; if (!e1) throw { message: "Cette dépense n'existe plus dans la cagnotte." };
+      var old = (e1.payments || []).filter(function (p) { return p.id === avant.pay; })[0];
+      e1.payments = (e1.payments || []).filter(function (p) { return p.id !== avant.pay; }).concat([Object.assign({}, old || {}, paie(avant.pay, apres.montant, old))]);
+      if (avant.cree) { e1.planned = r2(apres.montant); if (lib) e1.label = String(lib).slice(0, 60); }
+      var f1 = !!avant.ferme;
+      if (!e1.closed && solde(e1)) { e1.closed = true; f1 = true; } else if (f1 && e1.closed && !solde(e1)) { e1.closed = false; f1 = false; }
+      res = { montant: r2(apres.montant), exp: avant.exp, pay: avant.pay, cree: !!avant.cree, ferme: f1 };
+    } else if (apres && apres.lien) res = { montant: r2(+apres.lien.amount || 0), exp: apres.exp, pay: apres.lien.id, lie: true };
+    else if (apres && apres.exp) {
+      var e2 = X[apres.exp]; if (!e2) throw { message: "Cette dépense n'existe plus dans la cagnotte." };
+      var pid = cagNouvelId("p"), f2 = false;
+      e2.payments = (e2.payments || []).concat([paie(pid, apres.montant)]);
+      if (!e2.closed && solde(e2)) { e2.closed = true; f2 = true; }
+      res = { montant: r2(apres.montant), exp: apres.exp, pay: pid, ferme: f2 };
+    } else if (apres && apres.projet) {
+      var eid = cagNouvelId("e"), pid2 = cagNouvelId("p"), ord = 1 + Math.max.apply(null, [0].concat(cagEntrees(X).map(function (e) { return +e.order || 0; })));
+      X[eid] = { project: apres.projet, label: String(lib || "Dépense").slice(0, 60), planned: r2(apres.montant), rest: false, closed: true, note: "", order: ord, payments: [paie(pid2, apres.montant)], split: null };
+      res = { montant: r2(apres.montant), exp: eid, pay: pid2, cree: true };
+    }
+    cagEcrire(d);
+    return res;
+  }
+  /* La cagnotte d'abord, puis la dépense ; si la dépense ne s'enregistre pas, la cagnotte revient comme avant */
+  function cagEnregistrer(avant, apres, doc, persist) {
+    if (!avant && !apres) return persist(doc);
+    var bak = localStorage.getItem("la-cagnotte-donnees"), lien;
+    try { lien = cagAppliquer(avant, apres, doc ? doc.libelle : "", doc ? doc.date : todayISO()); } catch (e) { return Promise.reject(e); }
+    if (doc) doc.cagnotte = lien || { __delete__: true };
+    return Promise.resolve().then(function () { return persist(doc); }).catch(function (e) { try { if (bak != null) localStorage.setItem("la-cagnotte-donnees", bak); } catch (x) {} throw e; });
+  }
+  function cagPastilles(x) {
+    if (x._col !== "depenses" || x.carte) return "";
+    var m = Number(x.montant) || 0, hb = Number(x.horsBudget) || 0, c = x.cagnotte ? Number(x.cagnotte.montant) || 0 : 0, autre = r2(hb - c), h = "";
+    if (c > 0) h += ' <span class="pill sm neutral">Cagnotte' + (c < m - 0.004 ? " " + esc(eur.format(c)) : "") + "</span>";
+    if (autre > 0.004) h += ' <span class="pill sm neutral">' + (!c && hb >= m ? "Hors budget" : esc(eur.format(autre)) + " hors budget") + "</span>";
+    return h;
+  }
+
+  cagFormVider();
+  $("f-cag").addEventListener("change", function () {
+    if (this.checked && !CF.sel) { var d = cagLire(); CF.sel = d ? cagDeviner(d, $("f-libelle").value) : ""; }
+    CF.neuf = false; cagFormMaj();
+  });
+  $("f-cagexp").addEventListener("change", function () { CF.sel = this.value; CF.neuf = false; CF.mTouche = false; cagFormMaj(); });
+  $("f-cagm").addEventListener("input", function () { CF.mTouche = true; cagFormMaj(); });
+  /* Un choix à la main sur « hors budget » passe avant le calcul automatique (écouté avant les autres) */
+  $("f-opts").addEventListener("change", function (e) { if (e.target.id === "f-hb" && CF) CF.hbTouche = true; }, true);
+  $("f-opts").addEventListener("input", function (e) { if (e.target.id === "f-hbm" && CF) CF.hbTouche = true; }, true);
+  $("f-hbm").addEventListener("input", function () { if ($("f-cag").checked) cagFormMaj(); });
+  ["f-montant", "f-libelle", "f-date"].forEach(function (id) { $(id).addEventListener(id === "f-date" ? "change" : "input", function () { if ($("f-cag").checked) cagFormMaj(); }); });
+  document.addEventListener("click", function (e) { if (!e.target.closest || !e.target.closest("#f-cagneuf")) return; e.preventDefault(); CF.neuf = true; CF.mTouche = false; cagFormMaj(); });
+  /* La cagnotte modifiée dans un autre onglet, ou retour en arrière vers l'accueil : la tuile se met à jour */
+  window.addEventListener("storage", function (e) { if (e.key === "la-cagnotte-donnees") renderTiles(); });
+  window.addEventListener("pageshow", function (e) { if (e.persisted) renderTiles(); });
 
   /* Modifier une dépense : la fiche « + Dépense » s'ouvre remplie */
   function ouvrirEdition(id) {
@@ -6043,6 +6553,7 @@ html { touch-action: manipulation; }
     $("f-hb").checked = !x.carte && Number(x.horsBudget) > 0;
     $("f-hbm").value = Number(x.horsBudget) > 0 ? num2.format(Number(x.horsBudget)) : "";
     $("f-att").checked = !!x.attente;
+    cagFormOuvrir(x);
     $("add-btn").textContent = "Enregistrer";
     $("f-suppr").hidden = false; $("f-suppr").textContent = "Supprimer cette dépense"; delete $("f-suppr").dataset.armed;
     $("f-carte-row").hidden = true;
@@ -6081,12 +6592,17 @@ html { touch-action: manipulation; }
       if (att && !x.attente) upd.attente = true;
       if (!att && x.attente) { upd.attente = false; upd.passeLe = nowISO(); }
     }
-    write(function () { return S.db.doc("depenses/" + E.id).update(upd); }, "Dépense modifiée.").then(function (ok) { if (ok) closeSheet(); });
+    var cagF = /^carte:/.test(v) ? null : cagDuFormulaire(montant, libelle); if (cagF && cagF.err) { msg.textContent = cagF.err; return; }
+    if (cagF) upd.horsBudget = r2(Math.min(montant, cagF.montant + (Number(upd.horsBudget) || 0)));
+    var c0 = x.cagnotte || null;
+    var mod = "Dépense modifiée." + (cagF && !cagMeme(c0, cagF) ? " " + cagF.msg : !cagF && c0 ? (c0.lie ? " Elle n'est plus reliée à la cagnotte." : " Ses " + eur.format(Number(c0.montant) || 0) + " reviennent dans la cagnotte.") : "");
+    write(function () { return cagEnregistrer(c0, cagF, upd, function (u) { return S.db.doc("depenses/" + E.id).update(u); }); }, mod).then(function (ok) { if (ok) closeSheet(); });
   }
   $("f-suppr").addEventListener("click", function () {
     var b = this, E = S.editExp; if (!E) return;
     if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "Confirmer la suppression"; return; }
-    write(function () { return S.db.doc("depenses/" + E.id).delete(); }, "Dépense supprimée : " + (E.doc.libelle || "")).then(function (ok) { if (ok) closeSheet(); });
+    var c0 = E.doc.cagnotte || null;
+    write(function () { return cagEnregistrer(c0, null, null, function () { return S.db.doc("depenses/" + E.id).delete(); }); }, "Dépense supprimée : " + (E.doc.libelle || "") + (c0 && !c0.lie ? ". Ses " + eur.format(Number(c0.montant) || 0) + " reviennent dans la cagnotte." : "")).then(function (ok) { if (ok) closeSheet(); });
   });
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-exp-edit]"); if (!b) return;
@@ -6162,6 +6678,339 @@ html { touch-action: manipulation; }
     }, oldLib + " passe " + jour + (Math.abs(m - oldM) > 0.004 ? " (" + eur.format(m) + ")" : "") + (suite ? ", ce mois-ci et les suivants." : ", ce mois-ci seulement."));
   });
 
+  /* ---------- 1.5 : recherche, crédits, prévisions, évolution, règles ---------- */
+
+  /* Recherche dans toutes les dépenses */
+  function rechercher() {
+    var box = $("rech-res"); if (!box) return;
+    var q = String(($("rech") || {}).value || "").trim();
+    if (!q) { box.hidden = true; box.innerHTML = ""; $("list").hidden = false; return; }
+    var per = $("rech-per").value, cur = current(), ids = null, ps = S.periods.slice().sort(byDebut);
+    if (per === "mois" && cur) ids = [cur.id];
+    else if (per === "3" && cur) { var k = ps.map(function (p) { return p.id; }).indexOf(cur.id); ids = ps.slice(Math.max(0, k - 2), k + 1).map(function (p) { return p.id; }); }
+    var estNombre = /^[\d\s.,€]+$/.test(q), num = estNombre ? parseAmount(q.replace(/€/g, ""), false) : NaN, mots = impNorm(q).split(" ").filter(Boolean);
+    var l = (S.allExp || []).filter(function (x) {
+      if (ids && ids.indexOf(x.periode) < 0) return false;
+      if (estNombre) return !isNaN(num) && Math.abs((Number(x.montant) || 0) - num) < 0.005;
+      var t = impNorm([x.libelle, x.categorie, courtCompte(x.compte), x.carteNom].join(" "));
+      return mots.every(function (m) { return t.indexOf(m) >= 0; });
+    }).sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+    var ro = S.canWrite === false;
+    box.hidden = false; $("list").hidden = true;
+    var depuis = l.length ? l[l.length - 1].date : null;
+    box.innerHTML = '<div class="rech-head"><b>' + (l.length ? l.length + (l.length > 1 ? " dépenses · " : " dépense · ") + esc(eur.format(total(l))) : "Aucune dépense trouvée") + "</b>" +
+      (depuis && l.length > 1 ? '<span class="note">depuis le ' + esc(fmtShort.format(dateOf(depuis))) + (depuis.slice(0, 4) !== todayISO().slice(0, 4) ? " " + depuis.slice(0, 4) : "") + "</span>" : "") + "</div>" +
+      (l.length ? '<ul class="list">' + l.slice(0, 80).map(function (x) {
+        var meta = esc([x.categorie, x.carte ? "Carte " + (x.carteNom || "cadeau") : courtCompte(x.compte), x.date ? fmtRow.format(dateOf(x.date)) : ""].filter(Boolean).join(" · "));
+        return '<li class="erow rech-row">' + (ro ? '<div class="emain">' : '<button type="button" class="emain ebtn" data-exp-edit="' + esc(x.id) + '">') +
+          '<span class="ename">' + esc(x.libelle || "Dépense") + '</span><span class="emeta">' + meta + "</span>" + (ro ? "</div>" : "</button>") +
+          '<span class="eamt">' + esc(eur.format(Number(x.montant) || 0)) + "</span></li>";
+      }).join("") + "</ul>" : "") +
+      (l.length > 80 ? '<p class="note">Et ' + (l.length - 80) + " de plus : précise ta recherche.</p>" : "");
+  }
+  $("rech").addEventListener("input", rechercher);
+  $("rech-per").addEventListener("change", rechercher);
+
+  /* Crédits : mensualités, fin, reste à payer, taux d'endettement */
+  var RE_CREDIT = /pr[eê]t|cr[eé]dit|younited|credipar|cofidis|cetelem|sofinco|personal finance|oney|floa|franfinance|\bloa\b|\blld\b|leasing|passeport|financement/i;
+  function moisCourant() { return todayISO().slice(0, 7); }
+  function nomMois(ym) { var a = String(ym).split("-"); return fmtMonth.format(new Date(+a[0], +a[1] - 1, 1)); }
+  function creditActif(c) { return !c.fin || c.fin >= moisCourant(); }
+  function creditLigne(c) {
+    var p = current(); if (!p) return null;
+    return (p.charges || []).filter(function (x) { return x.libelle === c.libelle && (!c.compte || x.compte === c.compte); })[0] || null;
+  }
+  function creditMoisRestants(c) {
+    if (!c.fin) return null;
+    var a = moisCourant().split("-"), b = c.fin.split("-"), n = (+b[0] - +a[0]) * 12 + (+b[1] - +a[1]) + 1;
+    var l = creditLigne(c); if (l && l.passe) n -= 1;
+    return Math.max(0, n);
+  }
+  function creditsSuggeres() {
+    var p = current() || S.periods.slice().sort(byDebut).slice(-1)[0]; if (!p) return [];
+    var deja = (S.credits || []).map(function (c) { return c.libelle; });
+    return (p.charges || []).filter(function (x) { return RE_CREDIT.test(x.libelle || "") && deja.indexOf(x.libelle) < 0 && !x.ponctuel && (Number(x.montant) || 0) > 0; });
+  }
+  function creditTermine(x, pid) { return (S.credits || []).some(function (c) { return c.fin && c.libelle === x.libelle && (!c.compte || c.compte === x.compte) && pid > c.fin; }); }
+  function tauxEndettement() {
+    var p = current(); if (!p) return null;
+    var mens = r2((S.credits || []).filter(creditActif).reduce(function (t, c) { return t + (Number(c.mensualite) || 0); }, 0));
+    var sal = r2((p.revenus || []).filter(function (x) { return /salaire|paie/i.test(x.libelle || ""); }).reduce(function (t, x) { return t + revAmount(p, x); }, 0));
+    var base = sal > 0 ? sal : r2(totalRev(p));
+    return { mens: mens, base: base, sal: sal > 0, taux: base > 0 ? mens / base * 100 : null, n: (S.credits || []).filter(creditActif).length };
+  }
+  function creditFormHTML(c) {
+    var v = c || {}, id = c ? c.id : "";
+    var opts = COMPTES.filter(function (k) { return k[0] !== "Liquide"; }).map(function (k) { return '<option value="' + esc(k[0]) + '"' + (k[0] === (v.compte || (COMPTES[0] || [""])[0]) ? " selected" : "") + ">" + esc(k[1]) + "</option>"; }).join("");
+    return '<form class="carte credit-form" data-credit-form="' + esc(id) + '" novalidate><h3>' + (c ? "Modifier le crédit" : "Nouveau crédit") + "</h3>" +
+      '<label class="f"><span>Nom</span><input name="nom" maxlength="50" autocomplete="off" value="' + esc(v.nom || "") + '" placeholder="Prêt immo, Younited…"></label>' +
+      '<div class="row two"><label class="f"><span>Mensualité (€)</span><input name="m" inputmode="decimal" autocomplete="off" value="' + esc(c ? num2.format(Number(v.mensualite) || 0) : "") + '"></label>' +
+      '<label class="f"><span>Payé avec</span><select name="compte">' + opts + "</select></label></div>" +
+      '<div class="row two"><label class="f"><span>Dernière mensualité</span><input name="fin" type="month" value="' + esc(v.fin || "") + '"></label>' +
+      '<label class="f"><span>Capital restant (facultatif)</span><input name="cap" inputmode="decimal" autocomplete="off" value="' + esc(v.capital ? num2.format(Number(v.capital)) : "") + '"></label></div>' +
+      '<p class="form-msg" role="alert"></p><div class="carte-btns"><button type="button" class="btn ghost" data-credit-annul="1">Annuler</button><button class="btn" type="submit">Enregistrer</button></div>' +
+      (c ? (S.creditSuppr === c.id ? '<div class="confirm">Retirer ce crédit de la liste ? Les prélèvements ne changent pas.<button type="button" class="link-btn danger" data-credit-suppr-ok="' + esc(c.id) + '">Retirer</button><button type="button" class="link-btn" data-credit-suppr-non="1">Annuler</button></div>'
+        : '<button type="button" class="link-btn danger" data-credit-suppr="' + esc(c.id) + '">Retirer ce crédit</button>') : "") + "</form>";
+  }
+  function creditHTML(c) {
+    if (S.creditForm && S.creditForm.id === c.id) return creditFormHTML(c);
+    var n = creditMoisRestants(c), m = Number(c.mensualite) || 0, actif = creditActif(c), ro = S.canWrite === false;
+    var info = !c.fin ? '<span class="pill sm warn">Date de fin à renseigner</span>'
+      : !actif ? "Terminé en " + esc(nomMois(c.fin))
+      : "Dernière mensualité en " + esc(nomMois(c.fin)) + " · encore " + n + (n > 1 ? " mensualités" : " mensualité");
+    var reste = c.capital ? Number(c.capital) : n != null ? r2(n * m) : null;
+    return '<article class="carte credit' + (actif ? "" : " vide") + '"><div class="carte-top"><div class="carte-nom"><b>' + esc(c.nom || c.libelle) + '</b><span class="carte-ch">' + esc(courtCompte(c.compte) || "") + "</span></div>" +
+      '<div class="carte-solde"><b>' + esc(eur.format(m)) + "</b><span>par mois</span></div></div>" +
+      '<div class="carte-meta">' + info + "</div>" +
+      (actif && reste != null ? '<div class="carte-meta">' + (c.capital ? "Capital restant : " : "≈ reste à payer : ") + "<b>" + esc(eur.format(reste)) + "</b></div>" : "") +
+      (ro ? "" : '<div class="gbtns"><button type="button" class="link-btn" data-credit-edit="' + esc(c.id) + '">' + (c.fin ? "Modifier" : "Indiquer la date de fin") + "</button></div>") + "</article>";
+  }
+  function renderCredits() {
+    var box = $("credits"); if (!box) return;
+    var ae = document.activeElement;
+    if (ae && box.contains(ae) && /^(INPUT|SELECT)$/.test(ae.tagName)) return;
+    if (S.failed || !S.loaded) { box.innerHTML = ""; return; }
+    var ro = S.canWrite === false, t = tauxEndettement(), sug = creditsSuggeres(), all = (S.credits || []).slice();
+    var act = all.filter(creditActif).sort(function (a, b) { return String(a.fin || "9999").localeCompare(String(b.fin || "9999")); }), fin = all.filter(function (c) { return !creditActif(c); });
+    $("credits-count").textContent = t && t.taux != null && all.length ? t.taux.toFixed(1).replace(".", ",") + " % d'endettement" : "";
+    var h = "";
+    if (t && all.length && t.taux != null) {
+      var pc = Math.min(100, t.taux / 50 * 100), cls = t.taux > 35 ? "bad" : t.taux > 30 ? "warn" : "good";
+      h += '<div class="taux"><div class="taux-top"><span class="label">Taux d\'endettement du foyer</span><b class="' + cls + '">' + t.taux.toFixed(1).replace(".", ",") + " %</b></div>" +
+        '<div class="taux-bar" role="img" aria-label="' + t.taux.toFixed(1) + ' % sur une limite de 35 %"><span class="' + cls + '" style="width:' + pc.toFixed(1) + '%"></span><i style="left:70%"></i></div>' +
+        '<div class="taux-axe"><span>0 %</span><span style="left:70%">35 %</span><span>50 %</span></div>' +
+        '<p class="note">' + esc(eur.format(t.mens)) + " de crédits par mois sur " + esc(eur.format(t.base)) + (t.sal ? " de salaires" : " de revenus") + " du foyer ce mois-ci. Les banques regardent en général 35 % au maximum.</p></div>";
+    }
+    if (sug.length && !ro) h += '<div class="sug"><p>J\'ai trouvé ' + (sug.length > 1 ? "ces crédits" : "ce crédit") + " dans tes prélèvements : <b>" + sug.map(function (x) { return esc(x.libelle + " (" + eur.format(Number(x.montant) || 0) + ")"); }).join(", ") + "</b>.</p>" +
+      '<button type="button" class="btn" data-credit-sug="1">' + (sug.length > 1 ? "Les ajouter" : "L'ajouter") + "</button></div>";
+    if (!ro) h += S.creditForm && S.creditForm.id === "" ? creditFormHTML(null) : '<button type="button" class="btn ghost carte-add" data-credit-new="1">+ Ajouter un crédit</button>';
+    if (!all.length && !sug.length) h += '<p class="empty">Aucun crédit pour l\'instant.</p>';
+    h += act.map(creditHTML).join("");
+    if (fin.length) h += '<details class="cartes-vides"><summary>Crédits terminés · ' + fin.length + "</summary>" + fin.map(creditHTML).join("") + "</details>";
+    if (all.length) h += '<p class="note">À la date de sa dernière mensualité, un crédit disparaît tout seul des mois suivants de ton budget.</p>';
+    box.innerHTML = h;
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-credit-sug], [data-credit-new], [data-credit-edit], [data-credit-annul], [data-credit-suppr], [data-credit-suppr-ok], [data-credit-suppr-non]");
+    if (!b || S.canWrite === false) return;
+    var d = b.dataset;
+    if (d.creditSug) {
+      var sug = creditsSuggeres();
+      write(function () {
+        var seq = Promise.resolve();
+        sug.forEach(function (x) { seq = seq.then(function () { return S.db.collection("credits").add({ nom: x.libelle, libelle: x.libelle, compte: x.compte, mensualite: Number(x.montant) || 0, fin: "", capital: null, creeLe: nowISO() }); }); });
+        return seq;
+      }, sug.length + (sug.length > 1 ? " crédits ajoutés" : " crédit ajouté") + " : indique leur date de fin pour voir ce qui reste.");
+      return;
+    }
+    if (d.creditNew) { S.creditForm = { id: "" }; S.creditSuppr = null; renderCredits(); return; }
+    if (d.creditEdit) { S.creditForm = { id: d.creditEdit }; S.creditSuppr = null; renderCredits(); return; }
+    if (d.creditAnnul) { S.creditForm = null; S.creditSuppr = null; if (document.activeElement) document.activeElement.blur(); renderCredits(); return; }
+    if (d.creditSuppr) { S.creditSuppr = d.creditSuppr; renderCredits(); return; }
+    if (d.creditSupprNon) { S.creditSuppr = null; renderCredits(); return; }
+    if (d.creditSupprOk) { var id = d.creditSupprOk; S.creditSuppr = null; S.creditForm = null; write(function () { return S.db.doc("credits/" + id).delete(); }, "Crédit retiré de la liste."); }
+  });
+  document.addEventListener("submit", function (e) {
+    var f = e.target; if (!f.matches || !f.matches("[data-credit-form]")) return;
+    e.preventDefault();
+    var id = f.dataset.creditForm, msg = f.querySelector(".form-msg"), val = function (n) { return String((f.elements[n] || {}).value || "").trim(); };
+    var nom = val("nom"), m = parseAmount(val("m"), false), fin = val("fin"), cap = val("cap") ? parseAmount(val("cap"), true) : null;
+    if (!nom) { msg.textContent = "Indique le nom du crédit."; return; }
+    if (isNaN(m)) { msg.textContent = "Indique la mensualité, par exemple 293,45."; return; }
+    if (fin && !/^\d{4}-\d{2}$/.test(fin)) { msg.textContent = "Choisis le mois de la dernière mensualité."; return; }
+    if (cap != null && isNaN(cap)) { msg.textContent = "Capital restant invalide."; return; }
+    var old = id ? (S.credits || []).filter(function (c) { return c.id === id; })[0] : null;
+    var doc = Object.assign({}, old || {}, { nom: nom.slice(0, 50), mensualite: m, compte: val("compte"), fin: fin, capital: cap });
+    if (!old) { doc.libelle = doc.nom; doc.creeLe = nowISO(); }
+    delete doc.id;
+    /* Les mois déjà créés après la fin perdent ce prélèvement */
+    var patchs = {}, nMois = 0;
+    if (fin) S.periods.forEach(function (q) {
+      if (q.id <= fin) return;
+      var l = (q.charges || []).filter(function (x) { return !(x.libelle === doc.libelle && (!doc.compte || x.compte === doc.compte) && !x.passe); });
+      if (l.length !== (q.charges || []).length) { patchs[q.id] = l; nMois++; }
+    });
+    if (document.activeElement) document.activeElement.blur();
+    S.creditForm = null;
+    write(function () {
+      var seq = old ? S.db.doc("credits/" + id).set(doc) : S.db.collection("credits").add(doc);
+      Object.keys(patchs).forEach(function (pid) { seq = seq.then(function () { return S.db.doc("periodes/" + pid).update({ charges: patchs[pid] }); }); });
+      return seq;
+    }, (old ? "Crédit modifié" : "Crédit ajouté") + (fin ? " : dernière mensualité en " + nomMois(fin) : "") + (nMois ? ", retiré de " + nMois + (nMois > 1 ? " mois déjà créés." : " mois déjà créé.") : "."));
+  });
+
+  /* Prévision sur 3 mois, compte par compte */
+  function moyennePaie() {
+    var bs = sortedBulletins().filter(function (b) { return isNum(b.netPaye) && Number(b.netPaye) > 0; }).slice(0, 6);
+    return bs.length >= 2 ? r2(bs.reduce(function (t, b) { return t + Number(b.netPaye); }, 0) / bs.length) : null;
+  }
+  function rythmeQuotidien(compte) {
+    var cur = periodFor(todayISO()), ps = S.periods.slice().sort(byDebut);
+    var done = ps.filter(function (p) { return !cur || p.fin < cur.debut; }).slice(-3), src = done.length ? done : (cur ? [cur] : []);
+    var tot = 0, jours = 0;
+    src.forEach(function (p) {
+      var fin = cur && p.id === cur.id ? todayISO() : p.fin, j = daysBetween(p.debut, fin) + 1; if (j <= 0) return;
+      jours += j;
+      /* Sans les dépenses hors budget (payées par d'autres fonds) ni les grosses dépenses ponctuelles (plus de 200 €) */
+      tot += (S.allExp || []).filter(function (x) { return x.periode === p.id && x.compte === compte && !x.carte && (Number(x.montant) || 0) <= 200; }).reduce(function (t, x) { return t + partBudget(x); }, 0);
+    });
+    return jours > 0 ? tot / jours : 0;
+  }
+  function prevision(compte) {
+    var i = soldeInfo(compte), cur = periodFor(todayISO()); if (!i || !cur) return null;
+    var rate = rythmeQuotidien(compte), moy = moyennePaie(), t = todayISO();
+    var seq = [cur].concat(S.periods.slice().sort(byDebut).filter(function (p) { return p.debut > cur.debut; }));
+    while (seq.length < 4) seq.push(nextFrom(seq[seq.length - 1]));
+    seq = seq.slice(0, 4);
+    var v = i.montant, out = [];
+    seq.forEach(function (p, k) {
+      var ev = {}, lo = k === 0 ? t : p.debut;
+      var add = function (d, m) { var key = !d ? p.fin : isoOf(d) < lo ? lo : isoOf(d) > p.fin ? p.fin : isoOf(d); ev[key] = (ev[key] || 0) + m; };
+      ["charges", "epargne"].forEach(function (ln) { (p[ln] || []).forEach(function (x) { if (x.compte === compte && !x.passe && (Number(x.montant) || 0) > 0 && !(k > 0 && creditTermine(x, p.id))) add(itemDate(p, x), -Number(x.montant)); }); });
+      (p.virements || []).forEach(function (x) { if (x.fait) return; var m = Number(x.montant) || 0; if (x.de === compte) add(itemDate(p, x), -m); if (x.vers === compte) add(itemDate(p, x), m); });
+      (p.revenus || []).forEach(function (x) {
+        if (x.recu || x.compte !== compte) return;
+        var m = revAmount(p, x); if (x.lien === "bulletin" && !lienPaie(p.id, x) && moy) m = moy;
+        if (m > 0) add(itemDate(p, x), m);
+      });
+      var min = null;
+      for (var d = lo, n = 0; d <= p.fin && n < 40; d = isoOf(new Date(dateOf(d).getFullYear(), dateOf(d).getMonth(), dateOf(d).getDate() + 1)), n++) {
+        v += (ev[d] || 0) - rate;
+        if (!min || v < min.v) min = { d: d, v: r2(v) };
+      }
+      out.push({ p: p, fin: r2(v), min: min });
+    });
+    return { mois: out, parMois: r2(rate * 30.4), moy: moy, dec: decouvertDe(compte) };
+  }
+  function previsionHTML() {
+    var cpts = SUIVIS.filter(function (c) { return soldeInfo(c[0]); }); if (!cpts.length) return "";
+    var pv = cpts.map(function (c) { return { c: c, pr: prevision(c[0]) }; }).filter(function (x) { return x.pr; }); if (!pv.length) return "";
+    var mois = pv[0].pr.mois.slice(1), fmtM = new Intl.DateTimeFormat("fr-FR", { month: "short" }), alertes = [];
+    var h = '<div class="prev"><div class="prev-head"><h3>Prévision sur 3 mois</h3><span class="note">solde en fin de mois</span></div><div class="prev-scroll"><table class="prev-t"><thead><tr><th></th>' +
+      mois.map(function (m) { return "<th>fin " + esc(fmtM.format(dateOf(m.p.fin))) + "</th>"; }).join("") + "</tr></thead><tbody>";
+    pv.forEach(function (x) {
+      var dit = false;
+      h += "<tr><th>" + esc(courtCompte(x.c[0])) + "</th>" + x.pr.mois.slice(1).map(function (m) {
+        var bas = m.min && m.min.v < 0 && m.min.v < m.fin - 5;
+        if (m.min && m.min.v < 0 && !dit) { dit = true; alertes.push(courtCompte(x.c[0]) + " passerait sous 0 dès le " + fmtShort.format(dateOf(m.min.d)) + " (≈ " + eur0.format(Math.round(m.min.v)) + ")" + (x.pr.dec != null && m.min.v < -x.pr.dec ? ", au-delà du découvert autorisé" : "")); }
+        return '<td class="' + (m.fin < 0 ? "neg" : "") + '">' + esc(eur0.format(Math.round(m.fin))) + (bas ? '<span class="prev-bas">↓ ' + esc(eur0.format(Math.round(m.min.v))) + "</span>" : "") + "</td>";
+      }).join("") + "</tr>";
+    });
+    h += "</tbody></table></div>";
+    if (alertes.length) h += alertes.slice(0, 3).map(function (a) { return '<p class="imp-ctrl warn"><span aria-hidden="true">⚠</span> ' + esc(a) + ".</p>"; }).join("");
+    var moy = pv[0].pr.moy;
+    h += '<p class="note">Estimation : ' + (moy ? "ta paie moyenne (" + esc(eur.format(moy)) + ") pour les mois sans feuille d'heures, " : "") + "tous les prélèvements et virements prévus, et tes dépenses du quotidien au rythme des derniers mois, sans les grosses dépenses ponctuelles (" +
+      pv.map(function (x) { return esc(courtCompte(x.c[0])) + " ≈ " + esc(eur0.format(x.pr.parMois)) + "/mois"; }).join(", ") + ").</p></div>";
+    return h;
+  }
+
+  /* Évolution sur 6 mois */
+  S.evoSel = "Tout";
+  function evoBarres(vals, labels, coul, enCours, titre) {
+    var W = 320, H = 150, padT = 20, padB = 24, n = vals.length, max = Math.max.apply(null, vals.concat([1])), step = W / n, bw = Math.min(34, step * 0.62);
+    var g = '<line class="evo-base" x1="0" x2="' + W + '" y1="' + (H - padB) + '" y2="' + (H - padB) + '"></line>';
+    vals.forEach(function (v, k) {
+      var h = v > 0 ? Math.max(3, (v / max) * (H - padT - padB)) : 0, x = step * k + (step - bw) / 2, y = H - padB - h, cx = (x + bw / 2).toFixed(1);
+      g += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="4" fill="' + coul + '"' + (k === enCours ? ' fill-opacity="0.45"' : "") + "><title>" + esc(labels[k] + " : " + eur.format(v)) + "</title></rect>" +
+        '<text class="evo-v" x="' + cx + '" y="' + (y - 5).toFixed(1) + '" text-anchor="middle">' + esc(eur0.format(Math.round(v))) + "</text>" +
+        '<text class="evo-m" x="' + cx + '" y="' + (H - 7) + '" text-anchor="middle">' + esc(labels[k]) + "</text>";
+    });
+    return '<svg class="evo-svg" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + esc(titre) + '">' + g + "</svg>";
+  }
+  function renderEvolution() {
+    var box = $("evo"); if (!box) return;
+    if (S.failed || !S.loaded) { box.innerHTML = ""; return; }
+    var cur = periodFor(todayISO()), ps = S.periods.slice().sort(byDebut).filter(function (p) { return !cur || p.debut <= cur.debut; }).slice(-6);
+    var fmtM = new Intl.DateTimeFormat("fr-FR", { month: "short" });
+    var data = ps.map(function (p) {
+      var exps = (S.allExp || []).filter(function (x) { return x.periode === p.id && !x.carte && !isEnvExpense(x); });
+      return { p: p, tot: totalB(exps), cats: catsDe(exps), ep: r2(total(p.epargne)), cours: !!(cur && p.id === cur.id), lab: fmtM.format(dateOf(p.fin)).replace(".", "") };
+    }).filter(function (d) { return d.tot > 0 || d.ep > 0; });
+    if (data.length < 2) { box.innerHTML = '<p class="empty">Il faut au moins deux mois de dépenses notées pour voir une évolution. Ça viendra tout seul.</p>'; return; }
+    var cats = ANA_CATS.filter(function (a) { return data.some(function (d) { return d.cats[a[0]] > 0; }); });
+    if (S.evoSel !== "Tout" && !cats.some(function (a) { return a[0] === S.evoSel; })) S.evoSel = "Tout";
+    var coul = S.evoSel === "Tout" ? ANA_C1[1][2] : cats.filter(function (a) { return a[0] === S.evoSel; })[0][1];
+    var vals = data.map(function (d) { return S.evoSel === "Tout" ? d.tot : (d.cats[S.evoSel] || 0); }), labs = data.map(function (d) { return d.lab; });
+    var iCours = data.map(function (d) { return d.cours; }).indexOf(true);
+    var cumul = 0, eps = data.map(function (d) { cumul += d.ep; return d.ep; });
+    box.innerHTML = '<div class="evo-chips" role="group" aria-label="Catégorie">' + ["Tout"].concat(cats.map(function (a) { return a[0]; })).map(function (c) {
+      return '<button type="button" class="chip' + (c === S.evoSel ? " on" : "") + '" data-evo="' + esc(c) + '" aria-pressed="' + (c === S.evoSel) + '">' + esc(c === "Tout" ? "Tout le quotidien" : c) + "</button>";
+    }).join("") + "</div>" +
+      evoBarres(vals, labs, coul, iCours, "Dépenses " + (S.evoSel === "Tout" ? "du quotidien" : S.evoSel) + " par mois") +
+      (iCours >= 0 ? '<p class="note">Le mois en cours est plus clair : il n\'est pas fini.</p>' : "") +
+      '<h3 class="evo-t">Épargne mise de côté</h3>' + evoBarres(eps, labs, ANA_C1[2][2], -1, "Épargne par mois") +
+      '<p class="note">' + esc(eur.format(r2(cumul))) + " mis de côté sur ces " + data.length + " mois.</p>";
+  }
+  document.addEventListener("click", function (e) { var b = e.target.closest("[data-evo]"); if (!b) return; S.evoSel = b.dataset.evo; renderEvolution(); });
+
+  /* Règles de répartition : 50 / 20 / 10 / 15 / 5 sur les revenus du foyer */
+  var REGLES = [["besoins", "Charges et quotidien", "loyer, courses, transport…", 50, "max"], ["reserve", "Réserve", "livret, précaution", 20, "min"], ["dettes", "Dettes", "crédits, LOA", 10, "max"], ["projets", "Projets", "voyages, Dubaï…", 15, "min"], ["liquide", "Liquide", "argent sorti en espèces", 5, "max"]];
+  function reglePct(k) { var c = S.regles && S.regles.pcts, d = REGLES.filter(function (r) { return r[0] === k; })[0][3]; return c && c[k] != null && isFinite(Number(c[k])) ? Number(c[k]) : d; }
+  function regleDe(ln, x) {
+    var m = S.regles && S.regles.lignes, key = ln + "|" + (x.libelle || "");
+    if (m && m[key]) return m[key];
+    var l = impNorm(x.libelle || "");
+    if (ln === "epargne") return /noel|voyage|vacance|dubai|ski|projet|cadeau/.test(l) ? "projets" : /livret|ldds|lep|precaution|reserve|securit|urgence|matelas|salariale|bourse|pea|assurance vie/.test(l) ? "reserve" : "projets";
+    if ((S.credits || []).some(function (c) { return c.libelle === x.libelle; }) || RE_CREDIT.test(x.libelle || "")) return "dettes";
+    if (/liquide|retrait|especes/.test(l)) return "liquide";
+    if (/epargne|livret/.test(l)) return "reserve";
+    return "besoins";
+  }
+  function reglesDe(p) {
+    var s = { besoins: 0, reserve: 0, dettes: 0, projets: 0, liquide: 0 };
+    ["charges", "epargne"].forEach(function (ln) { (p[ln] || []).forEach(function (x) { s[regleDe(ln, x)] += Number(x.montant) || 0; }); });
+    (S.allExp || []).forEach(function (x) { if (x.periode !== p.id || x.carte) return; var b = partBudget(x); if (b) s[x.compte === "Liquide" ? "liquide" : "besoins"] += b; });
+    Object.keys(s).forEach(function (k) { s[k] = r2(s[k]); });
+    var comptesEp = {}; (p.epargne || []).forEach(function (x) { if ((Number(x.montant) || 0) > 0) comptesEp[x.compte || "?"] = 1; });
+    return { rev: r2(totalRev(p)), s: s, nEp: Object.keys(comptesEp).length };
+  }
+  function renderRegles() {
+    var box = $("regles"); if (!box) return;
+    var ae = document.activeElement;
+    if (ae && box.contains(ae) && /^(INPUT|SELECT)$/.test(ae.tagName)) return;
+    var p = current(); if (S.failed || !S.loaded || !p) { box.innerHTML = ""; return; }
+    var r = reglesDe(p), ro = S.canWrite === false;
+    if (!r.rev) { box.innerHTML = '<p class="empty">Ajoute les revenus du mois dans « Le budget du mois » pour voir tes règles.</p>'; return; }
+    var somme = REGLES.reduce(function (t, x) { return t + reglePct(x[0]); }, 0), affecte = 0;
+    var h = '<p class="note">Sur ' + esc(eur.format(r.rev)) + " de revenus du foyer en " + esc(p.nom || p.id) + ".</p>";
+    REGLES.forEach(function (g) {
+      var v = r.s[g[0]], pc = v / r.rev * 100, cible = reglePct(g[0]); affecte += v;
+      var ok = g[4] === "max" ? pc <= cible + 0.5 : pc >= cible - 0.5;
+      h += '<div class="regle"><div class="regle-top"><span><b>' + esc(g[1]) + '</b><span class="note"> · ' + esc(g[2]) + '</span></span><span class="regle-v"><b class="' + (ok ? "ok" : "ko") + '">' + pc.toFixed(0) + " %</b> / " + cible + " %</span></div>" +
+        '<div class="regle-bar" role="img" aria-label="' + esc(g[1]) + " : " + pc.toFixed(0) + " % pour une cible de " + cible + ' %"><span class="' + (ok ? "ok" : "ko") + '" style="width:' + Math.min(100, pc / 60 * 100).toFixed(1) + '%"></span><i style="left:' + Math.min(100, cible / 60 * 100).toFixed(1) + '%"></i></div>' +
+        '<div class="regle-m note">' + esc(eur.format(v)) + " · " + (ok ? (g[4] === "max" ? "dans la limite" : "objectif atteint") : (g[4] === "max" ? "dépasse de " + esc(eur.format(r2(v - r.rev * cible / 100))) : "il manque " + esc(eur.format(r2(r.rev * cible / 100 - v))))) + "</div></div>";
+    });
+    var reste = r2(r.rev - affecte);
+    h += '<p class="note">' + (reste >= 0 ? "Reste non réparti ce mois-ci : " + esc(eur.format(reste)) + "." : "Ce mois-ci, tu dépenses " + esc(eur.format(-reste)) + " de plus que tes revenus.") + "</p>";
+    h += '<div class="regle6' + (r.nEp >= 2 ? " ok" : "") + '">' + (r.nEp >= 2 ? "✓" : "⚠") + " Épargne répartie sur " + r.nEp + (r.nEp > 1 ? " comptes" : " compte") + (r.nEp >= 2 ? "" : " : ta 6e règle demande plusieurs comptes") + ".</div>";
+    if (!ro) {
+      var lignes = [];
+      ["charges", "epargne"].forEach(function (ln) { (p[ln] || []).forEach(function (x) { if ((Number(x.montant) || 0) > 0) lignes.push({ ln: ln, x: x }); }); });
+      h += '<details class="regle-reg"><summary>Régler les pourcentages et le classement</summary>' +
+        '<div class="regle-pcts">' + REGLES.map(function (g) { return '<label class="f"><span>' + esc(g[1]) + ' (%)</span><input type="number" inputmode="numeric" min="0" max="100" data-regle-pct="' + g[0] + '" value="' + reglePct(g[0]) + '"></label>'; }).join("") + "</div>" +
+        (Math.abs(somme - 100) > 0.5 ? '<p class="imp-ctrl warn">Total : ' + somme + " % (il faudrait 100 %).</p>" : "") +
+        '<p class="note">Chaque ligne du budget compte dans une règle. Les dépenses du quotidien vont dans « Charges et quotidien ».</p><ul class="regle-l">' +
+        lignes.map(function (o) {
+          var k = o.ln + "|" + (o.x.libelle || ""), cur2 = regleDe(o.ln, o.x);
+          return '<li><span>' + esc(o.x.libelle) + ' <span class="note">' + esc(eur.format(Number(o.x.montant) || 0)) + '</span></span><select data-regle-ligne="' + esc(k) + '" aria-label="Règle pour ' + esc(o.x.libelle) + '">' +
+            REGLES.map(function (g) { return '<option value="' + g[0] + '"' + (g[0] === cur2 ? " selected" : "") + ">" + esc(g[1]) + "</option>"; }).join("") + "</select></li>";
+        }).join("") + "</ul></details>";
+    }
+    box.innerHTML = h;
+  }
+  document.addEventListener("change", function (e) {
+    var t = e.target; if (!t || !t.dataset || S.canWrite === false) return;
+    if (t.dataset.reglePct == null && t.dataset.regleLigne == null) return;
+    var doc = clone(S.regles) || {}; doc.pcts = doc.pcts || {}; doc.lignes = doc.lignes || {};
+    if (t.dataset.reglePct != null) { var v = Number(t.value); if (!isFinite(v) || v < 0 || v > 100) return; doc.pcts[t.dataset.reglePct] = v; }
+    else doc.lignes[t.dataset.regleLigne] = t.value;
+    if (document.activeElement) document.activeElement.blur();
+    write(function () { return S.db.doc("config/regles").set(doc); });
+  });
+
+  /* Sauvegarde en un geste depuis l'accueil */
+  document.addEventListener("click", function (e) { var b = e.target.closest("[data-save-now]"); if (!b) return; $("save-btn").click(); });
+
   /* ---------- Démarrage ---------- */
   appliquerProfil(null);
   renderAll();
@@ -6211,8 +7060,10 @@ html { touch-action: manipulation; }
     paStart(db);
     function docsOf(snap) { return snap.docs.filter(function (d) { return d.exists; }).map(function (d) { return Object.assign({ id: d.id }, d.data()); }); }
     db.doc("config/soldes").onSnapshot(function (s) { S.soldes = s.exists ? s.data() : null; renderAll(); }, onError);
-    db.collection("depenses").onSnapshot(function (s) { S.allExp = docsOf(s); renderSoldes(); renderBilans(); renderCartes(); renderAttente(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
+    db.collection("depenses").onSnapshot(function (s) { S.allExp = docsOf(s); renderSoldes(); renderBilans(); renderCartes(); renderAttente(); rechercher(); if (S.loaded) { renderEvolution(); renderRegles(); } cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
     db.collection("cartes").onSnapshot(function (s) { S.cartes = docsOf(s); renderCartes(); cartesDansFormulaire(); if (S.loaded) renderTiles(); }, onError);
+    db.collection("credits").onSnapshot(function (s) { S.credits = docsOf(s); if (S.loaded) { renderCredits(); renderRegles(); renderSoldes(); renderTiles(); } }, onError);
+    db.doc("config/regles").onSnapshot(function (s) { S.regles = s.exists ? s.data() : null; if (S.loaded) renderRegles(); }, onError);
     db.collection("rentrees").onSnapshot(function (s) { S.allInc = docsOf(s); renderSoldes(); renderBilans(); }, onError);
     db.collection("virements").onSnapshot(function (s) { S.virs = docsOf(s); renderAll(); }, onError);
     db.collection("prets").onSnapshot(function (s) { S.prets = docsOf(s); S.mouvements = mouvementsPrets(); renderAll(); }, onError);
